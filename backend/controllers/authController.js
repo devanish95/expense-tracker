@@ -1,21 +1,16 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// Helper to generate signed JWT tokens
 const generateToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
     expiresIn: '30d'
   });
 };
 
-// @desc    Register a new user
-// @route   POST /api/auth/register
-// @access  Public
 const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Basic required field validation
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
@@ -30,8 +25,10 @@ const registerUser = async (req, res) => {
       });
     }
 
-    // Check if an account already exists with this email
-    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    const existingUser = await User.findOne({
+      email: email.toLowerCase()
+    });
+
     if (existingUser) {
       return res.status(400).json({
         success: false,
@@ -39,14 +36,12 @@ const registerUser = async (req, res) => {
       });
     }
 
-    // Create user (pre-save hook in User model automatically hashes the password)
     const user = await User.create({
       name: name.trim(),
       email: email.toLowerCase().trim(),
       password
     });
 
-    // Create token so the user is logged in right after registering
     const token = generateToken(user._id);
 
     res.status(201).json({
@@ -67,9 +62,6 @@ const registerUser = async (req, res) => {
   }
 };
 
-// @desc    Authenticate existing user & get token
-// @route   POST /api/auth/login
-// @access  Public
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -81,8 +73,10 @@ const loginUser = async (req, res) => {
       });
     }
 
-    // Look up the user by email
-    const user = await User.findOne({ email: email.toLowerCase().trim() });
+    const user = await User.findOne({
+      email: email.toLowerCase().trim()
+    });
+
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -90,8 +84,8 @@ const loginUser = async (req, res) => {
       });
     }
 
-    // Compare plain password with stored bcrypt hash
     const isMatch = await user.comparePassword(password);
+
     if (!isMatch) {
       return res.status(401).json({
         success: false,
@@ -119,9 +113,6 @@ const loginUser = async (req, res) => {
   }
 };
 
-// @desc    Get currently logged in user profile
-// @route   GET /api/auth/me
-// @access  Private (Protected by authMiddleware)
 const getMe = async (req, res) => {
   res.status(200).json({
     success: true,
@@ -134,4 +125,3 @@ module.exports = {
   loginUser,
   getMe
 };
-
