@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema(
       trim: true,
       minlength: [2, 'Name must be at least 2 characters long']
     },
+
     email: {
       type: String,
       required: [true, 'Please provide an email address'],
@@ -20,6 +21,7 @@ const userSchema = new mongoose.Schema(
         'Please provide a valid email address'
       ]
     },
+
     password: {
       type: String,
       required: [true, 'Please provide a password'],
@@ -31,8 +33,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// Hash the plain text password with bcrypt before saving to MongoDB.
-// We check isModified so we don't re-hash an already hashed password on normal profile updates.
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     return next();
@@ -40,13 +40,12 @@ userSchema.pre('save', async function (next) {
 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+
   next();
 });
 
-// Helper method to safely compare entered password with the hashed password in MongoDB
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
 module.exports = mongoose.model('User', userSchema);
-
