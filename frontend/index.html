@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expense Tracker - Personal Finance</title>
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <div class="app-shell">
+
+    <header class="app-header">
+      <div class="header-content">
+
+        <div class="brand">
+          <span class="brand-icon">₹</span>
+          <h1 class="brand-title">Expense Tracker</h1>
+        </div>
+
+        <div class="user-nav hidden" id="userNav">
+          <span class="user-greeting" id="userGreeting">Welcome, User</span>
+
+          <button
+            type="button"
+            class="btn btn-outline-danger btn-sm"
+            id="logoutBtn"
+          >
+            Logout
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <main class="app-main">
+
+      <section class="auth-section" id="authSection">
+        <div class="auth-card">
+
+          <div class="auth-tabs" role="tablist">
+
+            <button
+              type="button"
+              class="auth-tab active"
+              id="tabLogin"
+              role="tab"
+              aria-selected="true"
+            >
+              Login
+            </button>
+
+            <button
+              type="button"
+              class="auth-tab"
+              id="tabRegister"
+              role="tab"
+              aria-selected="false"
+            >
+              Register
+            </button>
+
+          </div>
+
+          <form class="auth-form" id="loginForm">
+
+            <div class="form-group">
+              <label for="loginEmail">Email Address</label>
+
+              <input
+                type="email"
+                id="loginEmail"
+                class="form-control"
+                placeholder="name@example.com"
+                required
+                autocomplete="email"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="loginPassword">Password</label>
+
+              <input
+                type="password"
+                id="loginPassword"
+                class="form-control"
+                placeholder="Enter your password"
+                required
+                autocomplete="current-password"
+              >
+            </div>
+
+            <p
+              class="form-error hidden"
+              id="loginError"
+              role="alert"
+            ></p>
+
+            <button
+              type="submit"
+              class="btn btn-primary btn-block"
+              id="loginSubmitBtn"
+            >
+              Sign In
+            </button>
+
+          </form>
+
+          <form class="auth-form hidden" id="registerForm">
+
+            <div class="form-group">
+              <label for="registerName">Full Name</label>
+
+              <input
+                type="text"
+                id="registerName"
+                class="form-control"
+                placeholder="John Doe"
+                required
+                autocomplete="name"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="registerEmail">Email Address</label>
+
+              <input
+                type="email"
+                id="registerEmail"
+                class="form-control"
+                placeholder="name@example.com"
+                required
+                autocomplete="email"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="registerPassword">Password</label>
+
+              <input
+                type="password"
+                id="registerPassword"
+                class="form-control"
+                placeholder="At least 6 characters"
+                minlength="6"
+                required
+                autocomplete="new-password"
+              >
+
+              <small class="form-hint">
+                Must be at least 6 characters
+              </small>
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary btn-block"
+              id="registerSubmitBtn"
+            >
+              Create Account
+            </button>
+
+          </form>
+
+        </div>
+      </section>
+
+      <section
+        class="dashboard-section hidden"
+        id="dashboardSection"
+      >
+
+        <div class="summary-grid">
+
+          <div class="summary-card balance-card">
+            <span class="card-label">Total Balance</span>
+            <h2 class="card-amount" id="totalBalance">₹0</h2>
+          </div>
+
+          <div class="summary-card income-card">
+            <span class="card-label">Total Income</span>
+            <h2 class="card-amount" id="totalIncome">+₹0</h2>
+          </div>
+
+          <div class="summary-card expense-card">
+            <span class="card-label">Total Expenses</span>
+            <h2 class="card-amount" id="totalExpenses">-₹0</h2>
+          </div>
+
+        </div>
+
+        <div class="dashboard-content">
+
+          <div class="panel form-panel">
+
+            <div class="panel-header">
+              <h3 class="panel-title" id="formTitle">
+                Add Transaction
+              </h3>
+
+              <button
+                type="button"
+                class="btn-text hidden"
+                id="cancelEditBtn"
+              >
+                Cancel
+              </button>
+            </div>
+
+            <form
+              class="transaction-form"
+              id="transactionForm"
+            >
+
+              <div class="form-group">
+                <label>Transaction Type</label>
+
+                <div
+                  class="type-toggle-group"
+                  role="radiogroup"
+                >
+
+                  <label
+                    class="type-radio-label expense-active"
+                    id="typeExpenseLabel"
+                  >
+                    <input
+                      type="radio"
+                      name="txType"
+                      value="expense"
+                      checked
+                    >
+                    <span>Expense</span>
+                  </label>
+
+                  <label
+                    class="type-radio-label"
+                    id="typeIncomeLabel"
+                  >
+                    <input
+                      type="radio"
+                      name="txType"
+                      value="income"
+                    >
+                    <span>Income</span>
+                  </label>
+
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="txAmount">Amount (₹)</label>
+
+                <div class="input-prefix-wrapper">
+                  <span class="currency-symbol">₹</span>
+
+                  <input
+                    type="number"
+                    id="txAmount"
+                    class="form-control with-prefix"
+                    placeholder="0.00"
+                    min="0.01"
+                    step="any"
+                    required
+                  >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="txCategory">Category</label>
+
+                <select
+                  id="txCategory"
+                  class="form-control"
+                  required
+                ></select>
+              </div>
+
+              <div class="form-group">
+                <label for="txDescription">Description</label>
+
+                <input
+                  type="text"
+                  id="txDescription"
+                  class="form-control"
+                  placeholder="e.g., Grocery store, Monthly Salary"
+                  maxlength="100"
+                  required
+                >
+              </div>
+
+              <div class="form-group">
+                <label for="txDate">Date</label>
+
+                <input
+                  type="date"
+                  id="txDate"
+                  class="form-control"
+                  required
+                >
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-primary btn-block"
+                id="txSubmitBtn"
+              >
+                + Add Transaction
+              </button>
+
+            </form>
+
+          </div>
+
+          <div class="panel list-panel">
+
+            <div class="panel-header list-header">
+              <h3 class="panel-title">Transactions</h3>
+
+              <span
+                class="tx-count"
+                id="txCountBadge"
+              >
+                0 records
+              </span>
+            </div>
+
+            <div class="filter-bar">
+
+              <div class="filter-group">
+
+                <button
+                  type="button"
+                  class="filter-btn active"
+                  data-type-filter="all"
+                >
+                  All
+                </button>
+
+                <button
+                  type="button"
+                  class="filter-btn"
+                  data-type-filter="income"
+                >
+                  Income
+                </button>
+
+                <button
+                  type="button"
+                  class="filter-btn"
+                  data-type-filter="expense"
+                >
+                  Expense
+                </button>
+
+              </div>
+
+              <div class="category-filter-group">
+
+                <select
+                  id="categoryFilter"
+                  class="form-control form-control-sm"
+                  aria-label="Filter by category"
+                >
+                  <option value="all">All Categories</option>
+                </select>
+
+              </div>
+
+            </div>
+
+            <div
+              class="tx-list-container"
+              id="txListContainer"
+            >
+
+              <div
+                class="empty-state"
+                id="emptyState"
+              >
+                <p class="empty-text">
+                  No transactions recorded yet.
+                </p>
+
+                <p class="empty-subtext">
+                  Add your first income or expense to start tracking!
+                </p>
+              </div>
+
+              <ul
+                class="tx-list"
+                id="txList"
+              ></ul>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+</body>
+</html>
