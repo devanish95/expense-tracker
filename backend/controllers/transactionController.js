@@ -1,25 +1,26 @@
 const mongoose = require('mongoose');
 const Transaction = require('../models/Transaction');
 
-// @desc    Get all transactions for the logged-in user
-// @route   GET /api/transactions
-// @access  Private
 const getTransactions = async (req, res) => {
   try {
     const { type, category } = req.query;
 
-    // Filter criteria: ALWAYS restrict to the logged-in user
-    const query = { user: req.user._id };
+    const query = {
+      user: req.user._id
+    };
 
     if (type && ['income', 'expense'].includes(type.toLowerCase())) {
       query.type = type.toLowerCase();
     }
 
-    if (category && category.trim() !== '' && category.toLowerCase() !== 'all') {
+    if (
+      category &&
+      category.trim() !== '' &&
+      category.toLowerCase() !== 'all'
+    ) {
       query.category = category.trim();
     }
 
-    // Sort latest transactions first
     const transactions = await Transaction.find(query).sort({
       date: -1,
       createdAt: -1
@@ -38,22 +39,26 @@ const getTransactions = async (req, res) => {
   }
 };
 
-// @desc    Create a new transaction
-// @route   POST /api/transactions
-// @access  Private
 const addTransaction = async (req, res) => {
   try {
-    const { type, amount, category, description, date } = req.body;
+    const {
+      type,
+      amount,
+      category,
+      description,
+      date
+    } = req.body;
 
-    // Validation
     if (!type || !amount || !category || !description) {
       return res.status(400).json({
         success: false,
-        message: 'Please fill in all required fields (type, amount, category, description)'
+        message:
+          'Please fill in all required fields (type, amount, category, description)'
       });
     }
 
     const parsedAmount = parseFloat(amount);
+
     if (isNaN(parsedAmount) || parsedAmount <= 0) {
       return res.status(400).json({
         success: false,
@@ -69,7 +74,7 @@ const addTransaction = async (req, res) => {
     }
 
     const transaction = await Transaction.create({
-      user: req.user._id, // Bind transaction to the authenticated user
+      user: req.user._id,
       type: type.toLowerCase(),
       amount: parsedAmount,
       category: category.trim(),
@@ -90,13 +95,16 @@ const addTransaction = async (req, res) => {
   }
 };
 
-// @desc    Update an existing transaction
-// @route   PUT /api/transactions/:id
-// @access  Private
 const updateTransaction = async (req, res) => {
   try {
     const { id } = req.params;
-    const { type, amount, category, description, date } = req.body;
+    const {
+      type,
+      amount,
+      category,
+      description,
+      date
+    } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
@@ -106,6 +114,7 @@ const updateTransaction = async (req, res) => {
     }
 
     const transaction = await Transaction.findById(id);
+
     if (!transaction) {
       return res.status(404).json({
         success: false,
@@ -113,22 +122,26 @@ const updateTransaction = async (req, res) => {
       });
     }
 
-    // Crucial Security Check: Ensure the transaction belongs to the person trying to edit it!
-    if (transaction.user.toString() !== req.user._id.toString()) {
+    if (
+      transaction.user.toString() !== req.user._id.toString()
+    ) {
       return res.status(403).json({
         success: false,
-        message: 'Forbidden: You do not have permission to modify this transaction'
+        message:
+          'Forbidden: You do not have permission to modify this transaction'
       });
     }
 
     if (amount !== undefined) {
       const parsedAmount = parseFloat(amount);
+
       if (isNaN(parsedAmount) || parsedAmount <= 0) {
         return res.status(400).json({
           success: false,
           message: 'Amount must be greater than 0'
         });
       }
+
       transaction.amount = parsedAmount;
     }
 
@@ -139,12 +152,21 @@ const updateTransaction = async (req, res) => {
           message: 'Type must be either "income" or "expense"'
         });
       }
+
       transaction.type = type.toLowerCase();
     }
 
-    if (category) transaction.category = category.trim();
-    if (description) transaction.description = description.trim();
-    if (date) transaction.date = new Date(date);
+    if (category) {
+      transaction.category = category.trim();
+    }
+
+    if (description) {
+      transaction.description = description.trim();
+    }
+
+    if (date) {
+      transaction.date = new Date(date);
+    }
 
     const updatedTransaction = await transaction.save();
 
@@ -161,9 +183,6 @@ const updateTransaction = async (req, res) => {
   }
 };
 
-// @desc    Delete a transaction
-// @route   DELETE /api/transactions/:id
-// @access  Private
 const deleteTransaction = async (req, res) => {
   try {
     const { id } = req.params;
@@ -176,6 +195,7 @@ const deleteTransaction = async (req, res) => {
     }
 
     const transaction = await Transaction.findById(id);
+
     if (!transaction) {
       return res.status(404).json({
         success: false,
@@ -183,11 +203,13 @@ const deleteTransaction = async (req, res) => {
       });
     }
 
-    // Crucial Security Check: Ensure the user owns this transaction before deleting
-    if (transaction.user.toString() !== req.user._id.toString()) {
+    if (
+      transaction.user.toString() !== req.user._id.toString()
+    ) {
       return res.status(403).json({
         success: false,
-        message: 'Forbidden: You do not have permission to delete this transaction'
+        message:
+          'Forbidden: You do not have permission to delete this transaction'
       });
     }
 
@@ -211,4 +233,3 @@ module.exports = {
   updateTransaction,
   deleteTransaction
 };
-
