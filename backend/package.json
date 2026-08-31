@@ -1,35 +1,16 @@
 {
-  "name": "expense-tracker-backend",
+  "name": "expense-tracker",
   "version": "1.0.0",
-  "description": "Beginner-friendly full-stack Expense Tracker REST API with Express, Mongoose, and JWT",
-  "main": "server.js",
+  "private": true,
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
-    "test": "node test.js"
+    "start": "node backend/server.js"
   },
-  "keywords": [
-    "expense-tracker",
-    "nodejs",
-    "express",
-    "mongodb",
-    "mongoose",
-    "jwt",
-    "beginner"
-  ],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.4.1"
-  },
-  "devDependencies": {
-    "mongodb-memory-server": "^9.2.0",
-    "supertest": "^7.0.0"
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.2",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^8.18.0"
   }
 }
-
