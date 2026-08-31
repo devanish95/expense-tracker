@@ -1,15 +1,48 @@
 const mongoose = require('mongoose');
 
+let cachedConnection = null;
+let connectionPromise = null;
+
 const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI);
-    console.log(`✓ MongoDB Connected: ${conn.connection.host}`);
-  } catch (error) {
-    console.error(`✗ MongoDB Connection Error: ${error.message}`);
-    console.log('Tip: Ensure MongoDB is running locally or check your MONGODB_URI in .env');
-    // We don't exit immediately in development so the user can see helpful errors
+  // Already connected
+  if (cachedConnection && mongoose.connection.readyState === 1) {
+    return cachedConnection;
   }
+
+  // Connection already being established
+  if (connectionPromise) {
+    return connectionPromise;
+  }
+
+  if (!process.env.MONGODB_URI) {
+    throw new Error('MONGODB_URI environment variable is not defined');
+  }
+
+  connectionPromise = mongoose
+    .connect(process.env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 10000,
+      socketTimeoutMS: 45000,
+    })
+    .then((mongooseInstance) => {
+      cachedConnection = mongooseInstance;
+
+      console.log(
+        `✓ MongoDB Connected: ${mongooseInstance.connection.host}`
+      );
+
+      return mongooseInstance;
+    })
+    .catch((error) => {
+      connectionPromise = null;
+
+      console.error(
+        `✗ MongoDB Connection Error: ${error.message}`
+      );
+
+      throw error;
+    });
+
+  return connectionPromise;
 };
 
 module.exports = connectDB;
-
