@@ -1,4 +1,3 @@
-const forgotPasswordLink = document.getElementById("forgotPasswordLink");
 const API_URL = "/api";
 
 let authToken = localStorage.getItem("authToken");
@@ -121,7 +120,9 @@ async function apiRequest(endpoint, options = {}) {
   }
 
   if (!response.ok) {
-    throw new Error(data.message || "Something went wrong.");
+    throw new Error(
+      data.message || "Something went wrong."
+    );
   }
 
   return data;
@@ -155,7 +156,8 @@ function showDashboard() {
   userNav.classList.remove("hidden");
 
   if (currentUser) {
-    userGreeting.textContent = `Welcome, ${currentUser.name}`;
+    userGreeting.textContent =
+      `Welcome, ${currentUser.name}`;
   }
 }
 
@@ -200,15 +202,21 @@ function updateTypeStyles() {
   );
 }
 
-function populateTransactionCategories(selectedCategory = "") {
+function populateTransactionCategories(
+  selectedCategory = ""
+) {
   const type = getSelectedType();
+
   const categories =
-    type === "income" ? incomeCategories : expenseCategories;
+    type === "income"
+      ? incomeCategories
+      : expenseCategories;
 
   txCategory.innerHTML = "";
 
   categories.forEach((category) => {
     const option = document.createElement("option");
+
     option.value = category;
     option.textContent = category;
 
@@ -241,14 +249,18 @@ function populateCategoryFilter() {
   categoryFilter.innerHTML = "";
 
   const allOption = document.createElement("option");
+
   allOption.value = "all";
   allOption.textContent = "All Categories";
+
   categoryFilter.appendChild(allOption);
 
   allCategories.forEach((category) => {
     const option = document.createElement("option");
+
     option.value = category;
     option.textContent = category;
+
     categoryFilter.appendChild(option);
   });
 
@@ -289,7 +301,8 @@ function updateSummary() {
   let expenses = 0;
 
   transactions.forEach((transaction) => {
-    const amount = Number(transaction.amount) || 0;
+    const amount =
+      Number(transaction.amount) || 0;
 
     if (transaction.type === "income") {
       income += amount;
@@ -300,9 +313,14 @@ function updateSummary() {
 
   const balance = income - expenses;
 
-  totalIncome.textContent = `+${formatCurrency(income)}`;
-  totalExpenses.textContent = `-${formatCurrency(expenses)}`;
-  totalBalance.textContent = formatCurrency(balance);
+  totalIncome.textContent =
+    `+${formatCurrency(income)}`;
+
+  totalExpenses.textContent =
+    `-${formatCurrency(expenses)}`;
+
+  totalBalance.textContent =
+    formatCurrency(balance);
 }
 
 function getFilteredTransactions() {
@@ -320,7 +338,8 @@ function getFilteredTransactions() {
 }
 
 function renderTransactions() {
-  const filteredTransactions = getFilteredTransactions();
+  const filteredTransactions =
+    getFilteredTransactions();
 
   txList.innerHTML = "";
 
@@ -336,7 +355,9 @@ function renderTransactions() {
 
   txCountBadge.textContent =
     `${filteredTransactions.length} ${
-      filteredTransactions.length === 1 ? "record" : "records"
+      filteredTransactions.length === 1
+        ? "record"
+        : "records"
     }`;
 
   filteredTransactions.forEach((transaction) => {
@@ -347,8 +368,10 @@ function renderTransactions() {
     info.className = "transaction-info";
 
     const description = document.createElement("div");
-    description.className = "transaction-description";
-    description.textContent = transaction.description;
+    description.className =
+      "transaction-description";
+    description.textContent =
+      transaction.description;
 
     const meta = document.createElement("div");
     meta.className = "transaction-meta";
@@ -357,42 +380,64 @@ function renderTransactions() {
     category.textContent = transaction.category;
 
     const date = document.createElement("span");
-    date.textContent = formatDate(transaction.date);
+    date.textContent =
+      formatDate(transaction.date);
 
     meta.append(category, date);
     info.append(description, meta);
 
-    const rightSide = document.createElement("div");
-    rightSide.className = "transaction-actions";
-
     const amount = document.createElement("span");
-    amount.className = `transaction-amount ${transaction.type}`;
+    amount.className =
+      `transaction-amount ${transaction.type}`;
 
     amount.textContent =
       transaction.type === "income"
         ? `+${formatCurrency(transaction.amount)}`
         : `-${formatCurrency(transaction.amount)}`;
 
-    const editButton = document.createElement("button");
+    const editButton =
+      document.createElement("button");
+
     editButton.type = "button";
     editButton.textContent = "Edit";
-    editButton.addEventListener("click", () => {
-      startEditingTransaction(transaction);
-    });
 
-    const deleteButton = document.createElement("button");
+    editButton.addEventListener(
+      "click",
+      () => {
+        startEditingTransaction(transaction);
+      }
+    );
+
+    const deleteButton =
+      document.createElement("button");
+
     deleteButton.type = "button";
     deleteButton.className = "delete-btn";
     deleteButton.textContent = "Delete";
-    deleteButton.addEventListener("click", () => {
-      deleteTransaction(transaction._id);
-    });
 
-    const actions = document.createElement("div");
-    actions.className = "transaction-actions";
-    actions.append(editButton, deleteButton);
+    deleteButton.addEventListener(
+      "click",
+      () => {
+        deleteTransaction(transaction._id);
+      }
+    );
 
-    item.append(info, amount, actions);
+    const actions =
+      document.createElement("div");
+
+    actions.className =
+      "transaction-actions";
+
+    actions.append(
+      editButton,
+      deleteButton
+    );
+
+    item.append(
+      info,
+      amount,
+      actions
+    );
 
     txList.appendChild(item);
   });
@@ -400,17 +445,23 @@ function renderTransactions() {
 
 async function loadTransactions() {
   try {
-    const data = await apiRequest("/transactions");
+    const data =
+      await apiRequest("/transactions");
 
-    transactions = Array.isArray(data.transactions)
-      ? data.transactions
-      : [];
+    transactions =
+      Array.isArray(data.transactions)
+        ? data.transactions
+        : [];
 
     populateCategoryFilter();
     updateSummary();
     renderTransactions();
+
   } catch (error) {
-    showToast(error.message, "error");
+    showToast(
+      error.message,
+      "error"
+    );
   }
 }
 
@@ -419,39 +470,72 @@ function resetTransactionForm() {
 
   transactionForm.reset();
 
-  formTitle.textContent = "Add Transaction";
-  txSubmitBtn.textContent = "+ Add Transaction";
+  formTitle.textContent =
+    "Add Transaction";
 
-  cancelEditBtn.classList.add("hidden");
+  txSubmitBtn.textContent =
+    "+ Add Transaction";
+
+  cancelEditBtn.classList.add(
+    "hidden"
+  );
 
   setSelectedType("expense");
 
-  txDate.value = new Date().toISOString().split("T")[0];
+  txDate.value =
+    new Date()
+      .toISOString()
+      .split("T")[0];
 }
 
 function startEditingTransaction(transaction) {
-  editingTransactionId = transaction._id;
+  editingTransactionId =
+    transaction._id;
 
-  formTitle.textContent = "Edit Transaction";
-  txSubmitBtn.textContent = "Save Changes";
+  formTitle.textContent =
+    "Edit Transaction";
 
-  cancelEditBtn.classList.remove("hidden");
+  txSubmitBtn.textContent =
+    "Save Changes";
 
-  setSelectedType(transaction.type);
+  cancelEditBtn.classList.remove(
+    "hidden"
+  );
 
-  txAmount.value = transaction.amount;
-  populateTransactionCategories(transaction.category);
-  txDescription.value = transaction.description;
+  setSelectedType(
+    transaction.type
+  );
+
+  txAmount.value =
+    transaction.amount;
+
+  populateTransactionCategories(
+    transaction.category
+  );
+
+  txDescription.value =
+    transaction.description;
 
   if (transaction.date) {
-    const date = new Date(transaction.date);
+    const date =
+      new Date(transaction.date);
 
     if (!Number.isNaN(date.getTime())) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
+      const year =
+        date.getFullYear();
 
-      txDate.value = `${year}-${month}-${day}`;
+      const month =
+        String(
+          date.getMonth() + 1
+        ).padStart(2, "0");
+
+      const day =
+        String(
+          date.getDate()
+        ).padStart(2, "0");
+
+      txDate.value =
+        `${year}-${month}-${day}`;
     }
   }
 
@@ -464,19 +548,43 @@ function startEditingTransaction(transaction) {
 async function saveTransaction(event) {
   event.preventDefault();
 
-  const type = getSelectedType();
-  const amount = Number(txAmount.value);
-  const category = txCategory.value.trim();
-  const description = txDescription.value.trim();
-  const date = txDate.value;
+  const type =
+    getSelectedType();
 
-  if (!Number.isFinite(amount) || amount <= 0) {
-    showToast("Amount must be greater than 0.", "error");
+  const amount =
+    Number(txAmount.value);
+
+  const category =
+    txCategory.value.trim();
+
+  const description =
+    txDescription.value.trim();
+
+  const date =
+    txDate.value;
+
+  if (
+    !Number.isFinite(amount) ||
+    amount <= 0
+  ) {
+    showToast(
+      "Amount must be greater than 0.",
+      "error"
+    );
+
     return;
   }
 
-  if (!category || !description || !date) {
-    showToast("Please fill in all transaction fields.", "error");
+  if (
+    !category ||
+    !description ||
+    !date
+  ) {
+    showToast(
+      "Please fill in all transaction fields.",
+      "error"
+    );
+
     return;
   }
 
@@ -488,13 +596,16 @@ async function saveTransaction(event) {
     date
   };
 
-  const isEditing = Boolean(editingTransactionId);
+  const isEditing =
+    Boolean(editingTransactionId);
 
   try {
     setLoading(
       txSubmitBtn,
       true,
-      isEditing ? "Saving..." : "Adding..."
+      isEditing
+        ? "Saving..."
+        : "Adding..."
     );
 
     if (isEditing) {
@@ -506,72 +617,111 @@ async function saveTransaction(event) {
         }
       );
 
-      showToast("Transaction updated successfully.");
-    } else {
-      await apiRequest("/transactions", {
-        method: "POST",
-        body: JSON.stringify(payload)
-      });
+      showToast(
+        "Transaction updated successfully."
+      );
 
-      showToast("Transaction added successfully.");
+    } else {
+      await apiRequest(
+        "/transactions",
+        {
+          method: "POST",
+          body: JSON.stringify(payload)
+        }
+      );
+
+      showToast(
+        "Transaction added successfully."
+      );
     }
 
     resetTransactionForm();
     await loadTransactions();
+
   } catch (error) {
-    showToast(error.message, "error");
+    showToast(
+      error.message,
+      "error"
+    );
+
   } finally {
-    setLoading(txSubmitBtn, false);
+    setLoading(
+      txSubmitBtn,
+      false
+    );
   }
 }
 
 async function deleteTransaction(id) {
   if (!id) return;
 
-  const shouldDelete = window.confirm(
-    "Are you sure you want to delete this transaction?"
-  );
+  const shouldDelete =
+    window.confirm(
+      "Are you sure you want to delete this transaction?"
+    );
 
   if (!shouldDelete) {
     return;
   }
 
   try {
-    await apiRequest(`/transactions/${id}`, {
-      method: "DELETE"
-    });
+    await apiRequest(
+      `/transactions/${id}`,
+      {
+        method: "DELETE"
+      }
+    );
 
-    showToast("Transaction deleted successfully.");
+    showToast(
+      "Transaction deleted successfully."
+    );
 
-    if (editingTransactionId === id) {
+    if (
+      editingTransactionId === id
+    ) {
       resetTransactionForm();
     }
 
     await loadTransactions();
+
   } catch (error) {
-    showToast(error.message, "error");
+    showToast(
+      error.message,
+      "error"
+    );
   }
 }
 
 async function registerUser(event) {
   event.preventDefault();
 
-  const name = document
-    .getElementById("registerName")
-    .value
-    .trim();
+  const name =
+    document
+      .getElementById("registerName")
+      .value
+      .trim();
 
-  const email = document
-    .getElementById("registerEmail")
-    .value
-    .trim();
+  const email =
+    document
+      .getElementById("registerEmail")
+      .value
+      .trim();
 
-  const password = document.getElementById(
-    "registerPassword"
-  ).value;
+  const password =
+    document.getElementById(
+      "registerPassword"
+    ).value;
 
-  if (!name || !email || !password) {
-    showToast("Please fill in all fields.", "error");
+  if (
+    !name ||
+    !email ||
+    !password
+  ) {
+    showToast(
+      "Please fill in all fields.",
+      "error"
+    );
+
     return;
   }
 
@@ -580,6 +730,7 @@ async function registerUser(event) {
       "Password must be at least 6 characters.",
       "error"
     );
+
     return;
   }
 
@@ -590,116 +741,146 @@ async function registerUser(event) {
       "Creating Account..."
     );
 
-    const data = await apiRequest("/auth/register", {
-      method: "POST",
-      body: JSON.stringify({
-        name,
-        email,
-        password
-      })
-    });
+    const data =
+      await apiRequest(
+        "/auth/register",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            name,
+            email,
+            password
+          })
+        }
+      );
 
     authToken = data.token;
     currentUser = data.user;
 
-    localStorage.setItem("authToken", authToken);
+    localStorage.setItem(
+      "authToken",
+      authToken
+    );
 
     registerForm.reset();
 
     showDashboard();
     resetTransactionForm();
+
     await loadTransactions();
 
-    showToast(data.message || "Registration successful.");
+    showToast(
+      data.message ||
+      "Registration successful."
+    );
+
   } catch (error) {
-    showToast(error.message, "error");
+    showToast(
+      error.message,
+      "error"
+    );
+
   } finally {
-    setLoading(registerSubmitBtn, false);
+    setLoading(
+      registerSubmitBtn,
+      false
+    );
   }
 }
 
 async function loginUser(event) {
   event.preventDefault();
 
-  const email = document
-    .getElementById("loginEmail")
-    .value
-    .trim();
+  const email =
+    document
+      .getElementById("loginEmail")
+      .value
+      .trim();
 
-  const password = document.getElementById(
-    "loginPassword"
-  ).value;
+  const password =
+    document.getElementById(
+      "loginPassword"
+    ).value;
 
   loginError.textContent = "";
-  loginError.classList.add("hidden");
 
-  if (!email || !password) {
+  loginError.classList.add(
+    "hidden"
+  );
+
+  if (
+    !email ||
+    !password
+  ) {
     loginError.textContent =
       "Please enter your email and password.";
-    loginError.classList.remove("hidden");
+
+    loginError.classList.remove(
+      "hidden"
+    );
+
     return;
   }
 
   try {
-    setLoading(loginSubmitBtn, true, "Signing In...");
+    setLoading(
+      loginSubmitBtn,
+      true,
+      "Signing In..."
+    );
 
-    const data = await apiRequest("/auth/login", {
-      method: "POST",
-      body: JSON.stringify({
-        email,
-        password
-      })
-    });
+    const data =
+      await apiRequest(
+        "/auth/login",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email,
+            password
+          })
+        }
+      );
 
     authToken = data.token;
     currentUser = data.user;
 
-    localStorage.setItem("authToken", authToken);
+    localStorage.setItem(
+      "authToken",
+      authToken
+    );
 
     loginForm.reset();
 
     loginError.textContent = "";
-    loginError.classList.add("hidden");
+
+    loginError.classList.add(
+      "hidden"
+    );
 
     showDashboard();
     resetTransactionForm();
 
     await loadTransactions();
 
-    showToast(data.message || "Login successful.");
-  } catch (error) {
-    loginError.textContent =
-      error.message || "Invalid email or password.";
-
-    loginError.classList.remove("hidden");
-  } finally {
-    setLoading(loginSubmitBtn, false);
-  }
-}
-
-async function forgotPassword(event) {
-  event.preventDefault();
-
-  const email = document.getElementById("loginEmail").value.trim();
-
-  if (!email) {
-    showToast("Please enter your email address first.", "error");
-    document.getElementById("loginEmail").focus();
-    return;
-  }
-
-  try {
-    const data = await apiRequest("/auth/forgot-password", {
-      method: "POST",
-      body: JSON.stringify({ email })
-    });
-
     showToast(
       data.message ||
-      "If this email is registered, a password reset link has been sent."
+      "Login successful."
     );
+
   } catch (error) {
-    showToast(error.message, "error");
+    loginError.textContent =
+      error.message ||
+      "Invalid email or password.";
+
+    loginError.classList.remove(
+      "hidden"
+    );
+
+  } finally {
+    setLoading(
+      loginSubmitBtn,
+      false
+    );
   }
 }
 
@@ -710,18 +891,25 @@ async function checkExistingSession() {
   }
 
   try {
-    const data = await apiRequest("/auth/me");
+    const data =
+      await apiRequest(
+        "/auth/me"
+      );
 
     currentUser = data.user;
 
     showDashboard();
     resetTransactionForm();
+
     await loadTransactions();
+
   } catch {
     authToken = null;
     currentUser = null;
 
-    localStorage.removeItem("authToken");
+    localStorage.removeItem(
+      "authToken"
+    );
 
     showAuth();
   }
@@ -733,9 +921,12 @@ function logout() {
   transactions = [];
   editingTransactionId = null;
 
-  localStorage.removeItem("authToken");
+  localStorage.removeItem(
+    "authToken"
+  );
 
   txList.innerHTML = "";
+
   loginForm.reset();
   registerForm.reset();
 
@@ -746,31 +937,48 @@ function logout() {
 
   categoryFilter.value = "all";
 
-  filterButtons.forEach((button) => {
-    button.classList.toggle(
-      "active",
-      button.dataset.typeFilter === "all"
-    );
-  });
+  filterButtons.forEach(
+    (button) => {
+      button.classList.toggle(
+        "active",
+        button.dataset.typeFilter === "all"
+      );
+    }
+  );
 
   resetTransactionForm();
   showLoginForm();
   showAuth();
 
-  showToast("You have been logged out.");
+  showToast(
+    "You have been logged out."
+  );
 }
 
-tabLogin.addEventListener("click", showLoginForm);
-tabRegister.addEventListener("click", showRegisterForm);
-
-loginForm.addEventListener("submit", loginUser);
-registerForm.addEventListener("submit", registerUser);
-forgotPasswordLink.addEventListener(
+tabLogin.addEventListener(
   "click",
-  forgotPassword
+  showLoginForm
 );
 
-logoutBtn.addEventListener("click", logout);
+tabRegister.addEventListener(
+  "click",
+  showRegisterForm
+);
+
+loginForm.addEventListener(
+  "submit",
+  loginUser
+);
+
+registerForm.addEventListener(
+  "submit",
+  registerUser
+);
+
+logoutBtn.addEventListener(
+  "click",
+  logout
+);
 
 transactionForm.addEventListener(
   "submit",
@@ -783,33 +991,51 @@ cancelEditBtn.addEventListener(
 );
 
 document
-  .querySelectorAll('input[name="txType"]')
+  .querySelectorAll(
+    'input[name="txType"]'
+  )
   .forEach((radio) => {
-    radio.addEventListener("change", () => {
-      updateTypeStyles();
-      populateTransactionCategories();
-    });
+    radio.addEventListener(
+      "change",
+      () => {
+        updateTypeStyles();
+        populateTransactionCategories();
+      }
+    );
   });
 
-filterButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    currentTypeFilter = button.dataset.typeFilter;
+filterButtons.forEach(
+  (button) => {
+    button.addEventListener(
+      "click",
+      () => {
+        currentTypeFilter =
+          button.dataset.typeFilter;
 
-    filterButtons.forEach((item) => {
-      item.classList.toggle(
-        "active",
-        item === button
-      );
-    });
+        filterButtons.forEach(
+          (item) => {
+            item.classList.toggle(
+              "active",
+              item === button
+            );
+          }
+        );
+
+        renderTransactions();
+      }
+    );
+  }
+);
+
+categoryFilter.addEventListener(
+  "change",
+  () => {
+    currentCategoryFilter =
+      categoryFilter.value;
 
     renderTransactions();
-  });
-});
-
-categoryFilter.addEventListener("change", () => {
-  currentCategoryFilter = categoryFilter.value;
-  renderTransactions();
-});
+  }
+);
 
 updateTypeStyles();
 populateTransactionCategories();
@@ -817,81 +1043,160 @@ populateTransactionCategories();
 checkExistingSession();
 
 function setupCustomSelect(select) {
-  if (!select || select.dataset.customReady === "true") return;
+  if (
+    !select ||
+    select.dataset.customReady === "true"
+  ) {
+    return;
+  }
 
-  select.dataset.customReady = "true";
+  select.dataset.customReady =
+    "true";
 
-  const wrapper = document.createElement("div");
-  wrapper.className = "custom-select";
+  const wrapper =
+    document.createElement("div");
 
-  select.parentNode.insertBefore(wrapper, select);
+  wrapper.className =
+    "custom-select";
+
+  select.parentNode.insertBefore(
+    wrapper,
+    select
+  );
+
   wrapper.appendChild(select);
 
-  const button = document.createElement("button");
+  const button =
+    document.createElement("button");
+
   button.type = "button";
-  button.className = "custom-select-button";
+  button.className =
+    "custom-select-button";
 
-  const label = document.createElement("span");
-  const arrow = document.createElement("span");
-  arrow.className = "custom-select-arrow";
+  const label =
+    document.createElement("span");
 
-  button.append(label, arrow);
+  const arrow =
+    document.createElement("span");
 
-  const menu = document.createElement("div");
-  menu.className = "custom-select-menu";
+  arrow.className =
+    "custom-select-arrow";
 
-  wrapper.append(button, menu);
+  button.append(
+    label,
+    arrow
+  );
+
+  const menu =
+    document.createElement("div");
+
+  menu.className =
+    "custom-select-menu";
+
+  wrapper.append(
+    button,
+    menu
+  );
 
   function updateLabel() {
-    const selected = select.options[select.selectedIndex];
-    label.textContent = selected ? selected.textContent : "";
+    const selected =
+      select.options[
+        select.selectedIndex
+      ];
+
+    label.textContent =
+      selected
+        ? selected.textContent
+        : "";
   }
 
   function renderOptions() {
     menu.innerHTML = "";
 
-    [...select.options].forEach((option) => {
-      const item = document.createElement("button");
+    [...select.options].forEach(
+      (option) => {
+        const item =
+          document.createElement("button");
 
-      item.type = "button";
-      item.className = "custom-select-option";
-      item.textContent = option.textContent;
+        item.type = "button";
 
-      if (option.value === select.value) {
-        item.classList.add("selected");
-      }
+        item.className =
+          "custom-select-option";
 
-      item.addEventListener("click", () => {
-        select.value = option.value;
+        item.textContent =
+          option.textContent;
 
-        select.dispatchEvent(
-          new Event("change", { bubbles: true })
+        if (
+          option.value ===
+          select.value
+        ) {
+          item.classList.add(
+            "selected"
+          );
+        }
+
+        item.addEventListener(
+          "click",
+          () => {
+            select.value =
+              option.value;
+
+            select.dispatchEvent(
+              new Event(
+                "change",
+                {
+                  bubbles: true
+                }
+              )
+            );
+
+            updateLabel();
+            renderOptions();
+
+            wrapper.classList.remove(
+              "open"
+            );
+          }
         );
 
-        updateLabel();
-        renderOptions();
-        wrapper.classList.remove("open");
-      });
-
-      menu.appendChild(item);
-    });
+        menu.appendChild(item);
+      }
+    );
 
     updateLabel();
   }
 
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".custom-select.open").forEach((item) => {
-      if (item !== wrapper) {
-        item.classList.remove("open");
-      }
-    });
+  button.addEventListener(
+    "click",
+    () => {
+      document
+        .querySelectorAll(
+          ".custom-select.open"
+        )
+        .forEach(
+          (item) => {
+            if (item !== wrapper) {
+              item.classList.remove(
+                "open"
+              );
+            }
+          }
+        );
 
-    wrapper.classList.toggle("open");
-  });
+      wrapper.classList.toggle(
+        "open"
+      );
+    }
+  );
 
-  select.addEventListener("change", renderOptions);
+  select.addEventListener(
+    "change",
+    renderOptions
+  );
 
-  new MutationObserver(renderOptions).observe(select, {
+  new MutationObserver(
+    renderOptions
+  ).observe(select, {
     childList: true,
     subtree: true
   });
@@ -899,13 +1204,28 @@ function setupCustomSelect(select) {
   renderOptions();
 }
 
-document.addEventListener("click", (event) => {
-  if (!event.target.closest(".custom-select")) {
-    document
-      .querySelectorAll(".custom-select.open")
-      .forEach((item) => item.classList.remove("open"));
+document.addEventListener(
+  "click",
+  (event) => {
+    if (
+      !event.target.closest(
+        ".custom-select"
+      )
+    ) {
+      document
+        .querySelectorAll(
+          ".custom-select.open"
+        )
+        .forEach(
+          (item) => {
+            item.classList.remove(
+              "open"
+            );
+          }
+        );
+    }
   }
-});
+);
 
 setupCustomSelect(txCategory);
 setupCustomSelect(categoryFilter);
