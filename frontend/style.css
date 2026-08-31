@@ -1276,3 +1276,20 @@ input[type="date"].form-control {
     font-size: 11px;
   }
 }
+
+.forgot-link {
+  display: block;
+  text-align: right;
+  margin-top: -8px;
+  margin-bottom: 18px;
+  color: #5ec8ff;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.forgot-link:hover {
+  color: #22d3ee;
+  text-decoration: underline;
+}

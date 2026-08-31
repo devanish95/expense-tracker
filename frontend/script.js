@@ -1,3 +1,4 @@
+const forgotPasswordLink = document.getElementById("forgotPasswordLink");
 const API_URL = "/api";
 
 let authToken = localStorage.getItem("authToken");
@@ -676,6 +677,32 @@ async function loginUser(event) {
   }
 }
 
+async function forgotPassword(event) {
+  event.preventDefault();
+
+  const email = document.getElementById("loginEmail").value.trim();
+
+  if (!email) {
+    showToast("Please enter your email address first.", "error");
+    document.getElementById("loginEmail").focus();
+    return;
+  }
+
+  try {
+    const data = await apiRequest("/auth/forgot-password", {
+      method: "POST",
+      body: JSON.stringify({ email })
+    });
+
+    showToast(
+      data.message ||
+      "If this email is registered, a password reset link has been sent."
+    );
+  } catch (error) {
+    showToast(error.message, "error");
+  }
+}
+
 async function checkExistingSession() {
   if (!authToken) {
     showAuth();
@@ -738,6 +765,10 @@ tabRegister.addEventListener("click", showRegisterForm);
 
 loginForm.addEventListener("submit", loginUser);
 registerForm.addEventListener("submit", registerUser);
+forgotPasswordLink.addEventListener(
+  "click",
+  forgotPassword
+);
 
 logoutBtn.addEventListener("click", logout);
 
