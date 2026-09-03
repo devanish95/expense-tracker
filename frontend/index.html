@@ -18,6 +18,21 @@
 
 <body>
 
+  <div class="currency-background" aria-hidden="true">
+    <span>₹</span>
+    <span>$</span>
+    <span>€</span>
+    <span>£</span>
+    <span>¥</span>
+    <span>₹</span>
+    <span>$</span>
+    <span>€</span>
+    <span>£</span>
+    <span>¥</span>
+    <span>$</span>
+    <span>₹</span>
+  </div>
+
   <div
     class="toast-container"
     id="toastContainer"
@@ -39,6 +54,22 @@
           </h1>
 
         </div>
+
+        <input
+          type="checkbox"
+          id="themeToggleInput"
+          class="theme-toggle-input"
+        >
+
+        <label
+          class="theme-toggle"
+          for="themeToggleInput"
+          title="Toggle theme"
+          aria-label="Toggle theme"
+        >
+          <span class="theme-icon theme-icon-sun">☀</span>
+          <span class="theme-icon theme-icon-moon">☾</span>
+        </label>
 
         <div
           class="user-nav hidden"
@@ -68,14 +99,26 @@
 
     <main class="app-main">
 
-      <!-- AUTH SECTION -->
-
       <section
         class="auth-section"
         id="authSection"
       >
 
         <div class="auth-card">
+
+          <div class="auth-intro">
+            <div class="auth-eyebrow">
+              PERSONAL FINANCE
+            </div>
+
+            <h2>
+              Your money, clearly tracked.
+            </h2>
+
+            <p>
+              Keep your income and expenses organized in one simple place.
+            </p>
+          </div>
 
           <div
             class="auth-tabs"
@@ -103,8 +146,6 @@
             </button>
 
           </div>
-
-          <!-- LOGIN FORM -->
 
           <form
             class="auth-form"
@@ -145,8 +186,6 @@
 
             </div>
 
-            <!-- FORGOT ID / PASSWORD -->
-
             <a
               href="/reset-password.html"
               class="forgot-link"
@@ -169,8 +208,6 @@
             </button>
 
           </form>
-
-          <!-- REGISTER FORM -->
 
           <form
             class="auth-form hidden"
@@ -243,11 +280,15 @@
 
           </form>
 
+          <div class="auth-footnote">
+            <span>Secure</span>
+            <span>Simple</span>
+            <span>Private</span>
+          </div>
+
         </div>
 
       </section>
-
-      <!-- DASHBOARD SECTION -->
 
       <section
         class="dashboard-section hidden"
@@ -304,8 +345,6 @@
         </div>
 
         <div class="dashboard-content">
-
-          <!-- TRANSACTION FORM -->
 
           <div class="panel form-panel">
 
@@ -467,8 +506,6 @@
 
           </div>
 
-          <!-- TRANSACTION LIST -->
-
           <div class="panel list-panel">
 
             <div class="panel-header list-header">
@@ -572,4 +609,5 @@
   </div>
 
 </body>
+
 </html>
