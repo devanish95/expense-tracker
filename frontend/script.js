@@ -155,6 +155,10 @@ function showDashboard() {
   dashboardSection.classList.remove("hidden");
   userNav.classList.remove("hidden");
 
+  authSection.style.display = "none";
+  dashboardSection.style.display = "";
+  userNav.style.display = "";
+
   if (currentUser) {
     userGreeting.textContent =
       `Welcome, ${currentUser.name}`;
@@ -165,6 +169,10 @@ function showAuth() {
   authSection.classList.remove("hidden");
   dashboardSection.classList.add("hidden");
   userNav.classList.add("hidden");
+
+  authSection.style.display = "";
+  dashboardSection.style.display = "none";
+  userNav.style.display = "none";
 }
 
 function getSelectedType() {
@@ -172,7 +180,9 @@ function getSelectedType() {
     'input[name="txType"]:checked'
   );
 
-  return selected ? selected.value : "expense";
+  return selected
+    ? selected.value
+    : "expense";
 }
 
 function setSelectedType(type) {
@@ -215,7 +225,8 @@ function populateTransactionCategories(
   txCategory.innerHTML = "";
 
   categories.forEach((category) => {
-    const option = document.createElement("option");
+    const option =
+      document.createElement("option");
 
     option.value = category;
     option.textContent = category;
@@ -227,7 +238,10 @@ function populateTransactionCategories(
     txCategory.appendChild(option);
   });
 
-  if (!selectedCategory && categories.length > 0) {
+  if (
+    !selectedCategory &&
+    categories.length > 0
+  ) {
     txCategory.value = categories[0];
   }
 }
@@ -244,11 +258,13 @@ function populateCategoryFilter() {
     "Other"
   ];
 
-  const currentValue = categoryFilter.value;
+  const currentValue =
+    categoryFilter.value;
 
   categoryFilter.innerHTML = "";
 
-  const allOption = document.createElement("option");
+  const allOption =
+    document.createElement("option");
 
   allOption.value = "all";
   allOption.textContent = "All Categories";
@@ -256,7 +272,8 @@ function populateCategoryFilter() {
   categoryFilter.appendChild(allOption);
 
   allCategories.forEach((category) => {
-    const option = document.createElement("option");
+    const option =
+      document.createElement("option");
 
     option.value = category;
     option.textContent = category;
@@ -273,11 +290,14 @@ function populateCategoryFilter() {
 }
 
 function formatCurrency(amount) {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 2
-  }).format(amount);
+  return new Intl.NumberFormat(
+    "en-IN",
+    {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 2
+    }
+  ).format(amount);
 }
 
 function formatDate(dateValue) {
@@ -289,11 +309,14 @@ function formatDate(dateValue) {
     return "-";
   }
 
-  return date.toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric"
-  });
+  return date.toLocaleDateString(
+    "en-IN",
+    {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    }
+  );
 }
 
 function updateSummary() {
@@ -324,17 +347,23 @@ function updateSummary() {
 }
 
 function getFilteredTransactions() {
-  return transactions.filter((transaction) => {
-    const matchesType =
-      currentTypeFilter === "all" ||
-      transaction.type === currentTypeFilter;
+  return transactions.filter(
+    (transaction) => {
+      const matchesType =
+        currentTypeFilter === "all" ||
+        transaction.type === currentTypeFilter;
 
-    const matchesCategory =
-      currentCategoryFilter === "all" ||
-      transaction.category === currentCategoryFilter;
+      const matchesCategory =
+        currentCategoryFilter === "all" ||
+        transaction.category ===
+          currentCategoryFilter;
 
-    return matchesType && matchesCategory;
-  });
+      return (
+        matchesType &&
+        matchesCategory
+      );
+    }
+  );
 }
 
 function renderTransactions() {
@@ -348,8 +377,11 @@ function renderTransactions() {
     filteredTransactions.length > 0
   );
 
-  if (filteredTransactions.length === 0) {
-    txCountBadge.textContent = "0 records";
+  if (
+    filteredTransactions.length === 0
+  ) {
+    txCountBadge.textContent =
+      "0 records";
     return;
   }
 
@@ -360,93 +392,134 @@ function renderTransactions() {
         : "records"
     }`;
 
-  filteredTransactions.forEach((transaction) => {
-    const item = document.createElement("li");
-    item.className = "transaction-item";
+  filteredTransactions.forEach(
+    (transaction) => {
+      const item =
+        document.createElement("li");
 
-    const info = document.createElement("div");
-    info.className = "transaction-info";
+      item.className =
+        "transaction-item";
 
-    const description = document.createElement("div");
-    description.className =
-      "transaction-description";
-    description.textContent =
-      transaction.description;
+      const info =
+        document.createElement("div");
 
-    const meta = document.createElement("div");
-    meta.className = "transaction-meta";
+      info.className =
+        "transaction-info";
 
-    const category = document.createElement("span");
-    category.textContent = transaction.category;
+      const description =
+        document.createElement("div");
 
-    const date = document.createElement("span");
-    date.textContent =
-      formatDate(transaction.date);
+      description.className =
+        "transaction-description";
 
-    meta.append(category, date);
-    info.append(description, meta);
+      description.textContent =
+        transaction.description;
 
-    const amount = document.createElement("span");
-    amount.className =
-      `transaction-amount ${transaction.type}`;
+      const meta =
+        document.createElement("div");
 
-    amount.textContent =
-      transaction.type === "income"
-        ? `+${formatCurrency(transaction.amount)}`
-        : `-${formatCurrency(transaction.amount)}`;
+      meta.className =
+        "transaction-meta";
 
-    const editButton =
-      document.createElement("button");
+      const category =
+        document.createElement("span");
 
-    editButton.type = "button";
-    editButton.textContent = "Edit";
+      category.textContent =
+        transaction.category;
 
-    editButton.addEventListener(
-      "click",
-      () => {
-        startEditingTransaction(transaction);
-      }
-    );
+      const date =
+        document.createElement("span");
 
-    const deleteButton =
-      document.createElement("button");
+      date.textContent =
+        formatDate(transaction.date);
 
-    deleteButton.type = "button";
-    deleteButton.className = "delete-btn";
-    deleteButton.textContent = "Delete";
+      meta.append(
+        category,
+        date
+      );
 
-    deleteButton.addEventListener(
-      "click",
-      () => {
-        deleteTransaction(transaction._id);
-      }
-    );
+      info.append(
+        description,
+        meta
+      );
 
-    const actions =
-      document.createElement("div");
+      const amount =
+        document.createElement("span");
 
-    actions.className =
-      "transaction-actions";
+      amount.className =
+        `transaction-amount ${transaction.type}`;
 
-    actions.append(
-      editButton,
-      deleteButton
-    );
+      amount.textContent =
+        transaction.type === "income"
+          ? `+${formatCurrency(
+              transaction.amount
+            )}`
+          : `-${formatCurrency(
+              transaction.amount
+            )}`;
 
-    item.append(
-      info,
-      amount,
-      actions
-    );
+      const editButton =
+        document.createElement("button");
 
-    txList.appendChild(item);
-  });
+      editButton.type = "button";
+      editButton.textContent = "Edit";
+
+      editButton.addEventListener(
+        "click",
+        () => {
+          startEditingTransaction(
+            transaction
+          );
+        }
+      );
+
+      const deleteButton =
+        document.createElement("button");
+
+      deleteButton.type = "button";
+      deleteButton.className =
+        "delete-btn";
+
+      deleteButton.textContent =
+        "Delete";
+
+      deleteButton.addEventListener(
+        "click",
+        () => {
+          deleteTransaction(
+            transaction._id
+          );
+        }
+      );
+
+      const actions =
+        document.createElement("div");
+
+      actions.className =
+        "transaction-actions";
+
+      actions.append(
+        editButton,
+        deleteButton
+      );
+
+      item.append(
+        info,
+        amount,
+        actions
+      );
+
+      txList.appendChild(item);
+    }
+  );
 }
 
 async function loadTransactions() {
   try {
     const data =
-      await apiRequest("/transactions");
+      await apiRequest(
+        "/transactions"
+      );
 
     transactions =
       Array.isArray(data.transactions)
@@ -488,7 +561,9 @@ function resetTransactionForm() {
       .split("T")[0];
 }
 
-function startEditingTransaction(transaction) {
+function startEditingTransaction(
+  transaction
+) {
   editingTransactionId =
     transaction._id;
 
@@ -520,7 +595,11 @@ function startEditingTransaction(transaction) {
     const date =
       new Date(transaction.date);
 
-    if (!Number.isNaN(date.getTime())) {
+    if (
+      !Number.isNaN(
+        date.getTime()
+      )
+    ) {
       const year =
         date.getFullYear();
 
@@ -545,7 +624,9 @@ function startEditingTransaction(transaction) {
   });
 }
 
-async function saveTransaction(event) {
+async function saveTransaction(
+  event
+) {
   event.preventDefault();
 
   const type =
@@ -571,7 +652,6 @@ async function saveTransaction(event) {
       "Amount must be greater than 0.",
       "error"
     );
-
     return;
   }
 
@@ -584,7 +664,6 @@ async function saveTransaction(event) {
       "Please fill in all transaction fields.",
       "error"
     );
-
     return;
   }
 
@@ -597,7 +676,9 @@ async function saveTransaction(event) {
   };
 
   const isEditing =
-    Boolean(editingTransactionId);
+    Boolean(
+      editingTransactionId
+    );
 
   try {
     setLoading(
@@ -613,7 +694,9 @@ async function saveTransaction(event) {
         `/transactions/${editingTransactionId}`,
         {
           method: "PUT",
-          body: JSON.stringify(payload)
+          body: JSON.stringify(
+            payload
+          )
         }
       );
 
@@ -626,7 +709,9 @@ async function saveTransaction(event) {
         "/transactions",
         {
           method: "POST",
-          body: JSON.stringify(payload)
+          body: JSON.stringify(
+            payload
+          )
         }
       );
 
@@ -721,7 +806,6 @@ async function registerUser(event) {
       "Please fill in all fields.",
       "error"
     );
-
     return;
   }
 
@@ -730,7 +814,6 @@ async function registerUser(event) {
       "Password must be at least 6 characters.",
       "error"
     );
-
     return;
   }
 
@@ -1040,12 +1123,11 @@ categoryFilter.addEventListener(
 updateTypeStyles();
 populateTransactionCategories();
 
-checkExistingSession();
-
 function setupCustomSelect(select) {
   if (
     !select ||
-    select.dataset.customReady === "true"
+    select.dataset.customReady ===
+      "true"
   ) {
     return;
   }
@@ -1119,7 +1201,6 @@ function setupCustomSelect(select) {
           document.createElement("button");
 
         item.type = "button";
-
         item.className =
           "custom-select-option";
 
@@ -1229,3 +1310,5 @@ document.addEventListener(
 
 setupCustomSelect(txCategory);
 setupCustomSelect(categoryFilter);
+
+checkExistingSession();
