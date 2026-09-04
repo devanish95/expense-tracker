@@ -2510,3 +2510,183 @@ html.light-theme .ambient-line {
     padding: 4px 5px !important;
   }
 }
+
+.user-greeting {
+  color: var(--text-secondary) !important;
+}
+
+.form-error {
+  color: #ff5555 !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  text-align: center !important;
+  margin: 8px 0 16px !important;
+}
+
+@media (max-width: 640px) {
+  .header-content {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 10px !important;
+    gap: 7px !important;
+  }
+
+  .brand {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+
+  .brand-title {
+    max-width: 120px !important;
+    font-size: 14px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .user-nav {
+    position: static !important;
+    transform: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    gap: 5px !important;
+    margin-left: auto !important;
+  }
+
+  .user-greeting {
+    display: block !important;
+    max-width: 95px !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 9px !important;
+    color: var(--text-secondary) !important;
+  }
+
+  #logoutBtn {
+    flex: 0 0 auto !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    padding: 5px 7px !important;
+    font-size: 9px !important;
+    white-space: nowrap !important;
+  }
+
+  .theme-toggle {
+    position: static !important;
+    flex: 0 0 30px !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+
+  .auth-card {
+    text-align: center !important;
+  }
+
+  .auth-intro {
+    text-align: center !important;
+  }
+
+  .auth-intro h2,
+  .auth-intro p,
+  .auth-eyebrow {
+    text-align: center !important;
+  }
+
+  .auth-tabs {
+    text-align: center !important;
+  }
+
+  .auth-tab {
+    text-align: center !important;
+  }
+
+  .auth-form {
+    text-align: center !important;
+  }
+
+  .auth-form .form-group label {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+  }
+
+  .forgot-link {
+    text-align: center !important;
+  }
+
+  .auth-footnote {
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .form-error {
+    width: 100% !important;
+    text-align: center !important;
+    color: #ff5555 !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .header-content {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    gap: 5px !important;
+  }
+
+  .brand-title {
+    max-width: 105px !important;
+    font-size: 12px !important;
+  }
+
+  .user-greeting {
+    max-width: 72px !important;
+    font-size: 8px !important;
+  }
+
+  #logoutBtn {
+    padding: 5px 6px !important;
+    font-size: 8px !important;
+  }
+
+  .theme-toggle {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    flex-basis: 28px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .brand-title {
+    max-width: 82px !important;
+  }
+
+  .user-greeting {
+    max-width: 58px !important;
+    font-size: 7px !important;
+  }
+
+  #logoutBtn {
+    padding: 4px 5px !important;
+    font-size: 7px !important;
+  }
+
+  .theme-toggle {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    flex-basis: 26px !important;
+  }
+}
