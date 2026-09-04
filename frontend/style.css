@@ -2385,3 +2385,128 @@ html.light-theme .ambient-line {
     justify-content: flex-start !important;
   }
 }
+
+@media (max-width: 640px) {
+  .panel-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+
+  .panel-title {
+    font-size: 1rem !important;
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+  }
+
+  .tx-count {
+    flex: 0 0 auto;
+    font-size: 0.7rem !important;
+    padding: 4px 7px !important;
+    white-space: nowrap;
+  }
+
+  .empty-state {
+    padding: 32px 14px !important;
+  }
+
+  .empty-text {
+    font-size: 1.05rem !important;
+    line-height: 1.25 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .empty-subtext {
+    font-size: 0.8rem !important;
+    line-height: 1.45 !important;
+    overflow-wrap: anywhere;
+  }
+
+  .transaction-item {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    align-items: start !important;
+    gap: 6px 10px !important;
+  }
+
+  .transaction-info {
+    min-width: 0 !important;
+  }
+
+  .transaction-description {
+    font-size: 13px !important;
+    line-height: 1.25 !important;
+    margin-bottom: 4px !important;
+  }
+
+  .transaction-meta {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    line-height: 1.2 !important;
+  }
+
+  .transaction-meta span {
+    font-size: 9px !important;
+    padding: 3px 5px !important;
+  }
+
+  .transaction-amount {
+    font-size: 12px !important;
+    line-height: 1.25 !important;
+  }
+
+  .transaction-actions {
+    grid-column: 1 / -1 !important;
+    justify-content: flex-end !important;
+  }
+}
+
+@media (max-width: 300px) {
+  .panel-header {
+    gap: 6px !important;
+  }
+
+  .panel-title {
+    font-size: 0.78rem !important;
+  }
+
+  .tx-count {
+    font-size: 7px !important;
+    padding: 3px 5px !important;
+  }
+
+  .empty-state {
+    padding: 24px 8px !important;
+  }
+
+  .empty-text {
+    font-size: 0.85rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .empty-subtext {
+    font-size: 0.68rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .transaction-description {
+    font-size: 10px !important;
+  }
+
+  .transaction-meta span {
+    font-size: 7px !important;
+    padding: 2px 4px !important;
+  }
+
+  .transaction-amount {
+    font-size: 9px !important;
+  }
+
+  .transaction-actions button {
+    font-size: 8px !important;
+    padding: 4px 5px !important;
+  }
+}
