@@ -2946,3 +2946,230 @@ body:has(#themeToggleInput:checked) .theme-toggle:hover {
     right: 12px !important;
   }
 }
+
+@media (max-width: 640px) {
+  .header-content {
+    position: relative !important;
+    width: 100% !important;
+    min-height: 58px !important;
+    padding: 0 62px 0 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+  }
+
+  .brand {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 7px !important;
+  }
+
+  .brand-icon {
+    width: 32px !important;
+    height: 32px !important;
+    flex: 0 0 32px !important;
+    font-size: 17px !important;
+  }
+
+  .brand-title {
+    min-width: 0 !important;
+    font-size: 16px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .user-nav {
+    position: absolute !important;
+    top: 50% !important;
+    right: 54px !important;
+    left: auto !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    z-index: 45 !important;
+  }
+
+  .user-greeting {
+    display: none !important;
+  }
+
+  #logoutBtn {
+    white-space: nowrap !important;
+    padding: 7px 10px !important;
+    font-size: 11px !important;
+    height: 34px !important;
+  }
+
+  .theme-toggle {
+    position: absolute !important;
+    top: 50% !important;
+    right: 12px !important;
+    left: auto !important;
+    transform: translateY(-50%) !important;
+    width: 34px !important;
+    height: 34px !important;
+    margin: 0 !important;
+    z-index: 50 !important;
+  }
+
+  .theme-toggle:hover {
+    transform: translateY(-50%) scale(1.05) !important;
+  }
+
+  .app-main {
+    width: 100% !important;
+    padding: 20px 14px 42px !important;
+  }
+
+  .auth-section {
+    min-height: calc(100vh - 110px) !important;
+  }
+
+  .auth-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 28px 20px 22px !important;
+  }
+
+  .auth-intro h2 {
+    font-size: 1.55rem !important;
+  }
+
+  .auth-intro p {
+    font-size: 0.80rem !important;
+  }
+
+  .summary-grid {
+    width: 100% !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    margin-bottom: 18px !important;
+  }
+
+  .summary-card {
+    width: 100% !important;
+    padding: 18px 18px !important;
+  }
+
+  .dashboard-content {
+    width: 100% !important;
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .panel {
+    width: 100% !important;
+    padding: 18px !important;
+  }
+
+  .filter-bar {
+    width: 100% !important;
+    gap: 10px !important;
+  }
+
+  .filter-group {
+    width: 100% !important;
+    display: flex !important;
+  }
+
+  .filter-btn {
+    flex: 1 !important;
+  }
+
+  .category-filter-group {
+    width: 100% !important;
+  }
+
+  .category-filter-group select,
+  #categoryFilter {
+    width: 100% !important;
+  }
+
+  .tx-list-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .toast-container {
+    top: 72px !important;
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  .toast {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .header-content {
+    padding-left: 12px !important;
+    padding-right: 56px !important;
+  }
+
+  .brand-title {
+    font-size: 15px !important;
+  }
+
+  .user-nav {
+    right: 51px !important;
+  }
+
+  #logoutBtn {
+    padding: 7px 9px !important;
+    font-size: 10px !important;
+  }
+
+  .theme-toggle {
+    right: 9px !important;
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  .auth-card {
+    padding: 26px 18px 20px !important;
+  }
+
+  .auth-intro h2 {
+    font-size: 1.45rem !important;
+  }
+
+  .summary-card {
+    padding: 17px 16px !important;
+  }
+
+  .card-amount {
+    font-size: 1.65rem !important;
+  }
+
+  .panel {
+    padding: 16px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .brand-title {
+    font-size: 14px !important;
+  }
+
+  #logoutBtn {
+    padding: 6px 8px !important;
+    font-size: 9px !important;
+  }
+
+  .theme-toggle {
+    width: 30px !important;
+    height: 30px !important;
+  }
+}
