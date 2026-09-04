@@ -2872,3 +2872,128 @@ html.light-theme .ambient-line {
     line-height: 1.35 !important;
   }
 }
+
+.header-content {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: 1200px !important;
+  min-width: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 24px !important;
+}
+
+.brand {
+  min-width: 0 !important;
+  justify-self: start !important;
+}
+
+.user-nav {
+  position: static !important;
+  transform: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  min-width: 0 !important;
+  gap: 10px !important;
+  justify-self: end !important;
+}
+
+.theme-toggle {
+  position: static !important;
+  transform: none !important;
+  flex: 0 0 auto !important;
+}
+
+@media (max-width: 700px) {
+  .header-content {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    padding: 0 12px !important;
+  }
+
+  .brand {
+    min-width: 0 !important;
+  }
+
+  .brand-title {
+    font-size: 14px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .user-nav {
+    gap: 6px !important;
+  }
+
+  .user-greeting {
+    display: none !important;
+  }
+
+  #logoutBtn {
+    height: 30px !important;
+    min-height: 30px !important;
+    padding: 5px 8px !important;
+    font-size: 9px !important;
+    white-space: nowrap !important;
+  }
+
+  .theme-toggle {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    flex-basis: 30px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .header-content {
+    padding: 0 8px !important;
+  }
+
+  .brand-title {
+    font-size: 13px !important;
+  }
+
+  #logoutBtn {
+    padding: 5px 6px !important;
+    font-size: 8px !important;
+  }
+
+  .theme-toggle {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    flex-basis: 28px !important;
+  }
+}
+
+@media (max-width: 250px) {
+  .header-content {
+    grid-template-columns: auto auto !important;
+    padding: 0 5px !important;
+  }
+
+  .brand-title {
+    display: none !important;
+  }
+
+  .user-nav {
+    gap: 4px !important;
+  }
+
+  #logoutBtn {
+    height: 26px !important;
+    min-height: 26px !important;
+    padding: 4px 5px !important;
+    font-size: 7px !important;
+  }
+
+  .theme-toggle {
+    width: 26px !important;
+    height: 26px !important;
+    min-width: 26px !important;
+    flex-basis: 26px !important;
+  }
+}
