@@ -1675,254 +1675,6 @@ html.light-theme .ambient-line {
   white-space: nowrap;
 }
 
-
-.hidden,
-.user-nav.hidden {
-  display: none !important;
-}
-
-.header-content {
-  position: relative;
-  width: 100%;
-  max-width: 1200px;
-  min-width: 0;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 12px;
-}
-
-.brand {
-  grid-column: 1;
-  justify-self: start;
-  min-width: 0;
-}
-
-.user-nav {
-  position: static;
-  grid-column: 2;
-  justify-self: end;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-  transform: none;
-}
-
-.user-greeting {
-  display: block;
-  min-width: 0;
-  max-width: 180px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 0.88rem;
-  color: var(--text-secondary);
-}
-
-.theme-toggle {
-  position: static;
-  grid-column: 3;
-  justify-self: end;
-  width: 42px;
-  height: 42px;
-  min-width: 42px;
-  margin: 0;
-  transform: none;
-}
-
-.theme-toggle:hover {
-  transform: scale(1.06);
-}
-
-.theme-toggle:active {
-  transform: scale(0.97);
-}
-
-.custom-select-menu {
-  display: none !important;
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
-
-.custom-select.open .custom-select-menu {
-  display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-}
-
-.custom-select-option {
-  display: flex !important;
-  width: 100% !important;
-  min-height: 40px !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  padding: 9px 12px !important;
-  margin: 0 !important;
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 8px !important;
-  color: #e8edf5 !important;
-  font: inherit !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  line-height: 1.2 !important;
-  text-align: left !important;
-  white-space: nowrap !important;
-  appearance: none !important;
-  -webkit-appearance: none !important;
-  box-shadow: none !important;
-  cursor: pointer !important;
-}
-
-.panel-header {
-  min-width: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 10px;
-}
-
-.panel-title {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.tx-count {
-  justify-self: end;
-  flex-shrink: 0;
-  white-space: nowrap;
-}
-
-.transaction-item {
-  width: 100%;
-  min-width: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
-  align-items: center;
-  gap: 12px;
-}
-
-.transaction-info {
-  min-width: 0;
-  width: 100%;
-  overflow: hidden;
-}
-
-.transaction-description {
-  min-width: 0;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.transaction-meta {
-  min-width: 0;
-  max-width: 100%;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.transaction-meta span {
-  white-space: nowrap;
-}
-
-.transaction-amount {
-  min-width: max-content;
-  max-width: 100%;
-  white-space: nowrap;
-}
-
-.transaction-actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 5px;
-  flex-wrap: nowrap;
-  white-space: nowrap;
-}
-
-.auth-card,
-.auth-intro,
-.auth-intro h2,
-.auth-intro p,
-.auth-eyebrow,
-.auth-tabs,
-.auth-tab {
-  text-align: center;
-}
-
-.forgot-link {
-  text-align: center;
-}
-
-.form-error {
-  width: 100%;
-  margin-top: 8px;
-  margin-bottom: 16px;
-  color: #ff5555 !important;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.35;
-  text-align: center !important;
-}
-
-.auth-footnote {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: nowrap;
-  width: 100%;
-  margin-top: 20px;
-  text-align: center;
-}
-
-.auth-footnote span {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-  color: var(--text-secondary);
-  font-size: 0.68rem;
-  line-height: 1;
-}
-
-.auth-footnote span + span::before {
-  content: "•";
-  display: inline-block;
-  margin: 0 10px;
-  color: rgba(141, 150, 168, 0.5);
-}
-
-.toast-container {
-  position: fixed;
-  top: auto;
-  right: 20px;
-  bottom: 20px;
-  left: auto;
-  z-index: 99999;
-  max-width: 340px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  pointer-events: none;
-}
-
-.toast {
-  pointer-events: auto;
-  width: auto;
-  max-width: 340px;
-  font-size: 0.88rem;
-  line-height: 1.35;
-}
-
 @media (max-width: 960px) {
   .app-main {
     width: 100%;
@@ -1941,34 +1693,69 @@ html.light-theme .ambient-line {
   }
 
   .header-content {
-    padding-left: 14px;
-    padding-right: 14px;
+    width: 100%;
+    max-width: 100%;
+    padding: 0 16px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    justify-content: initial;
+  }
+
+  .brand {
+    min-width: 0;
+    justify-self: start;
+  }
+
+  .brand-title {
+    min-width: 0;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .user-nav {
+    position: static;
+    transform: none;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
   }
 
   .user-greeting {
-    max-width: 130px;
-    font-size: 0.78rem;
+    display: block;
+    min-width: 0;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 10px;
   }
 
   .theme-toggle {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
+    position: static;
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    transform: none;
   }
 
-  .panel {
+  #logoutBtn {
+    flex: 0 0 auto;
     min-width: 0;
+    height: 32px;
+    min-height: 32px;
+    padding: 6px 9px;
+    font-size: 9px;
+    white-space: nowrap;
   }
 }
 
 @media (max-width: 640px) {
-  html,
-  body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-  }
-
   .app-header {
     min-height: 58px;
   }
@@ -1976,12 +1763,11 @@ html.light-theme .ambient-line {
   .header-content {
     min-height: 58px;
     padding: 0 10px;
-    gap: 7px;
+    gap: 8px;
   }
 
   .brand {
-    min-width: 0;
-    gap: 6px;
+    gap: 7px;
   }
 
   .brand-icon {
@@ -1993,13 +1779,8 @@ html.light-theme .ambient-line {
   }
 
   .brand-title {
-    min-width: 0;
-    max-width: 120px;
+    max-width: 130px;
     font-size: 14px;
-    line-height: 1.1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   .user-nav {
@@ -2007,8 +1788,7 @@ html.light-theme .ambient-line {
   }
 
   .user-greeting {
-    display: block !important;
-    max-width: 105px;
+    max-width: 88px;
     font-size: 8px;
   }
 
@@ -2017,7 +1797,6 @@ html.light-theme .ambient-line {
     min-height: 30px;
     padding: 5px 7px;
     font-size: 8px;
-    white-space: nowrap;
   }
 
   .theme-toggle {
@@ -2047,9 +1826,7 @@ html.light-theme .ambient-line {
   .auth-intro,
   .auth-intro h2,
   .auth-intro p,
-  .auth-eyebrow,
-  .auth-tabs,
-  .auth-tab {
+  .auth-eyebrow {
     text-align: center;
   }
 
@@ -2081,11 +1858,7 @@ html.light-theme .ambient-line {
   .form-group label {
     display: block;
     width: 100%;
-    text-align: center;
-  }
-
-  .form-hint {
-    text-align: center;
+    text-align: left;
   }
 
   .form-control {
@@ -2102,6 +1875,7 @@ html.light-theme .ambient-line {
 
   .form-error {
     font-size: 12px;
+    text-align: center;
   }
 
   .auth-footnote {
@@ -2127,9 +1901,7 @@ html.light-theme .ambient-line {
     max-width: 100%;
     font-size: 1.45rem;
     line-height: 1.15;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow-wrap: anywhere;
   }
 
   .dashboard-content {
@@ -2145,17 +1917,25 @@ html.light-theme .ambient-line {
   }
 
   .panel-header {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: 8px;
   }
 
   .panel-title {
+    flex: 1 1 auto;
+    min-width: 0;
     font-size: 1rem;
+    white-space: nowrap;
   }
 
   .tx-count {
+    flex: 0 0 auto;
     font-size: 0.68rem;
-    padding: 4px 6px;
+    padding: 4px 7px;
+    white-space: nowrap;
   }
 
   .type-toggle-group {
@@ -2193,8 +1973,7 @@ html.light-theme .ambient-line {
   }
 
   .category-filter-group,
-  #categoryFilter,
-  .custom-select {
+  #categoryFilter {
     width: 100%;
     max-width: 100%;
     min-width: 0;
@@ -2207,19 +1986,30 @@ html.light-theme .ambient-line {
   }
 
   .custom-select-menu {
-    max-height: 240px !important;
+    max-height: 240px;
   }
 
   .custom-select-option {
-    min-height: 40px !important;
-    padding: 8px 10px !important;
-    font-size: 13px !important;
+    min-height: 40px;
+    padding: 8px 10px;
+    font-size: 13px;
   }
 
   .transaction-item {
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 6px 9px;
+    gap: 6px 10px;
     padding: 13px 11px;
+  }
+
+  .transaction-amount {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 12px;
+  }
+
+  .transaction-actions {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
   }
 
   .transaction-description {
@@ -2228,26 +2018,12 @@ html.light-theme .ambient-line {
 
   .transaction-meta {
     gap: 4px;
+    font-size: 10px;
   }
 
   .transaction-meta span {
     padding: 3px 5px;
     font-size: 9px;
-  }
-
-  .transaction-amount {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: end;
-    max-width: 110px;
-    font-size: 12px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .transaction-actions {
-    grid-column: 1 / -1;
-    justify-content: flex-end;
   }
 
   .empty-state {
@@ -2265,16 +2041,15 @@ html.light-theme .ambient-line {
   }
 
   .toast-container {
-    top: auto !important;
-    right: 10px !important;
-    bottom: 10px !important;
-    left: 10px !important;
-    max-width: none !important;
+    top: 68px;
+    left: 10px;
+    right: 10px;
+    max-width: none;
   }
 
   .toast {
-    width: 100% !important;
-    max-width: none !important;
+    width: 100%;
+    max-width: none;
   }
 
   .auth-ambient {
@@ -2282,66 +2057,18 @@ html.light-theme .ambient-line {
   }
 }
 
-@media (max-width: 400px) {
-  .header-content {
-    padding: 0 7px;
-    gap: 5px;
-  }
-
-  .brand-icon {
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
-    flex-basis: 28px;
-  }
-
-  .brand-title {
-    max-width: 90px;
-    font-size: 12px;
-  }
-
-  .user-greeting {
-    max-width: 82px;
-    font-size: 7px;
-  }
-
-  #logoutBtn {
-    height: 28px;
-    min-height: 28px;
-    padding: 4px 6px;
-    font-size: 7px;
-  }
-
-  .theme-toggle {
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
-    flex-basis: 28px;
-  }
-
-  .panel-header {
-    gap: 5px;
-  }
-
-  .panel-title {
-    font-size: 0.88rem;
-  }
-
-  .tx-count {
-    font-size: 6px;
-    padding: 3px 5px;
-  }
-}
-
 @media (max-width: 300px) {
   .header-content {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    min-height: 50px;
+    min-height: 52px;
     padding: 0 5px;
-    gap: 3px;
   }
 
-  .brand-title {
+  .app-header {
+    min-height: 52px;
+  }
+
+  .brand-title,
+  .user-greeting {
     display: none;
   }
 
@@ -2354,20 +2081,14 @@ html.light-theme .ambient-line {
   }
 
   .user-nav {
-    gap: 3px;
-  }
-
-  .user-greeting {
-    display: block !important;
-    max-width: 74px;
-    font-size: 6px;
+    gap: 4px;
   }
 
   #logoutBtn {
     height: 26px;
     min-height: 26px;
     padding: 4px 5px;
-    font-size: 6px;
+    font-size: 7px;
   }
 
   .theme-toggle {
@@ -2375,7 +2096,7 @@ html.light-theme .ambient-line {
     height: 26px;
     min-width: 26px;
     flex-basis: 26px;
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .app-main {
@@ -2408,7 +2129,6 @@ html.light-theme .ambient-line {
 
   .form-group label {
     font-size: 8px;
-    text-align: center;
   }
 
   .forgot-link {
@@ -2443,78 +2163,45 @@ html.light-theme .ambient-line {
     padding: 9px;
   }
 
-  .panel-header {
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 4px;
-  }
-
   .panel-title {
-    font-size: 0.72rem;
+    font-size: 0.75rem;
   }
 
   .tx-count {
-    font-size: 6px;
-    padding: 3px 4px;
-  }
-
-  .filter-group {
-    gap: 4px;
+    font-size: 7px;
+    padding: 3px 5px;
   }
 
   .filter-btn {
-    font-size: 7px;
-    padding: 5px 1px;
-  }
-
-  .type-radio-label {
     font-size: 8px;
-    padding: 8px 2px;
-  }
-
-  .custom-select-button {
-    min-height: 38px;
-    padding: 7px 32px 7px 9px;
-    font-size: 9px;
-  }
-
-  .custom-select-option {
-    min-height: 32px !important;
-    padding: 6px 8px !important;
-    font-size: 9px !important;
+    padding: 5px 2px;
   }
 
   .transaction-item {
     grid-template-columns: 1fr;
     gap: 5px;
-    padding: 10px 8px;
-  }
-
-  .transaction-description {
-    font-size: 9px;
-  }
-
-  .transaction-meta span {
-    font-size: 6px;
-    padding: 2px 3px;
   }
 
   .transaction-amount {
     grid-column: 1;
     grid-row: auto;
     justify-self: start;
-    max-width: 100%;
-    font-size: 8px;
+    min-width: 0;
+    font-size: 10px;
   }
 
   .transaction-actions {
     grid-column: 1;
     justify-content: flex-start;
-    gap: 4px;
   }
 
-  .transaction-actions button {
-    font-size: 6px;
-    padding: 3px 4px;
+  .transaction-description {
+    font-size: 10px;
+  }
+
+  .transaction-meta span {
+    font-size: 7px;
+    padding: 2px 4px;
   }
 
   .empty-state {
@@ -2522,26 +2209,534 @@ html.light-theme .ambient-line {
   }
 
   .empty-text {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
 
   .empty-subtext {
-    font-size: 0.62rem;
+    font-size: 0.68rem;
   }
 
-  .toast {
-    font-size: 9px !important;
-    padding: 8px 9px !important;
+  .currency-background span {
+    font-size: 2rem;
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+.user-nav.hidden {
+  display: none !important;
+}
+
+.custom-select-menu {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.custom-select.open .custom-select-menu {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+@media (max-width: 960px) {
+  .header-content {
+    width: 100%;
+    max-width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    min-height: 58px;
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  .brand {
+    min-width: 0;
+    justify-self: start;
+  }
+
+  .brand-title {
+    min-width: 0;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .theme-toggle {
+    position: static;
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    flex: 0 0 auto;
+    margin: 0;
+    transform: none;
+  }
+
+  .user-nav {
+    position: static;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    gap: 8px;
+    transform: none;
+  }
+
+  .user-greeting {
+    min-width: 0;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-header {
+    min-height: 76px;
+  }
+
+  .header-content {
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 76px;
+    padding: 8px 10px;
+    gap: 6px 8px;
+  }
+
+  .brand {
+    gap: 7px;
+  }
+
+  .brand-icon {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    flex: 0 0 30px;
+    font-size: 15px;
+  }
+
+  .brand-title {
+    max-width: 145px;
+    font-size: 14px;
+  }
+
+  .theme-toggle {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    font-size: 14px;
+  }
+
+  .user-nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    gap: 6px;
+  }
+
+  .user-greeting {
+    max-width: 160px;
+    font-size: 8px;
+  }
+
+  #logoutBtn {
+    height: 30px;
+    min-height: 30px;
+    padding: 5px 8px;
+    font-size: 8px;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-amount {
+    max-width: 100%;
+    font-size: 1.45rem;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .panel-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .panel-title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tx-count {
+    white-space: nowrap;
+  }
+
+  .filter-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .filter-group {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .filter-btn {
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .transaction-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 7px 10px;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .transaction-info {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .transaction-description {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .transaction-meta {
+    min-width: 0;
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .transaction-amount {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    max-width: 130px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .transaction-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .auth-card {
+    text-align: center;
+  }
+
+  .auth-intro,
+  .auth-intro h2,
+  .auth-intro p,
+  .auth-eyebrow {
+    text-align: center;
+  }
+
+  .form-error {
+    color: #ff5555 !important;
+    text-align: center !important;
+  }
+
+  .auth-footnote {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+
+  .auth-footnote span {
+    white-space: nowrap;
+    font-size: 8px;
+  }
+
+  .auth-footnote span + span::before {
+    margin: 0 7px;
+  }
+
+  .toast-container {
+    position: fixed;
+    top: 70px;
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-width: none;
+    z-index: 99999;
+  }
+
+  .toast {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 400px) {
+  .app-header {
+    min-height: 78px;
+  }
+
+  .header-content {
+    min-height: 78px;
+    padding: 7px 7px;
+    gap: 5px;
+  }
+
+  .brand-title {
+    max-width: 120px;
+    font-size: 12px;
+  }
+
+  .brand-icon {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    flex-basis: 28px;
+    font-size: 14px;
+  }
+
+  .theme-toggle {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    font-size: 13px;
+  }
+
+  .user-nav {
+    gap: 5px;
+  }
+
+  .user-greeting {
+    max-width: 145px;
+    font-size: 7px;
+  }
+
+  #logoutBtn {
+    height: 28px;
+    min-height: 28px;
+    padding: 4px 7px;
+    font-size: 7px;
+  }
+
+  .panel-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 5px;
+  }
+
+  .panel-title {
+    font-size: 0.92rem;
+  }
+
+  .tx-count {
+    font-size: 0.62rem;
+    padding: 3px 6px;
+  }
+
+  .transaction-item {
+    grid-template-columns: 1fr;
+  }
+
+  .transaction-amount {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+    max-width: 100%;
+    font-size: 12px;
+  }
+
+  .transaction-actions {
+    grid-column: 1;
+    justify-content: flex-start;
+  }
+
+  .summary-card {
+    padding: 17px 16px;
+  }
+
+  .card-amount {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 300px) {
+  .app-header {
+    min-height: 90px;
+  }
+
+  .header-content {
+    min-height: 90px;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: 36px 38px;
+    padding: 7px 5px;
+    gap: 4px;
+  }
+
+  .brand {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .brand-icon {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    flex-basis: 26px;
+    font-size: 12px;
+  }
+
+  .brand-title {
+    max-width: 70px;
+    font-size: 9px;
+  }
+
+  .theme-toggle {
+    grid-column: 2;
+    grid-row: 1;
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    font-size: 12px;
+  }
+
+  .user-nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: end;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .user-greeting {
+    display: inline-block !important;
+    max-width: 95px;
+    font-size: 7px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #logoutBtn {
+    height: 26px;
+    min-height: 26px;
+    padding: 4px 6px;
+    font-size: 7px;
+  }
+
+  .app-main {
+    padding: 12px 7px 30px;
+  }
+
+  .summary-card {
+    padding: 15px 12px;
+  }
+
+  .card-label {
+    font-size: 7px;
+  }
+
+  .card-amount {
+    font-size: 0.92rem;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .panel {
+    padding: 10px;
+  }
+
+  .panel-header {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 5px;
+  }
+
+  .panel-title {
+    font-size: 0.76rem;
+  }
+
+  .tx-count {
+    justify-self: start;
+    font-size: 6px;
+  }
+
+  .filter-group {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+  }
+
+  .filter-btn {
+    padding: 5px 2px;
+    font-size: 7px;
+  }
+
+  .transaction-item {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .transaction-amount {
+    grid-column: 1;
+    grid-row: auto;
+    font-size: 9px;
+    max-width: 100%;
+  }
+
+  .transaction-actions {
+    grid-column: 1;
+    justify-content: flex-start;
+  }
+
+  .transaction-actions button {
+    font-size: 7px;
+    padding: 3px 5px;
+  }
+
+  .transaction-description {
+    font-size: 10px;
+  }
+
+  .transaction-meta span {
+    font-size: 6px;
+    padding: 2px 3px;
+  }
+
+  .toast-container {
+    top: 96px;
+    left: 6px;
+    right: 6px;
+  }
+
+  .toast {
+    font-size: 9px;
+    padding: 8px 9px;
   }
 }
