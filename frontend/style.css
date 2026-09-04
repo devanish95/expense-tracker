@@ -4156,3 +4156,244 @@ body:has(#themeToggleInput:checked) .theme-toggle:hover {
     font-size: 0.84rem !important;
   }
 }
+
+@media (max-width: 500px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  .app-shell,
+  .app-header,
+  .app-main {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .header-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: 0 10px !important;
+    gap: 6px !important;
+  }
+
+  .brand {
+    min-width: 0 !important;
+    flex: 1 1 auto !important;
+  }
+
+  .brand-title {
+    min-width: 0 !important;
+    max-width: 100% !important;
+    font-size: 14px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .user-nav {
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    gap: 4px !important;
+  }
+
+  .user-greeting {
+    display: none !important;
+  }
+
+  #logoutBtn {
+    flex: 0 0 auto !important;
+    padding: 6px 8px !important;
+    font-size: 10px !important;
+    white-space: nowrap !important;
+  }
+
+  .theme-toggle {
+    flex: 0 0 32px !important;
+    width: 32px !important;
+    height: 32px !important;
+    margin: 0 !important;
+  }
+
+  .app-main {
+    padding: 16px 10px 32px !important;
+    overflow-x: hidden !important;
+  }
+
+  .auth-section,
+  .dashboard-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .auth-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+    padding: 24px 16px 20px !important;
+  }
+
+  .auth-tabs {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .auth-tab {
+    min-width: 0 !important;
+    padding: 9px 6px !important;
+    font-size: 13px !important;
+  }
+
+  .auth-form,
+  .form-group,
+  .form-control,
+  .btn-block {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .summary-grid {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .summary-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .dashboard-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .filter-bar {
+    width: 100% !important;
+    min-width: 0 !important;
+    flex-wrap: wrap !important;
+  }
+
+  .filter-group,
+  .category-filter-group,
+  #categoryFilter {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .transaction-item {
+    min-width: 0 !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 8px !important;
+    padding: 14px 12px !important;
+  }
+
+  .transaction-info {
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .transaction-description {
+    max-width: 100% !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  .transaction-meta {
+    min-width: 0 !important;
+    flex-wrap: wrap !important;
+  }
+
+  .transaction-amount {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    font-size: 13px !important;
+  }
+
+  .transaction-actions {
+    grid-column: 1 / -1 !important;
+    min-width: 0 !important;
+    flex-wrap: wrap !important;
+  }
+
+  .transaction-actions button {
+    font-size: 11px !important;
+    padding: 6px 8px !important;
+  }
+
+  .tx-list-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  .toast-container {
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  .toast {
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .header-content {
+    padding: 0 8px !important;
+    gap: 4px !important;
+  }
+
+  .brand-title {
+    font-size: 13px !important;
+  }
+
+  #logoutBtn {
+    padding: 5px 7px !important;
+    font-size: 9px !important;
+  }
+
+  .theme-toggle {
+    width: 30px !important;
+    height: 30px !important;
+    flex-basis: 30px !important;
+  }
+
+  .app-main {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .auth-card {
+    padding-left: 13px !important;
+    padding-right: 13px !important;
+  }
+
+  .auth-tab {
+    font-size: 12px !important;
+  }
+}
