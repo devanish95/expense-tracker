@@ -2085,3 +2085,303 @@ html.light-theme .ambient-line {
     scroll-behavior: auto !important;
   }
 }
+
+.custom-select {
+  position: relative !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.custom-select > select {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  min-width: 1px !important;
+  min-height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  border: 0 !important;
+  padding: 0 !important;
+}
+
+.custom-select-button {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 46px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  position: relative !important;
+  padding: 11px 42px 11px 14px !important;
+  margin: 0 !important;
+  background: rgba(20, 31, 46, 0.72) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  border-radius: 14px !important;
+  color: #f2f5fa !important;
+  font-family: inherit !important;
+  font-size: 15px !important;
+  line-height: 1.2 !important;
+  text-align: left !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-shadow: none !important;
+}
+
+.custom-select-menu {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: calc(100% + 6px) !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-height: 260px !important;
+  padding: 6px !important;
+  margin: 0 !important;
+  display: block !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  background: #162536 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45) !important;
+  z-index: 9999 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(-5px) !important;
+  transition: opacity 0.16s ease, transform 0.16s ease, visibility 0.16s ease !important;
+}
+
+.custom-select.open .custom-select-menu {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translateY(0) !important;
+}
+
+.custom-select-option {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 40px !important;
+  height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  position: relative !important;
+  padding: 9px 12px !important;
+  margin: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  color: #e8edf5 !important;
+  font-family: inherit !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1.2 !important;
+  text-align: left !important;
+  white-space: nowrap !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+}
+
+.custom-select-option:hover {
+  background: rgba(34, 211, 238, 0.10) !important;
+  color: #ffffff !important;
+}
+
+.custom-select-option.selected {
+  background: rgba(34, 211, 238, 0.14) !important;
+  color: #7bdcff !important;
+}
+
+.custom-select-option.selected::after {
+  content: "✓" !important;
+  margin-left: auto !important;
+  padding-left: 10px !important;
+  color: #7bdcff !important;
+  font-size: 13px !important;
+}
+
+.transaction-item {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto auto !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.transaction-info {
+  min-width: 0 !important;
+  width: 100% !important;
+}
+
+.transaction-description {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.transaction-meta {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 5px !important;
+}
+
+.transaction-meta span {
+  white-space: nowrap !important;
+}
+
+.transaction-amount {
+  white-space: nowrap !important;
+  min-width: max-content !important;
+}
+
+.transaction-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 640px) {
+  .custom-select-button {
+    min-height: 48px !important;
+    font-size: 15px !important;
+  }
+
+  .custom-select-menu {
+    max-height: 230px !important;
+  }
+
+  .custom-select-option {
+    min-height: 42px !important;
+    font-size: 14px !important;
+  }
+
+  .transaction-item {
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 7px !important;
+    padding: 13px 11px !important;
+  }
+
+  .transaction-amount {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+    font-size: 13px !important;
+  }
+
+  .transaction-actions {
+    grid-column: 1 / -1 !important;
+    justify-content: flex-end !important;
+  }
+
+  .transaction-description {
+    font-size: 14px !important;
+  }
+
+  .transaction-meta {
+    gap: 4px !important;
+    font-size: 10px !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .custom-select-button {
+    min-height: 46px !important;
+    padding-left: 12px !important;
+    padding-right: 38px !important;
+    font-size: 14px !important;
+  }
+
+  .custom-select-option {
+    min-height: 40px !important;
+    padding: 8px 10px !important;
+    font-size: 13px !important;
+  }
+
+  .transaction-item {
+    padding: 12px 10px !important;
+  }
+
+  .transaction-description {
+    font-size: 13px !important;
+  }
+
+  .transaction-amount {
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 300px) {
+  .app-main {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  .panel {
+    padding: 9px !important;
+  }
+
+  .auth-card {
+    padding: 16px 8px !important;
+  }
+
+  .auth-intro h2 {
+    font-size: 1rem !important;
+  }
+
+  .auth-intro p {
+    font-size: 8px !important;
+  }
+
+  .form-control,
+  .custom-select-button {
+    min-height: 38px !important;
+    font-size: 9px !important;
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+  }
+
+  .custom-select-option {
+    min-height: 32px !important;
+    font-size: 9px !important;
+    padding: 6px 8px !important;
+  }
+
+  .panel-title {
+    font-size: 0.75rem !important;
+  }
+
+  .card-label {
+    font-size: 7px !important;
+  }
+
+  .card-amount {
+    font-size: 0.95rem !important;
+  }
+
+  .transaction-item {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 5px !important;
+  }
+
+  .transaction-amount {
+    grid-column: 1 !important;
+    grid-row: auto !important;
+    justify-self: start !important;
+    font-size: 10px !important;
+  }
+
+  .transaction-actions {
+    grid-column: 1 !important;
+    justify-content: flex-start !important;
+  }
+}
