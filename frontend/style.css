@@ -3173,3 +3173,986 @@ body:has(#themeToggleInput:checked) .theme-toggle:hover {
     height: 30px !important;
   }
 }
+
+
+@media (max-width: 640px) {
+
+  .app-main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 18px 14px 40px !important;
+    overflow-x: hidden !important;
+  }
+
+  .dashboard-section,
+  .auth-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+
+  .summary-grid {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 0 16px !important;
+    gap: 12px !important;
+  }
+
+  .summary-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 18px 16px !important;
+    border-radius: 16px !important;
+  }
+
+  .card-label {
+    font-size: 10px !important;
+  }
+
+  .card-amount {
+    font-size: 1.55rem !important;
+    line-height: 1.15 !important;
+  }
+
+  .dashboard-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .panel {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 16px !important;
+    border-radius: 16px !important;
+  }
+
+  .panel-header {
+    width: 100% !important;
+    margin-bottom: 16px !important;
+  }
+
+  .panel-title {
+    font-size: 1rem !important;
+  }
+
+  .transaction-form {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .form-group {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .form-control,
+  #txCategory,
+  #categoryFilter {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .type-toggle-group {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .type-radio-label {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .filter-bar {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+  }
+
+  .filter-group {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+  }
+
+  .filter-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .category-filter-group {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .tx-list-container {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .tx-list {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .tx-list li {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 390px) {
+
+  .app-main {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .summary-card {
+    padding: 16px 14px !important;
+  }
+
+  .card-amount {
+    font-size: 1.42rem !important;
+  }
+
+  .panel {
+    padding: 14px !important;
+  }
+
+  .type-toggle-group {
+    gap: 6px !important;
+  }
+}
+
+/* FINAL MOBILE LAYOUT FIX */
+@media (max-width: 640px) {
+
+  .app-header {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .header-content {
+    position: relative !important;
+    width: 100% !important;
+    min-height: 58px !important;
+    padding: 0 58px 0 14px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    gap: 0 !important;
+  }
+
+  .brand {
+    width: auto !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    gap: 7px !important;
+    flex: 1 1 auto !important;
+  }
+
+  .brand-icon {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    flex: 0 0 32px !important;
+    font-size: 0.92rem !important;
+  }
+
+  .brand-title {
+    min-width: 0 !important;
+    max-width: 150px !important;
+
+    margin: 0 !important;
+    font-size: 0.95rem !important;
+    line-height: 1.1 !important;
+
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .user-nav {
+    position: absolute !important;
+    top: 50% !important;
+    right: 52px !important;
+    left: auto !important;
+
+    transform: translateY(-50%) !important;
+
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+
+    gap: 0 !important;
+    z-index: 45 !important;
+  }
+
+  .user-greeting {
+    display: none !important;
+  }
+
+  #logoutBtn {
+    height: 32px !important;
+    min-height: 32px !important;
+
+    padding: 6px 9px !important;
+
+    font-size: 10px !important;
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+  }
+
+  .theme-toggle {
+    position: absolute !important;
+    top: 50% !important;
+    right: 10px !important;
+    left: auto !important;
+
+    transform: translateY(-50%) !important;
+
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    z-index: 50 !important;
+  }
+
+  .theme-toggle:hover {
+    transform: translateY(-50%) scale(1.05) !important;
+  }
+
+  /* Main mobile spacing */
+  .app-main {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    margin: 0 !important;
+    padding: 16px 12px 36px !important;
+
+    overflow-x: hidden !important;
+  }
+
+  /* Summary cards */
+  .summary-grid {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+
+    gap: 12px !important;
+    margin: 0 0 16px !important;
+  }
+
+  .summary-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    margin: 0 !important;
+    padding: 16px !important;
+
+    border-radius: 15px !important;
+  }
+
+  .card-label {
+    font-size: 0.65rem !important;
+    margin-bottom: 7px !important;
+  }
+
+  .card-amount {
+    font-size: 1.42rem !important;
+    line-height: 1.12 !important;
+  }
+
+  /* Dashboard panels */
+  .dashboard-content {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+
+    gap: 14px !important;
+  }
+
+  .panel {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    margin: 0 !important;
+    padding: 16px !important;
+
+    border-radius: 15px !important;
+  }
+
+  .panel-header {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    margin-bottom: 14px !important;
+    padding-bottom: 12px !important;
+  }
+
+  .panel-title {
+    font-size: 0.98rem !important;
+  }
+
+  /* Transaction form */
+  .transaction-form,
+  .form-group {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .form-control {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    font-size: 0.86rem !important;
+  }
+
+  .type-toggle-group {
+    width: 100% !important;
+
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+
+    gap: 7px !important;
+  }
+
+  .type-radio-label {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    padding: 10px 6px !important;
+    font-size: 0.72rem !important;
+  }
+
+  /* Transaction filters */
+  .filter-bar {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+
+    gap: 9px !important;
+  }
+
+  .filter-group {
+    width: 100% !important;
+
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+
+    gap: 6px !important;
+  }
+
+  .filter-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    padding: 7px 4px !important;
+    font-size: 0.68rem !important;
+  }
+
+  .category-filter-group,
+  .category-filter-group select,
+  #categoryFilter {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Transaction list */
+  .tx-list-container {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    overflow-x: hidden !important;
+  }
+
+  .tx-list {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .tx-list li {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Small phones */
+@media (max-width: 430px) {
+
+  .header-content {
+    padding-left: 12px !important;
+    padding-right: 54px !important;
+  }
+
+  .brand-title {
+    max-width: 132px !important;
+    font-size: 0.88rem !important;
+  }
+
+  .brand-icon {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    flex-basis: 30px !important;
+  }
+
+  .user-nav {
+    right: 50px !important;
+  }
+
+  #logoutBtn {
+    height: 30px !important;
+    min-height: 30px !important;
+
+    padding: 6px 8px !important;
+    font-size: 9px !important;
+  }
+
+  .theme-toggle {
+    right: 9px !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+  }
+
+  .app-main {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .summary-card {
+    padding: 15px !important;
+  }
+
+  .card-amount {
+    font-size: 1.34rem !important;
+  }
+
+  .panel {
+    padding: 14px !important;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 370px) {
+
+  .brand-title {
+    max-width: 112px !important;
+    font-size: 0.82rem !important;
+  }
+
+  #logoutBtn {
+    padding: 6px 7px !important;
+    font-size: 8.5px !important;
+  }
+
+  .user-nav {
+    right: 47px !important;
+  }
+
+  .theme-toggle {
+    right: 8px !important;
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+  }
+
+  .summary-card {
+    padding: 14px !important;
+  }
+
+  .card-amount {
+    font-size: 1.25rem !important;
+  }
+
+  .panel {
+    padding: 13px !important;
+  }
+}
+
+
+@media (max-width: 960px) {
+  .header-content {
+    width: 100% !important;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  .app-main {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+
+  .dashboard-content {
+    width: 100% !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .summary-grid {
+    width: 100% !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-header {
+    width: 100% !important;
+    min-height: 58px !important;
+    height: auto !important;
+  }
+
+  .header-content {
+    position: relative !important;
+    width: 100% !important;
+    min-height: 58px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 52px 0 12px !important;
+    overflow: hidden !important;
+  }
+
+  .brand {
+    min-width: 0 !important;
+    width: auto !important;
+    max-width: calc(100% - 80px) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 7px !important;
+    flex: 0 1 auto !important;
+  }
+
+  .brand-icon {
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    flex: 0 0 30px !important;
+    font-size: 15px !important;
+  }
+
+  .brand-title {
+    min-width: 0 !important;
+    max-width: 135px !important;
+    margin: 0 !important;
+    font-size: 15px !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .user-nav {
+    position: absolute !important;
+    top: 50% !important;
+    right: 45px !important;
+    left: auto !important;
+    transform: translateY(-50%) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 0 !important;
+    z-index: 45 !important;
+  }
+
+  .user-greeting {
+    display: none !important;
+  }
+
+  #logoutBtn {
+    width: auto !important;
+    min-width: 0 !important;
+    height: 30px !important;
+    min-height: 30px !important;
+    padding: 6px 9px !important;
+    font-size: 9px !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+  }
+
+  .theme-toggle {
+    position: absolute !important;
+    top: 50% !important;
+    right: 9px !important;
+    left: auto !important;
+    transform: translateY(-50%) !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 50 !important;
+  }
+
+  .theme-toggle:hover {
+    transform: translateY(-50%) scale(1.05) !important;
+  }
+
+  .app-main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 16px 12px 36px !important;
+    overflow-x: hidden !important;
+  }
+
+  .summary-grid {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    margin: 0 0 16px !important;
+  }
+
+  .summary-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 15px 16px !important;
+    border-radius: 15px !important;
+  }
+
+  .card-label {
+    font-size: 10px !important;
+    line-height: 1.2 !important;
+    margin-bottom: 7px !important;
+  }
+
+  .card-amount {
+    max-width: 100% !important;
+    font-size: 1.42rem !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+
+  .dashboard-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+    min-width: 0 !important;
+  }
+
+  .panel {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 14px !important;
+    border-radius: 15px !important;
+    overflow: hidden !important;
+  }
+
+  .panel-header {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin-bottom: 13px !important;
+    padding-bottom: 11px !important;
+  }
+
+  .panel-title {
+    min-width: 0 !important;
+    font-size: 0.96rem !important;
+  }
+
+  .transaction-form,
+  .form-group,
+  .input-prefix-wrapper,
+  .custom-select {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .form-group {
+    margin-bottom: 14px !important;
+  }
+
+  .form-control,
+  .custom-select-button {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    font-size: 0.84rem !important;
+  }
+
+  .type-toggle-group {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 7px !important;
+  }
+
+  .type-radio-label {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 10px 5px !important;
+    font-size: 0.72rem !important;
+  }
+
+  .filter-bar {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 9px !important;
+  }
+
+  .filter-group {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 6px !important;
+  }
+
+  .filter-btn {
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 7px 3px !important;
+    font-size: 0.67rem !important;
+    white-space: nowrap !important;
+  }
+
+  .category-filter-group,
+  .category-filter-group select,
+  #categoryFilter {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .tx-list-container,
+  .tx-list {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: hidden !important;
+  }
+
+  .tx-list li {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .transaction-item {
+    width: 100% !important;
+    min-width: 0 !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    gap: 8px !important;
+    padding: 12px !important;
+  }
+
+  .transaction-info {
+    min-width: 0 !important;
+  }
+
+  .transaction-description {
+    max-width: 100% !important;
+    font-size: 13px !important;
+  }
+
+  .transaction-meta {
+    flex-wrap: wrap !important;
+    gap: 5px !important;
+    font-size: 10px !important;
+  }
+
+  .transaction-amount {
+    font-size: 13px !important;
+  }
+
+  .transaction-actions {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+  }
+
+  .toast-container {
+    top: 68px !important;
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+
+  .toast {
+    width: 100% !important;
+    max-width: none !important;
+  }
+}
+
+@media (max-width: 430px) {
+  .header-content {
+    padding-left: 10px !important;
+    padding-right: 49px !important;
+  }
+
+  .brand-title {
+    max-width: 118px !important;
+    font-size: 14px !important;
+  }
+
+  .brand-icon {
+    width: 29px !important;
+    height: 29px !important;
+    min-width: 29px !important;
+    flex-basis: 29px !important;
+  }
+
+  .user-nav {
+    right: 43px !important;
+  }
+
+  #logoutBtn {
+    height: 29px !important;
+    min-height: 29px !important;
+    padding: 6px 8px !important;
+    font-size: 8.5px !important;
+  }
+
+  .theme-toggle {
+    right: 8px !important;
+    width: 31px !important;
+    height: 31px !important;
+    min-width: 31px !important;
+  }
+
+  .app-main {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .summary-card {
+    padding: 14px !important;
+  }
+
+  .card-amount {
+    font-size: 1.32rem !important;
+  }
+
+  .panel {
+    padding: 13px !important;
+  }
+}
+
+@media (max-width: 280px) {
+  .header-content {
+    padding-left: 8px !important;
+    padding-right: 43px !important;
+  }
+
+  .brand-title {
+    max-width: 90px !important;
+    font-size: 11px !important;
+  }
+
+  .brand-icon {
+    width: 25px !important;
+    height: 25px !important;
+    min-width: 25px !important;
+    flex-basis: 25px !important;
+    font-size: 12px !important;
+  }
+
+  .user-nav {
+    right: 37px !important;
+  }
+
+  #logoutBtn {
+    height: 25px !important;
+    min-height: 25px !important;
+    padding: 5px 6px !important;
+    font-size: 7px !important;
+  }
+
+  .theme-toggle {
+    right: 5px !important;
+    width: 27px !important;
+    height: 27px !important;
+    min-width: 27px !important;
+  }
+
+  .app-main {
+    padding-left: 7px !important;
+    padding-right: 7px !important;
+  }
+
+  .summary-card {
+    padding: 11px !important;
+  }
+
+  .card-label {
+    font-size: 8px !important;
+  }
+
+  .card-amount {
+    font-size: 1.08rem !important;
+  }
+
+  .panel {
+    padding: 10px !important;
+  }
+
+  .panel-title {
+    font-size: 0.84rem !important;
+  }
+}
