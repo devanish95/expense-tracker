@@ -3459,20 +3459,23 @@ html.light-theme .ambient-line {
 @media (min-width: 641px) {
   .app-header .header-content {
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-columns: minmax(0, 1fr) auto auto !important;
+    grid-template-rows: 46px 28px !important;
     grid-template-areas:
-      "brand theme"
-      "greeting logout" !important;
+      "brand theme logout"
+      "greeting greeting greeting" !important;
     align-items: center !important;
-    row-gap: 4px !important;
-    min-height: 78px !important;
-    padding-top: 8px !important;
-    padding-bottom: 8px !important;
+    column-gap: 12px !important;
+    row-gap: 0 !important;
+    min-height: 82px !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
   }
 
   .app-header .brand {
     grid-area: brand !important;
     position: static !important;
+    align-self: center !important;
   }
 
   .app-header .theme-toggle {
@@ -3480,6 +3483,8 @@ html.light-theme .ambient-line {
     position: static !important;
     transform: none !important;
     justify-self: end !important;
+    align-self: center !important;
+    margin: 0 !important;
   }
 
   .app-header .user-nav {
@@ -3494,14 +3499,16 @@ html.light-theme .ambient-line {
     grid-area: greeting !important;
     position: static !important;
     justify-self: start !important;
-    margin: 0 !important;
+    align-self: center !important;
+    margin: 0 0 0 46px !important;
     white-space: nowrap !important;
-    font-size: 0.88rem !important;
+    font-size: 0.82rem !important;
   }
 
   .app-header #logoutBtn {
     grid-area: logout !important;
     justify-self: end !important;
+    align-self: center !important;
     margin: 0 !important;
   }
 }
