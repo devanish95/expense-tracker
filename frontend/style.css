@@ -3456,3 +3456,49 @@ html.light-theme .ambient-line {
   text-align: center;
 }
 
+@media (min-width: 641px) {
+  .header-content {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto !important;
+    grid-template-areas:
+      "brand theme"
+      "greeting logout" !important;
+    align-items: center !important;
+    row-gap: 2px !important;
+    min-height: auto !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+
+  .brand {
+    grid-area: brand !important;
+  }
+
+  .theme-toggle {
+    grid-area: theme !important;
+    position: static !important;
+    transform: none !important;
+  }
+
+  .user-nav {
+    display: contents !important;
+  }
+
+  .user-nav.hidden {
+    display: none !important;
+  }
+
+  .user-greeting {
+    grid-area: greeting !important;
+    justify-self: start !important;
+    position: static !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+  }
+
+  #logoutBtn {
+    grid-area: logout !important;
+    justify-self: end !important;
+    margin: 0 !important;
+  }
+}
