@@ -7,48 +7,100 @@ let currentTypeFilter = "all";
 let currentCategoryFilter = "all";
 let editingTransactionId = null;
 
-const authSection = document.getElementById("authSection");
-const dashboardSection = document.getElementById("dashboardSection");
+const authSection =
+  document.getElementById("authSection");
 
-const tabLogin = document.getElementById("tabLogin");
-const tabRegister = document.getElementById("tabRegister");
+const dashboardSection =
+  document.getElementById("dashboardSection");
 
-const loginForm = document.getElementById("loginForm");
-const registerForm = document.getElementById("registerForm");
+const tabLogin =
+  document.getElementById("tabLogin");
 
-const loginSubmitBtn = document.getElementById("loginSubmitBtn");
-const registerSubmitBtn = document.getElementById("registerSubmitBtn");
-const loginError = document.getElementById("loginError");
+const tabRegister =
+  document.getElementById("tabRegister");
 
-const userNav = document.getElementById("userNav");
-const userGreeting = document.getElementById("userGreeting");
-const logoutBtn = document.getElementById("logoutBtn");
+const loginForm =
+  document.getElementById("loginForm");
 
-const transactionForm = document.getElementById("transactionForm");
-const formTitle = document.getElementById("formTitle");
-const cancelEditBtn = document.getElementById("cancelEditBtn");
-const txSubmitBtn = document.getElementById("txSubmitBtn");
+const registerForm =
+  document.getElementById("registerForm");
 
-const txAmount = document.getElementById("txAmount");
-const txCategory = document.getElementById("txCategory");
-const txDescription = document.getElementById("txDescription");
-const txDate = document.getElementById("txDate");
+const loginSubmitBtn =
+  document.getElementById("loginSubmitBtn");
 
-const totalBalance = document.getElementById("totalBalance");
-const totalIncome = document.getElementById("totalIncome");
-const totalExpenses = document.getElementById("totalExpenses");
+const registerSubmitBtn =
+  document.getElementById("registerSubmitBtn");
 
-const txList = document.getElementById("txList");
-const emptyState = document.getElementById("emptyState");
-const txCountBadge = document.getElementById("txCountBadge");
+const loginError =
+  document.getElementById("loginError");
 
-const categoryFilter = document.getElementById("categoryFilter");
-const filterButtons = document.querySelectorAll("[data-type-filter]");
+const userNav =
+  document.getElementById("userNav");
 
-const toastContainer = document.getElementById("toastContainer");
+const userGreeting =
+  document.getElementById("userGreeting");
 
-const typeExpenseLabel = document.getElementById("typeExpenseLabel");
-const typeIncomeLabel = document.getElementById("typeIncomeLabel");
+const logoutBtn =
+  document.getElementById("logoutBtn");
+
+const transactionForm =
+  document.getElementById("transactionForm");
+
+const formTitle =
+  document.getElementById("formTitle");
+
+const cancelEditBtn =
+  document.getElementById("cancelEditBtn");
+
+const txSubmitBtn =
+  document.getElementById("txSubmitBtn");
+
+const txAmount =
+  document.getElementById("txAmount");
+
+const txCategory =
+  document.getElementById("txCategory");
+
+const txDescription =
+  document.getElementById("txDescription");
+
+const txDate =
+  document.getElementById("txDate");
+
+const totalBalance =
+  document.getElementById("totalBalance");
+
+const totalIncome =
+  document.getElementById("totalIncome");
+
+const totalExpenses =
+  document.getElementById("totalExpenses");
+
+const txList =
+  document.getElementById("txList");
+
+const emptyState =
+  document.getElementById("emptyState");
+
+const txCountBadge =
+  document.getElementById("txCountBadge");
+
+const categoryFilter =
+  document.getElementById("categoryFilter");
+
+const filterButtons =
+  document.querySelectorAll(
+    "[data-type-filter]"
+  );
+
+const toastContainer =
+  document.getElementById("toastContainer");
+
+const typeExpenseLabel =
+  document.getElementById("typeExpenseLabel");
+
+const typeIncomeLabel =
+  document.getElementById("typeIncomeLabel");
 
 const expenseCategories = [
   "Food",
@@ -65,63 +117,152 @@ const incomeCategories = [
   "Other"
 ];
 
-function showToast(message, type = "success") {
-  if (!toastContainer) return;
+const amountWrapper =
+  txAmount.closest(
+    ".input-prefix-wrapper"
+  );
 
-  const toast = document.createElement("div");
-  toast.className = `toast ${type}`;
-  toast.textContent = message;
+const amountClearButton =
+  document.createElement("button");
 
-  toastContainer.appendChild(toast);
+amountClearButton.type =
+  "button";
+
+amountClearButton.className =
+  "amount-clear-button";
+
+amountClearButton.setAttribute(
+  "aria-label",
+  "Clear amount"
+);
+
+amountClearButton.textContent =
+  "×";
+
+if (amountWrapper) {
+  amountWrapper.appendChild(
+    amountClearButton
+  );
+
+  const updateAmountClearButton =
+    () => {
+      amountClearButton.classList.toggle(
+        "visible",
+        txAmount.value.trim() !== ""
+      );
+    };
+
+  amountClearButton.addEventListener(
+    "click",
+    () => {
+      txAmount.value = "";
+
+      updateAmountClearButton();
+
+      txAmount.focus();
+    }
+  );
+
+  txAmount.addEventListener(
+    "input",
+    updateAmountClearButton
+  );
+
+  updateAmountClearButton();
+}
+
+function showToast(
+  message,
+  type = "success"
+) {
+  if (!toastContainer) {
+    return;
+  }
+
+  const toast =
+    document.createElement("div");
+
+  toast.className =
+    `toast ${type}`;
+
+  toast.textContent =
+    message;
+
+  toastContainer.appendChild(
+    toast
+  );
 
   setTimeout(() => {
     toast.remove();
   }, 3000);
 }
 
-function setLoading(button, loading, text) {
-  if (!button) return;
+function setLoading(
+  button,
+  loading,
+  text
+) {
+  if (!button) {
+    return;
+  }
 
-  button.disabled = loading;
+  button.disabled =
+    loading;
 
   if (loading) {
-    button.dataset.originalText = button.textContent;
-    button.textContent = text;
+    button.dataset.originalText =
+      button.textContent;
+
+    button.textContent =
+      text;
   } else {
     button.textContent =
-      button.dataset.originalText || button.textContent;
+      button.dataset.originalText ||
+      button.textContent;
   }
 }
 
-async function apiRequest(endpoint, options = {}) {
+async function apiRequest(
+  endpoint,
+  options = {}
+) {
   const headers = {
-    "Content-Type": "application/json",
+    "Content-Type":
+      "application/json",
     ...(options.headers || {})
   };
 
   if (authToken) {
-    headers.Authorization = `Bearer ${authToken}`;
+    headers.Authorization =
+      `Bearer ${authToken}`;
   }
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers
-  });
+  const response =
+    await fetch(
+      `${API_URL}${endpoint}`,
+      {
+        ...options,
+        headers
+      }
+    );
 
   let data;
 
   try {
-    data = await response.json();
+    data =
+      await response.json();
   } catch {
     data = {
       success: false,
-      message: "The server returned an invalid response."
+      message:
+        "The server returned an invalid response."
     };
   }
 
   if (!response.ok) {
     throw new Error(
-      data.message || "Something went wrong."
+      data.message ||
+      "Something went wrong."
     );
   }
 
@@ -129,35 +270,82 @@ async function apiRequest(endpoint, options = {}) {
 }
 
 function showLoginForm() {
-  tabLogin.classList.add("active");
-  tabRegister.classList.remove("active");
+  tabLogin.classList.add(
+    "active"
+  );
 
-  tabLogin.setAttribute("aria-selected", "true");
-  tabRegister.setAttribute("aria-selected", "false");
+  tabRegister.classList.remove(
+    "active"
+  );
 
-  loginForm.classList.remove("hidden");
-  registerForm.classList.add("hidden");
+  tabLogin.setAttribute(
+    "aria-selected",
+    "true"
+  );
+
+  tabRegister.setAttribute(
+    "aria-selected",
+    "false"
+  );
+
+  loginForm.classList.remove(
+    "hidden"
+  );
+
+  registerForm.classList.add(
+    "hidden"
+  );
 }
 
 function showRegisterForm() {
-  tabRegister.classList.add("active");
-  tabLogin.classList.remove("active");
+  tabRegister.classList.add(
+    "active"
+  );
 
-  tabRegister.setAttribute("aria-selected", "true");
-  tabLogin.setAttribute("aria-selected", "false");
+  tabLogin.classList.remove(
+    "active"
+  );
 
-  registerForm.classList.remove("hidden");
-  loginForm.classList.add("hidden");
+  tabRegister.setAttribute(
+    "aria-selected",
+    "true"
+  );
+
+  tabLogin.setAttribute(
+    "aria-selected",
+    "false"
+  );
+
+  registerForm.classList.remove(
+    "hidden"
+  );
+
+  loginForm.classList.add(
+    "hidden"
+  );
 }
 
 function showDashboard() {
-  authSection.classList.add("hidden");
-  dashboardSection.classList.remove("hidden");
-  userNav.classList.remove("hidden");
+  authSection.classList.add(
+    "hidden"
+  );
 
-  authSection.style.display = "none";
-  dashboardSection.style.display = "";
-  userNav.style.display = "";
+  dashboardSection.classList.remove(
+    "hidden"
+  );
+
+  userNav.classList.remove(
+    "hidden"
+  );
+
+  authSection.style.display =
+    "none";
+
+  dashboardSection.style.display =
+    "";
+
+  userNav.style.display =
+    "";
 
   if (currentUser) {
     userGreeting.textContent =
@@ -166,40 +354,60 @@ function showDashboard() {
 }
 
 function showAuth() {
-  authSection.classList.remove("hidden");
-  dashboardSection.classList.add("hidden");
-  userNav.classList.add("hidden");
+  authSection.classList.remove(
+    "hidden"
+  );
 
-  authSection.style.display = "";
-  dashboardSection.style.display = "none";
-  userNav.style.display = "none";
+  dashboardSection.classList.add(
+    "hidden"
+  );
+
+  userNav.classList.add(
+    "hidden"
+  );
+
+  authSection.style.display =
+    "";
+
+  dashboardSection.style.display =
+    "none";
+
+  userNav.style.display =
+    "none";
 }
 
 function getSelectedType() {
-  const selected = document.querySelector(
-    'input[name="txType"]:checked'
-  );
+  const selected =
+    document.querySelector(
+      'input[name="txType"]:checked'
+    );
 
   return selected
     ? selected.value
     : "expense";
 }
 
-function setSelectedType(type) {
-  const radio = document.querySelector(
-    `input[name="txType"][value="${type}"]`
-  );
+function setSelectedType(
+  type
+) {
+  const radio =
+    document.querySelector(
+      `input[name="txType"][value="${type}"]`
+    );
 
   if (radio) {
-    radio.checked = true;
+    radio.checked =
+      true;
   }
 
   updateTypeStyles();
+
   populateTransactionCategories();
 }
 
 function updateTypeStyles() {
-  const type = getSelectedType();
+  const type =
+    getSelectedType();
 
   typeExpenseLabel.classList.toggle(
     "expense-active",
@@ -215,34 +423,50 @@ function updateTypeStyles() {
 function populateTransactionCategories(
   selectedCategory = ""
 ) {
-  const type = getSelectedType();
+  const type =
+    getSelectedType();
 
   const categories =
     type === "income"
       ? incomeCategories
       : expenseCategories;
 
-  txCategory.innerHTML = "";
+  txCategory.innerHTML =
+    "";
 
-  categories.forEach((category) => {
-    const option =
-      document.createElement("option");
+  categories.forEach(
+    (category) => {
+      const option =
+        document.createElement(
+          "option"
+        );
 
-    option.value = category;
-    option.textContent = category;
+      option.value =
+        category;
 
-    if (category === selectedCategory) {
-      option.selected = true;
+      option.textContent =
+        category;
+
+      if (
+        category ===
+        selectedCategory
+      ) {
+        option.selected =
+          true;
+      }
+
+      txCategory.appendChild(
+        option
+      );
     }
-
-    txCategory.appendChild(option);
-  });
+  );
 
   if (
     !selectedCategory &&
     categories.length > 0
   ) {
-    txCategory.value = categories[0];
+    txCategory.value =
+      categories[0];
   }
 }
 
@@ -261,35 +485,62 @@ function populateCategoryFilter() {
   const currentValue =
     categoryFilter.value;
 
-  categoryFilter.innerHTML = "";
+  categoryFilter.innerHTML =
+    "";
 
   const allOption =
-    document.createElement("option");
+    document.createElement(
+      "option"
+    );
 
-  allOption.value = "all";
-  allOption.textContent = "All Categories";
+  allOption.value =
+    "all";
 
-  categoryFilter.appendChild(allOption);
+  allOption.textContent =
+    "All Categories";
 
-  allCategories.forEach((category) => {
-    const option =
-      document.createElement("option");
+  categoryFilter.appendChild(
+    allOption
+  );
 
-    option.value = category;
-    option.textContent = category;
+  allCategories.forEach(
+    (category) => {
+      const option =
+        document.createElement(
+          "option"
+        );
 
-    categoryFilter.appendChild(option);
-  });
+      option.value =
+        category;
 
-  if (allCategories.includes(currentValue)) {
-    categoryFilter.value = currentValue;
+      option.textContent =
+        category;
+
+      categoryFilter.appendChild(
+        option
+      );
+    }
+  );
+
+  if (
+    allCategories.includes(
+      currentValue
+    )
+  ) {
+    categoryFilter.value =
+      currentValue;
   } else {
-    categoryFilter.value = "all";
-    currentCategoryFilter = "all";
+    categoryFilter.value =
+      "all";
+
+    currentCategoryFilter =
+      "all";
   }
 }
 
-function formatCurrency(amount) {
+function formatCurrency(
+  amount
+) {
   return new Intl.NumberFormat(
     "en-IN",
     {
@@ -300,12 +551,21 @@ function formatCurrency(amount) {
   ).format(amount);
 }
 
-function formatDate(dateValue) {
-  if (!dateValue) return "-";
+function formatDate(
+  dateValue
+) {
+  if (!dateValue) {
+    return "-";
+  }
 
-  const date = new Date(dateValue);
+  const date =
+    new Date(dateValue);
 
-  if (Number.isNaN(date.getTime())) {
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
     return "-";
   }
 
@@ -323,18 +583,31 @@ function updateSummary() {
   let income = 0;
   let expenses = 0;
 
-  transactions.forEach((transaction) => {
-    const amount =
-      Number(transaction.amount) || 0;
+  transactions.forEach(
+    (transaction) => {
+      const amount =
+        Number(transaction.amount) ||
+        0;
 
-    if (transaction.type === "income") {
-      income += amount;
-    } else if (transaction.type === "expense") {
-      expenses += amount;
+      if (
+        transaction.type ===
+        "income"
+      ) {
+        income +=
+          amount;
+      } else if (
+        transaction.type ===
+        "expense"
+      ) {
+        expenses +=
+          amount;
+      }
     }
-  });
+  );
 
-  const balance = income - expenses;
+  const balance =
+    income -
+    expenses;
 
   totalIncome.textContent =
     `+${formatCurrency(income)}`;
@@ -350,11 +623,14 @@ function getFilteredTransactions() {
   return transactions.filter(
     (transaction) => {
       const matchesType =
-        currentTypeFilter === "all" ||
-        transaction.type === currentTypeFilter;
+        currentTypeFilter ===
+          "all" ||
+        transaction.type ===
+          currentTypeFilter;
 
       const matchesCategory =
-        currentCategoryFilter === "all" ||
+        currentCategoryFilter ===
+          "all" ||
         transaction.category ===
           currentCategoryFilter;
 
@@ -370,24 +646,29 @@ function renderTransactions() {
   const filteredTransactions =
     getFilteredTransactions();
 
-  txList.innerHTML = "";
+  txList.innerHTML =
+    "";
 
   emptyState.classList.toggle(
     "hidden",
-    filteredTransactions.length > 0
+    filteredTransactions.length >
+      0
   );
 
   if (
-    filteredTransactions.length === 0
+    filteredTransactions.length ===
+    0
   ) {
     txCountBadge.textContent =
       "0 records";
+
     return;
   }
 
   txCountBadge.textContent =
     `${filteredTransactions.length} ${
-      filteredTransactions.length === 1
+      filteredTransactions.length ===
+      1
         ? "record"
         : "records"
     }`;
@@ -395,19 +676,25 @@ function renderTransactions() {
   filteredTransactions.forEach(
     (transaction) => {
       const item =
-        document.createElement("li");
+        document.createElement(
+          "li"
+        );
 
       item.className =
         "transaction-item";
 
       const info =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       info.className =
         "transaction-info";
 
       const description =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       description.className =
         "transaction-description";
@@ -416,22 +703,30 @@ function renderTransactions() {
         transaction.description;
 
       const meta =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       meta.className =
         "transaction-meta";
 
       const category =
-        document.createElement("span");
+        document.createElement(
+          "span"
+        );
 
       category.textContent =
         transaction.category;
 
       const date =
-        document.createElement("span");
+        document.createElement(
+          "span"
+        );
 
       date.textContent =
-        formatDate(transaction.date);
+        formatDate(
+          transaction.date
+        );
 
       meta.append(
         category,
@@ -444,13 +739,16 @@ function renderTransactions() {
       );
 
       const amount =
-        document.createElement("span");
+        document.createElement(
+          "span"
+        );
 
       amount.className =
         `transaction-amount ${transaction.type}`;
 
       amount.textContent =
-        transaction.type === "income"
+        transaction.type ===
+        "income"
           ? `+${formatCurrency(
               transaction.amount
             )}`
@@ -459,10 +757,15 @@ function renderTransactions() {
             )}`;
 
       const editButton =
-        document.createElement("button");
+        document.createElement(
+          "button"
+        );
 
-      editButton.type = "button";
-      editButton.textContent = "Edit";
+      editButton.type =
+        "button";
+
+      editButton.textContent =
+        "Edit";
 
       editButton.addEventListener(
         "click",
@@ -474,9 +777,13 @@ function renderTransactions() {
       );
 
       const deleteButton =
-        document.createElement("button");
+        document.createElement(
+          "button"
+        );
 
-      deleteButton.type = "button";
+      deleteButton.type =
+        "button";
+
       deleteButton.className =
         "delete-btn";
 
@@ -493,7 +800,9 @@ function renderTransactions() {
       );
 
       const actions =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
 
       actions.className =
         "transaction-actions";
@@ -509,7 +818,9 @@ function renderTransactions() {
         actions
       );
 
-      txList.appendChild(item);
+      txList.appendChild(
+        item
+      );
     }
   );
 }
@@ -522,14 +833,17 @@ async function loadTransactions() {
       );
 
     transactions =
-      Array.isArray(data.transactions)
+      Array.isArray(
+        data.transactions
+      )
         ? data.transactions
         : [];
 
     populateCategoryFilter();
-    updateSummary();
-    renderTransactions();
 
+    updateSummary();
+
+    renderTransactions();
   } catch (error) {
     showToast(
       error.message,
@@ -539,7 +853,8 @@ async function loadTransactions() {
 }
 
 function resetTransactionForm() {
-  editingTransactionId = null;
+  editingTransactionId =
+    null;
 
   transactionForm.reset();
 
@@ -553,7 +868,9 @@ function resetTransactionForm() {
     "hidden"
   );
 
-  setSelectedType("expense");
+  setSelectedType(
+    "expense"
+  );
 
   txDate.value =
     new Date()
@@ -584,6 +901,15 @@ function startEditingTransaction(
   txAmount.value =
     transaction.amount;
 
+  txAmount.dispatchEvent(
+    new Event(
+      "input",
+      {
+        bubbles: true
+      }
+    )
+  );
+
   populateTransactionCategories(
     transaction.category
   );
@@ -593,7 +919,9 @@ function startEditingTransaction(
 
   if (transaction.date) {
     const date =
-      new Date(transaction.date);
+      new Date(
+        transaction.date
+      );
 
     if (
       !Number.isNaN(
@@ -618,10 +946,12 @@ function startEditingTransaction(
     }
   }
 
-  transactionForm.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
+  transactionForm.scrollIntoView(
+    {
+      behavior: "smooth",
+      block: "start"
+    }
+  );
 }
 
 async function saveTransaction(
@@ -633,7 +963,9 @@ async function saveTransaction(
     getSelectedType();
 
   const amount =
-    Number(txAmount.value);
+    Number(
+      txAmount.value
+    );
 
   const category =
     txCategory.value.trim();
@@ -645,13 +977,16 @@ async function saveTransaction(
     txDate.value;
 
   if (
-    !Number.isFinite(amount) ||
+    !Number.isFinite(
+      amount
+    ) ||
     amount <= 0
   ) {
     showToast(
       "Amount must be greater than 0.",
       "error"
     );
+
     return;
   }
 
@@ -664,6 +999,7 @@ async function saveTransaction(
       "Please fill in all transaction fields.",
       "error"
     );
+
     return;
   }
 
@@ -694,24 +1030,25 @@ async function saveTransaction(
         `/transactions/${editingTransactionId}`,
         {
           method: "PUT",
-          body: JSON.stringify(
-            payload
-          )
+          body:
+            JSON.stringify(
+              payload
+            )
         }
       );
 
       showToast(
         "Transaction updated successfully."
       );
-
     } else {
       await apiRequest(
         "/transactions",
         {
           method: "POST",
-          body: JSON.stringify(
-            payload
-          )
+          body:
+            JSON.stringify(
+              payload
+            )
         }
       );
 
@@ -721,14 +1058,13 @@ async function saveTransaction(
     }
 
     resetTransactionForm();
-    await loadTransactions();
 
+    await loadTransactions();
   } catch (error) {
     showToast(
       error.message,
       "error"
     );
-
   } finally {
     setLoading(
       txSubmitBtn,
@@ -737,8 +1073,12 @@ async function saveTransaction(
   }
 }
 
-async function deleteTransaction(id) {
-  if (!id) return;
+async function deleteTransaction(
+  id
+) {
+  if (!id) {
+    return;
+  }
 
   const shouldDelete =
     window.confirm(
@@ -762,13 +1102,13 @@ async function deleteTransaction(id) {
     );
 
     if (
-      editingTransactionId === id
+      editingTransactionId ===
+      id
     ) {
       resetTransactionForm();
     }
 
     await loadTransactions();
-
   } catch (error) {
     showToast(
       error.message,
@@ -777,25 +1117,33 @@ async function deleteTransaction(id) {
   }
 }
 
-async function registerUser(event) {
+async function registerUser(
+  event
+) {
   event.preventDefault();
 
   const name =
     document
-      .getElementById("registerName")
+      .getElementById(
+        "registerName"
+      )
       .value
       .trim();
 
   const email =
     document
-      .getElementById("registerEmail")
+      .getElementById(
+        "registerEmail"
+      )
       .value
       .trim();
 
   const password =
-    document.getElementById(
-      "registerPassword"
-    ).value;
+    document
+      .getElementById(
+        "registerPassword"
+      )
+      .value;
 
   if (
     !name ||
@@ -806,14 +1154,18 @@ async function registerUser(event) {
       "Please fill in all fields.",
       "error"
     );
+
     return;
   }
 
-  if (password.length < 6) {
+  if (
+    password.length < 6
+  ) {
     showToast(
       "Password must be at least 6 characters.",
       "error"
     );
+
     return;
   }
 
@@ -829,16 +1181,20 @@ async function registerUser(event) {
         "/auth/register",
         {
           method: "POST",
-          body: JSON.stringify({
-            name,
-            email,
-            password
-          })
+          body:
+            JSON.stringify({
+              name,
+              email,
+              password
+            })
         }
       );
 
-    authToken = data.token;
-    currentUser = data.user;
+    authToken =
+      data.token;
+
+    currentUser =
+      data.user;
 
     localStorage.setItem(
       "authToken",
@@ -848,6 +1204,7 @@ async function registerUser(event) {
     registerForm.reset();
 
     showDashboard();
+
     resetTransactionForm();
 
     await loadTransactions();
@@ -856,13 +1213,11 @@ async function registerUser(event) {
       data.message ||
       "Registration successful."
     );
-
   } catch (error) {
     showToast(
       error.message,
       "error"
     );
-
   } finally {
     setLoading(
       registerSubmitBtn,
@@ -871,21 +1226,28 @@ async function registerUser(event) {
   }
 }
 
-async function loginUser(event) {
+async function loginUser(
+  event
+) {
   event.preventDefault();
 
   const email =
     document
-      .getElementById("loginEmail")
+      .getElementById(
+        "loginEmail"
+      )
       .value
       .trim();
 
   const password =
-    document.getElementById(
-      "loginPassword"
-    ).value;
+    document
+      .getElementById(
+        "loginPassword"
+      )
+      .value;
 
-  loginError.textContent = "";
+  loginError.textContent =
+    "";
 
   loginError.classList.add(
     "hidden"
@@ -917,15 +1279,19 @@ async function loginUser(event) {
         "/auth/login",
         {
           method: "POST",
-          body: JSON.stringify({
-            email,
-            password
-          })
+          body:
+            JSON.stringify({
+              email,
+              password
+            })
         }
       );
 
-    authToken = data.token;
-    currentUser = data.user;
+    authToken =
+      data.token;
+
+    currentUser =
+      data.user;
 
     localStorage.setItem(
       "authToken",
@@ -934,13 +1300,15 @@ async function loginUser(event) {
 
     loginForm.reset();
 
-    loginError.textContent = "";
+    loginError.textContent =
+      "";
 
     loginError.classList.add(
       "hidden"
     );
 
     showDashboard();
+
     resetTransactionForm();
 
     await loadTransactions();
@@ -949,7 +1317,6 @@ async function loginUser(event) {
       data.message ||
       "Login successful."
     );
-
   } catch (error) {
     loginError.textContent =
       error.message ||
@@ -958,7 +1325,6 @@ async function loginUser(event) {
     loginError.classList.remove(
       "hidden"
     );
-
   } finally {
     setLoading(
       loginSubmitBtn,
@@ -979,16 +1345,20 @@ async function checkExistingSession() {
         "/auth/me"
       );
 
-    currentUser = data.user;
+    currentUser =
+      data.user;
 
     showDashboard();
+
     resetTransactionForm();
 
     await loadTransactions();
-
   } catch {
-    authToken = null;
-    currentUser = null;
+    authToken =
+      null;
+
+    currentUser =
+      null;
 
     localStorage.removeItem(
       "authToken"
@@ -999,38 +1369,55 @@ async function checkExistingSession() {
 }
 
 function logout() {
-  authToken = null;
-  currentUser = null;
-  transactions = [];
-  editingTransactionId = null;
+  authToken =
+    null;
+
+  currentUser =
+    null;
+
+  transactions =
+    [];
+
+  editingTransactionId =
+    null;
 
   localStorage.removeItem(
     "authToken"
   );
 
-  txList.innerHTML = "";
+  txList.innerHTML =
+    "";
 
   loginForm.reset();
+
   registerForm.reset();
 
   updateSummary();
 
-  currentTypeFilter = "all";
-  currentCategoryFilter = "all";
+  currentTypeFilter =
+    "all";
 
-  categoryFilter.value = "all";
+  currentCategoryFilter =
+    "all";
+
+  categoryFilter.value =
+    "all";
 
   filterButtons.forEach(
     (button) => {
       button.classList.toggle(
         "active",
-        button.dataset.typeFilter === "all"
+        button.dataset
+          .typeFilter ===
+          "all"
       );
     }
   );
 
   resetTransactionForm();
+
   showLoginForm();
+
   showAuth();
 
   showToast(
@@ -1077,15 +1464,18 @@ document
   .querySelectorAll(
     'input[name="txType"]'
   )
-  .forEach((radio) => {
-    radio.addEventListener(
-      "change",
-      () => {
-        updateTypeStyles();
-        populateTransactionCategories();
-      }
-    );
-  });
+  .forEach(
+    (radio) => {
+      radio.addEventListener(
+        "change",
+        () => {
+          updateTypeStyles();
+
+          populateTransactionCategories();
+        }
+      );
+    }
+  );
 
 filterButtons.forEach(
   (button) => {
@@ -1121,9 +1511,12 @@ categoryFilter.addEventListener(
 );
 
 updateTypeStyles();
+
 populateTransactionCategories();
 
-function setupCustomSelect(select) {
+function setupCustomSelect(
+  select
+) {
   if (
     !select ||
     select.dataset.customReady ===
@@ -1136,7 +1529,9 @@ function setupCustomSelect(select) {
     "true";
 
   const wrapper =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   wrapper.className =
     "custom-select";
@@ -1146,20 +1541,30 @@ function setupCustomSelect(select) {
     select
   );
 
-  wrapper.appendChild(select);
+  wrapper.appendChild(
+    select
+  );
 
   const button =
-    document.createElement("button");
+    document.createElement(
+      "button"
+    );
 
-  button.type = "button";
+  button.type =
+    "button";
+
   button.className =
     "custom-select-button";
 
   const label =
-    document.createElement("span");
+    document.createElement(
+      "span"
+    );
 
   const arrow =
-    document.createElement("span");
+    document.createElement(
+      "span"
+    );
 
   arrow.className =
     "custom-select-arrow";
@@ -1170,7 +1575,9 @@ function setupCustomSelect(select) {
   );
 
   const menu =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   menu.className =
     "custom-select-menu";
@@ -1193,14 +1600,21 @@ function setupCustomSelect(select) {
   }
 
   function renderOptions() {
-    menu.innerHTML = "";
+    menu.innerHTML =
+      "";
 
-    [...select.options].forEach(
+    [
+      ...select.options
+    ].forEach(
       (option) => {
         const item =
-          document.createElement("button");
+          document.createElement(
+            "button"
+          );
 
-        item.type = "button";
+        item.type =
+          "button";
+
         item.className =
           "custom-select-option";
 
@@ -1232,6 +1646,7 @@ function setupCustomSelect(select) {
             );
 
             updateLabel();
+
             renderOptions();
 
             wrapper.classList.remove(
@@ -1240,7 +1655,9 @@ function setupCustomSelect(select) {
           }
         );
 
-        menu.appendChild(item);
+        menu.appendChild(
+          item
+        );
       }
     );
 
@@ -1256,7 +1673,10 @@ function setupCustomSelect(select) {
         )
         .forEach(
           (item) => {
-            if (item !== wrapper) {
+            if (
+              item !==
+              wrapper
+            ) {
               item.classList.remove(
                 "open"
               );
@@ -1277,10 +1697,13 @@ function setupCustomSelect(select) {
 
   new MutationObserver(
     renderOptions
-  ).observe(select, {
-    childList: true,
-    subtree: true
-  });
+  ).observe(
+    select,
+    {
+      childList: true,
+      subtree: true
+    }
+  );
 
   renderOptions();
 }
@@ -1308,7 +1731,12 @@ document.addEventListener(
   }
 );
 
-setupCustomSelect(txCategory);
-setupCustomSelect(categoryFilter);
+setupCustomSelect(
+  txCategory
+);
+
+setupCustomSelect(
+  categoryFilter
+);
 
 checkExistingSession();
