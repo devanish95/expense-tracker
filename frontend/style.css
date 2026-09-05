@@ -3457,46 +3457,49 @@ html.light-theme .ambient-line {
 }
 
 @media (min-width: 641px) {
-  .header-content {
+  .app-header .header-content {
     display: grid !important;
     grid-template-columns: minmax(0, 1fr) auto !important;
     grid-template-areas:
       "brand theme"
       "greeting logout" !important;
     align-items: center !important;
-    row-gap: 2px !important;
-    min-height: auto !important;
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
+    row-gap: 4px !important;
+    min-height: 78px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
   }
 
-  .brand {
+  .app-header .brand {
     grid-area: brand !important;
+    position: static !important;
   }
 
-  .theme-toggle {
+  .app-header .theme-toggle {
     grid-area: theme !important;
     position: static !important;
     transform: none !important;
+    justify-self: end !important;
   }
 
-  .user-nav {
+  .app-header .user-nav {
     display: contents !important;
   }
 
-  .user-nav.hidden {
+  .app-header .user-nav.hidden {
     display: none !important;
   }
 
-  .user-greeting {
+  .app-header .user-greeting {
     grid-area: greeting !important;
-    justify-self: start !important;
     position: static !important;
+    justify-self: start !important;
     margin: 0 !important;
     white-space: nowrap !important;
+    font-size: 0.88rem !important;
   }
 
-  #logoutBtn {
+  .app-header #logoutBtn {
     grid-area: logout !important;
     justify-self: end !important;
     margin: 0 !important;
