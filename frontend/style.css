@@ -3455,21 +3455,3 @@ html.light-theme .ambient-line {
 .auth-intro {
   text-align: center;
 }
-
-@media (min-width: 641px) {
-  .header-content {
-    min-height: 64px !important;
-    align-items: center !important;
-  }
-
-  .user-nav {
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    align-items: center !important;
-  }
-
-  .theme-toggle {
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-  }
-}
