@@ -3455,3 +3455,31 @@ html.light-theme .ambient-line {
 .auth-intro {
   text-align: center;
 }
+
+@media (min-width: 641px) {
+  .header-content {
+    align-items: center;
+  }
+
+  .brand {
+    position: relative;
+  }
+
+  .user-greeting {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 2px);
+    white-space: nowrap;
+  }
+
+  .user-nav {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  #logoutBtn {
+    margin-left: auto;
+  }
+}
