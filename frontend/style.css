@@ -3451,3 +3451,7 @@ html.light-theme .ambient-line {
     min-width: 30px !important;
   }
 }
+
+.auth-intro {
+  text-align: center;
+}
