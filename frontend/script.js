@@ -34,6 +34,36 @@ const registerSubmitBtn =
 const loginError =
   document.getElementById("loginError");
 
+const googleSignInButton =
+  document.getElementById("googleSignInButton");
+
+const otpLoginToggle =
+  document.getElementById("otpLoginToggle");
+
+const otpLoginForm =
+  document.getElementById("otpLoginForm");
+
+const otpEmail =
+  document.getElementById("otpEmail");
+
+const otpError =
+  document.getElementById("otpError");
+
+const sendOtpBtn =
+  document.getElementById("sendOtpBtn");
+
+const otpCodeGroup =
+  document.getElementById("otpCodeGroup");
+
+const otpCode =
+  document.getElementById("otpCode");
+
+const verifyOtpBtn =
+  document.getElementById("verifyOtpBtn");
+
+const otpBackBtn =
+  document.getElementById("otpBackBtn");
+
 const userNav =
   document.getElementById("userNav");
 
@@ -292,6 +322,10 @@ function showLoginForm() {
     "hidden"
   );
 
+  otpLoginForm.classList.add(
+    "hidden"
+  );
+
   registerForm.classList.add(
     "hidden"
   );
@@ -317,6 +351,10 @@ function showRegisterForm() {
   );
 
   registerForm.classList.remove(
+    "hidden"
+  );
+
+  otpLoginForm.classList.add(
     "hidden"
   );
 
@@ -1333,6 +1371,342 @@ async function loginUser(
   }
 }
 
+async function sendOtp() {
+  const email =
+    otpEmail.value.trim();
+
+  otpError.textContent =
+    "";
+
+  otpError.classList.add(
+    "hidden"
+  );
+
+  if (!email) {
+    otpError.textContent =
+      "Please enter your email address.";
+
+    otpError.classList.remove(
+      "hidden"
+    );
+
+    return;
+  }
+
+  try {
+    setLoading(
+      sendOtpBtn,
+      true,
+      "Sending OTP..."
+    );
+
+    const data =
+      await apiRequest(
+        "/auth/send-otp",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email
+          })
+        }
+      );
+
+    otpCodeGroup.classList.remove(
+      "hidden"
+    );
+
+    verifyOtpBtn.classList.remove(
+      "hidden"
+    );
+
+    otpCode.value =
+      "";
+
+    showToast(
+      data.message ||
+      "OTP sent successfully."
+    );
+
+    otpCode.focus();
+  } catch (error) {
+    otpError.textContent =
+      error.message ||
+      "Unable to send OTP.";
+
+    otpError.classList.remove(
+      "hidden"
+    );
+  } finally {
+    setLoading(
+      sendOtpBtn,
+      false
+    );
+  }
+}
+
+async function verifyOtp() {
+  const email =
+    otpEmail.value.trim();
+
+  const otp =
+    otpCode.value.trim();
+
+  otpError.textContent =
+    "";
+
+  otpError.classList.add(
+    "hidden"
+  );
+
+  if (
+    !email ||
+    !otp
+  ) {
+    otpError.textContent =
+      "Please enter your email and OTP.";
+
+    otpError.classList.remove(
+      "hidden"
+    );
+
+    return;
+  }
+
+  if (
+    !/^\d{6}$/.test(otp)
+  ) {
+    otpError.textContent =
+      "Please enter a valid 6-digit OTP.";
+
+    otpError.classList.remove(
+      "hidden"
+    );
+
+    return;
+  }
+
+  try {
+    setLoading(
+      verifyOtpBtn,
+      true,
+      "Verifying..."
+    );
+
+    const data =
+      await apiRequest(
+        "/auth/verify-otp",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email,
+            otp
+          })
+        }
+      );
+
+    authToken =
+      data.token;
+
+    currentUser =
+      data.user;
+
+    localStorage.setItem(
+      "authToken",
+      authToken
+    );
+
+    otpLoginForm.reset();
+
+    otpCodeGroup.classList.add(
+      "hidden"
+    );
+
+    verifyOtpBtn.classList.add(
+      "hidden"
+    );
+
+    showDashboard();
+
+    resetTransactionForm();
+
+    await loadTransactions();
+
+    showToast(
+      data.message ||
+      "OTP login successful."
+    );
+  } catch (error) {
+    otpError.textContent =
+      error.message ||
+      "Invalid OTP.";
+
+    otpError.classList.remove(
+      "hidden"
+    );
+  } finally {
+    setLoading(
+      verifyOtpBtn,
+      false
+    );
+  }
+}
+
+function showOtpForm() {
+  loginForm.classList.add(
+    "hidden"
+  );
+
+  otpLoginForm.classList.remove(
+    "hidden"
+  );
+
+  otpError.textContent =
+    "";
+
+  otpError.classList.add(
+    "hidden"
+  );
+
+  otpCodeGroup.classList.add(
+    "hidden"
+  );
+
+  verifyOtpBtn.classList.add(
+    "hidden"
+  );
+
+  otpCode.value =
+    "";
+
+  const loginEmail =
+    document.getElementById(
+      "loginEmail"
+    );
+
+  if (
+    loginEmail &&
+    loginEmail.value
+  ) {
+    otpEmail.value =
+      loginEmail.value.trim();
+  }
+
+  otpEmail.focus();
+}
+
+function showPasswordLoginForm() {
+  otpLoginForm.classList.add(
+    "hidden"
+  );
+
+  loginForm.classList.remove(
+    "hidden"
+  );
+
+  otpError.textContent =
+    "";
+
+  otpError.classList.add(
+    "hidden"
+  );
+}
+
+function handleGoogleCredentialResponse(
+  response
+) {
+  apiRequest(
+    "/auth/google",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        credential:
+          response.credential
+      })
+    }
+  )
+    .then((data) => {
+      authToken =
+        data.token;
+
+      currentUser =
+        data.user;
+
+      localStorage.setItem(
+        "authToken",
+        authToken
+      );
+
+      showDashboard();
+
+      resetTransactionForm();
+
+      return loadTransactions();
+    })
+    .then(() => {
+      showToast(
+        "Google login successful."
+      );
+    })
+    .catch((error) => {
+      loginError.textContent =
+        error.message ||
+        "Google login failed.";
+
+      loginError.classList.remove(
+        "hidden"
+      );
+    });
+}
+
+function initializeGoogleSignIn() {
+  if (
+    !googleSignInButton ||
+    !window.google ||
+    !google.accounts ||
+    !google.accounts.id
+  ) {
+    return false;
+  }
+
+  google.accounts.id.initialize({
+    client_id:
+      "448499935087-ee77v8eoka98h5k0hojiiev41fsjilsv.apps.googleusercontent.com",
+    callback:
+      handleGoogleCredentialResponse
+  });
+
+  googleSignInButton.style.marginTop =
+    "12px";
+
+  googleSignInButton.style.display =
+    "flex";
+
+  googleSignInButton.style.justifyContent =
+    "center";
+
+  google.accounts.id.renderButton(
+    googleSignInButton,
+    {
+      theme: "outline",
+      size: "large",
+      text: "continue_with",
+      shape: "rectangular",
+      width: 355
+    }
+  );
+
+  return true;
+}
+
+const googleSignInInterval =
+  setInterval(() => {
+    if (initializeGoogleSignIn()) {
+      clearInterval(
+        googleSignInInterval
+      );
+    }
+  }, 100);
+
 async function checkExistingSession() {
   if (!authToken) {
     showAuth();
@@ -1392,6 +1766,16 @@ function logout() {
 
   registerForm.reset();
 
+  otpLoginForm.reset();
+
+  otpCodeGroup.classList.add(
+    "hidden"
+  );
+
+  verifyOtpBtn.classList.add(
+    "hidden"
+  );
+
   updateSummary();
 
   currentTypeFilter =
@@ -1438,6 +1822,36 @@ tabRegister.addEventListener(
 loginForm.addEventListener(
   "submit",
   loginUser
+);
+
+otpLoginToggle.addEventListener(
+  "click",
+  showOtpForm
+);
+
+sendOtpBtn.addEventListener(
+  "click",
+  sendOtp
+);
+
+verifyOtpBtn.addEventListener(
+  "click",
+  verifyOtp
+);
+
+otpBackBtn.addEventListener(
+  "click",
+  showPasswordLoginForm
+);
+
+otpCode.addEventListener(
+  "input",
+  () => {
+    otpCode.value =
+      otpCode.value
+        .replace(/\D/g, "")
+        .slice(0, 6);
+  }
 );
 
 registerForm.addEventListener(

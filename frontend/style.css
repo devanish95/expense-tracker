@@ -4627,3 +4627,15 @@ body:has(#themeToggleInput:checked) .auth-tab.active {
     left: 13px !important;
   }
 }
+
+#googleSignInButton {
+  width: 100%;
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+#googleSignInButton > div {
+  width: 100% !important;
+  max-width: 400px;
+}

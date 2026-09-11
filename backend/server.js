@@ -3,7 +3,9 @@ const cors = require('cors');
 const path = require('path');
 const dotenv = require('dotenv');
 
-dotenv.config();
+dotenv.config({
+  path: path.join(__dirname, '.env')
+});
 
 const app = express();
 
@@ -25,7 +27,9 @@ const frontendPath = path.join(
   '../frontend'
 );
 
-app.use(express.static(frontendPath));
+app.use(
+  express.static(frontendPath)
+);
 
 app.get('/', (req, res) => {
   res.sendFile(
@@ -34,17 +38,25 @@ app.get('/', (req, res) => {
 });
 
 app.get('/*.html', (req, res) => {
-  const fileName = path.basename(req.path);
-  const filePath = path.join(
-    frontendPath,
-    fileName
-  );
+  const fileName =
+    path.basename(req.path);
 
-  res.sendFile(filePath, (error) => {
-    if (error) {
-      res.status(404).send('Page not found');
+  const filePath =
+    path.join(
+      frontendPath,
+      fileName
+    );
+
+  res.sendFile(
+    filePath,
+    (error) => {
+      if (error) {
+        res
+          .status(404)
+          .send('Page not found');
+      }
     }
-  });
+  );
 });
 
 app.use('/api/*', (req, res) => {
@@ -61,7 +73,9 @@ app.use((err, req, res, next) => {
     err.stack
   );
 
-  res.status(err.status || 500).json({
+  res.status(
+    err.status || 500
+  ).json({
     success: false,
     message:
       err.message ||
@@ -72,20 +86,27 @@ app.use((err, req, res, next) => {
 const PORT =
   process.env.PORT || 5000;
 
-if (process.env.NODE_ENV !== 'production') {
-  const connectDB = require('./config/db');
+if (
+  process.env.NODE_ENV !==
+  'production'
+) {
+  const connectDB =
+    require('./config/db');
 
   connectDB()
     .then(() => {
-      app.listen(PORT, () => {
-        console.log(
-          `Expense Tracker Server is running on port ${PORT}`
-        );
+      app.listen(
+        PORT,
+        () => {
+          console.log(
+            `Expense Tracker Server is running on port ${PORT}`
+          );
 
-        console.log(
-          `Local URL: http://localhost:${PORT}`
-        );
-      });
+          console.log(
+            `Local URL: http://localhost:${PORT}`
+          );
+        }
+      );
     })
     .catch((error) => {
       console.error(

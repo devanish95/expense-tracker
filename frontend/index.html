@@ -13,12 +13,114 @@
 
   <link rel="stylesheet" href="style.css">
 
-  <script src="script.js" defer></script>
+  <style>
+    #googleSignInButton {
+      width: 100%;
+      height: 44px;
+      margin-top: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      border-radius: 10px;
+    }
+
+    #googleSignInButton > div {
+      width: 100% !important;
+      max-width: 380px !important;
+      height: 44px !important;
+      border-radius: 10px !important;
+      overflow: hidden;
+    }
+
+    .otp-login-toggle {
+      display: block;
+      width: 100%;
+      margin-top: 11px;
+      padding: 5px 0;
+      border: 0;
+      background: transparent;
+      color: #39bdf8;
+      font: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 22px;
+      text-align: center;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .otp-login-toggle:hover {
+      opacity: 0.85;
+      text-decoration: underline;
+    }
+
+    .otp-back-button {
+      display: block;
+      width: 100%;
+      margin-top: 12px;
+      padding: 5px 0;
+      border: 0;
+      background: transparent;
+      color: #39bdf8;
+      font: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 22px;
+      text-align: center;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+    }
+
+    .otp-back-button:hover {
+      opacity: 0.85;
+      text-decoration: underline;
+    }
+
+    .auth-card {
+      overflow: visible;
+    }
+
+    .auth-form {
+      gap: 0;
+    }
+
+    .auth-footnote {
+      margin-top: 16px;
+    }
+
+    #otpLoginForm .form-group {
+      margin-bottom: 14px;
+    }
+
+    #otpLoginForm .form-error {
+      margin-top: -3px;
+      margin-bottom: 10px;
+    }
+
+    #otpLoginForm .btn-block {
+      margin-bottom: 0;
+    }
+  </style>
+
+  <script
+    src="https://accounts.google.com/gsi/client"
+    async
+    defer
+  ></script>
+
+  <script
+    src="script.js"
+    defer
+  ></script>
 </head>
 
 <body>
 
-  <div class="currency-background" aria-hidden="true">
+  <div
+    class="currency-background"
+    aria-hidden="true"
+  >
     <span>₹</span>
     <span>$</span>
     <span>€</span>
@@ -47,7 +149,9 @@
 
         <div class="brand">
 
-          <span class="brand-icon">₹</span>
+          <span class="brand-icon">
+            ₹
+          </span>
 
           <h1 class="brand-title">
             Expense Tracker
@@ -67,8 +171,13 @@
           title="Toggle theme"
           aria-label="Toggle theme"
         >
-          <span class="theme-icon theme-icon-sun">☀</span>
-          <span class="theme-icon theme-icon-moon">☾</span>
+          <span class="theme-icon theme-icon-sun">
+            ☀
+          </span>
+
+          <span class="theme-icon theme-icon-moon">
+            ☾
+          </span>
         </label>
 
         <div
@@ -107,6 +216,7 @@
         <div class="auth-card">
 
           <div class="auth-intro">
+
             <div class="auth-eyebrow">
               PERSONAL FINANCE
             </div>
@@ -118,6 +228,7 @@
             <p>
               Keep your income and expenses organized in one simple place.
             </p>
+
           </div>
 
           <div
@@ -207,6 +318,91 @@
               Sign In
             </button>
 
+            <div id="googleSignInButton"></div>
+
+            <button
+              type="button"
+              class="otp-login-toggle"
+              id="otpLoginToggle"
+            >
+              Login with Email OTP
+            </button>
+
+          </form>
+
+          <form
+            class="auth-form hidden"
+            id="otpLoginForm"
+          >
+
+            <div class="form-group">
+
+              <label for="otpEmail">
+                Email Address
+              </label>
+
+              <input
+                type="email"
+                id="otpEmail"
+                class="form-control"
+                placeholder="name@example.com"
+                required
+                autocomplete="email"
+              >
+
+            </div>
+
+            <p
+              class="form-error hidden"
+              id="otpError"
+              role="alert"
+            ></p>
+
+            <button
+              type="button"
+              class="btn btn-primary btn-block"
+              id="sendOtpBtn"
+            >
+              Send OTP
+            </button>
+
+            <div
+              class="form-group hidden"
+              id="otpCodeGroup"
+            >
+
+              <label for="otpCode">
+                Enter OTP
+              </label>
+
+              <input
+                type="text"
+                id="otpCode"
+                class="form-control"
+                placeholder="6-digit OTP"
+                inputmode="numeric"
+                maxlength="6"
+                autocomplete="one-time-code"
+              >
+
+            </div>
+
+            <button
+              type="button"
+              class="btn btn-primary btn-block hidden"
+              id="verifyOtpBtn"
+            >
+              Verify OTP
+            </button>
+
+            <button
+              type="button"
+              class="otp-back-button"
+              id="otpBackBtn"
+            >
+              Back to Password Login
+            </button>
+
           </form>
 
           <form
@@ -281,9 +477,19 @@
           </form>
 
           <div class="auth-footnote">
-            <span>Secure</span>
-            <span>Simple</span>
-            <span>Private</span>
+
+            <span>
+              Secure
+            </span>
+
+            <span>
+              Simple
+            </span>
+
+            <span>
+              Private
+            </span>
+
           </div>
 
         </div>
@@ -428,7 +634,9 @@
                   Amount (₹)
                 </label>
 
-                <div class="input-prefix-wrapper">
+                <div
+                  class="input-prefix-wrapper"
+                >
 
                   <span class="currency-symbol">
                     ₹

@@ -23,28 +23,46 @@ const userSchema = new mongoose.Schema(
     },
 
     password: {
-  type: String,
-  required: [true, 'Please provide a password'],
-  minlength: [6, 'Password must be at least 6 characters long']
-},
+      type: String,
+      required: false,
+      minlength: [6, 'Password must be at least 6 characters long']
+    },
 
-resetPasswordToken: {
-  type: String,
-  default: null
-},
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true,
+      default: null
+    },
 
-resetPasswordExpires: {
-  type: Date,
-  default: null
-}
-},
-{
-  timestamps: true
-}
+    authProvider: {
+      type: String,
+      enum: ['password', 'google'],
+      default: 'password'
+    },
+
+    isVerified: {
+      type: Boolean,
+      default: false
+    },
+
+    resetPasswordToken: {
+      type: String,
+      default: null
+    },
+
+    resetPasswordExpires: {
+      type: Date,
+      default: null
+    }
+  },
+  {
+    timestamps: true
+  }
 );
 
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
+  if (!this.isModified('password') || !this.password) {
     return next();
   }
 
@@ -55,6 +73,10 @@ userSchema.pre('save', async function (next) {
 });
 
 userSchema.methods.comparePassword = async function (enteredPassword) {
+  if (!this.password) {
+    return false;
+  }
+
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
