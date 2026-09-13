@@ -5709,3 +5709,4 @@ body:has(#themeToggleInput:checked) .budget-panel .budget-status.warning {
 body:has(#themeToggleInput:checked) .budget-panel .budget-status.danger {
   color: #df534d !important;
 }
+
