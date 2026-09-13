@@ -3732,44 +3732,26 @@ function initializeGoogleSignIn() {
   google.accounts.id.initialize({
     client_id:
       "448499935087-ee77v8eoka98h5k0hojiiev41fsjilsv.apps.googleusercontent.com",
-
     callback:
       handleGoogleCredentialResponse
   });
 
-  googleSignInButton.innerHTML =
-    "";
+  googleSignInButton.innerHTML = "";
 
-  const buttonWidth = Math.min(
-    400,
-    Math.max(
-      200,
-      Math.floor(
-        googleSignInButton.clientWidth
-      )
-    )
-  );
+  const width =
+    Math.floor(
+      googleSignInButton.getBoundingClientRect().width
+    );
 
   google.accounts.id.renderButton(
     googleSignInButton,
     {
-      theme:
-        "outline",
-
-      size:
-        "large",
-
-      text:
-        "continue_with",
-
-      shape:
-        "rectangular",
-
-      width:
-        buttonWidth,
-
-      logo_alignment:
-        "left"
+      theme: "outline",
+      size: "large",
+      text: "continue_with",
+      shape: "rectangular",
+      width: Math.max(200, width),
+      logo_alignment: "left"
     }
   );
 
