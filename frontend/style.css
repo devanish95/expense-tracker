@@ -5731,3 +5731,29 @@ body:has(#themeToggleInput:checked) .budget-panel .budget-status.danger {
   color: #df534d !important;
 }
 
+#googleSignInButton {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 12px 0 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+#googleSignInButton > div {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+#googleSignInButton > div iframe {
+  display: block !important;
+  margin: 0 auto !important;
+  border: 0 !important;
+}
