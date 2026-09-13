@@ -3740,6 +3740,16 @@ function initializeGoogleSignIn() {
   googleSignInButton.innerHTML =
     "";
 
+  const buttonWidth = Math.min(
+    400,
+    Math.max(
+      200,
+      Math.floor(
+        googleSignInButton.clientWidth
+      )
+    )
+  );
+
   google.accounts.id.renderButton(
     googleSignInButton,
     {
@@ -3747,7 +3757,7 @@ function initializeGoogleSignIn() {
         "outline",
 
       size:
-        "medium",
+        "large",
 
       text:
         "continue_with",
@@ -3756,7 +3766,7 @@ function initializeGoogleSignIn() {
         "rectangular",
 
       width:
-        355,
+        buttonWidth,
 
       logo_alignment:
         "left"
