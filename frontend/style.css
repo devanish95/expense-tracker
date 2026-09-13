@@ -1659,7 +1659,25 @@ input[type="date"].form-control {
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) auto auto !important;
   align-items: center !important;
-  gap: 12px !important;
+  gap: 14px !important;
+  padding: 15px 18px !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.025) !important;
+  border: 1px solid rgba(255, 255, 255, 0.045) !important;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease,
+    box-shadow 180ms ease !important;
+}
+
+.transaction-item:hover {
+  background: rgba(255, 255, 255, 0.045) !important;
+  border-color: rgba(34, 211, 238, 0.16) !important;
+  transform: translateY(-1px) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.18),
+    0 0 0 1px rgba(34, 211, 238, 0.04) inset !important;
 }
 
 .transaction-info {
@@ -1673,6 +1691,13 @@ input[type="date"].form-control {
   overflow: hidden !important;
   text-overflow: ellipsis !important;
   white-space: nowrap !important;
+  margin: 0 0 4px !important;
+  color: var(--text) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.01em !important;
 }
 
 .transaction-meta {
@@ -1680,24 +1705,69 @@ input[type="date"].form-control {
   max-width: 100% !important;
   display: flex !important;
   align-items: center !important;
-  flex-wrap: wrap !important;
-  gap: 5px !important;
+  flex-wrap: nowrap !important;
+  gap: 6px !important;
+  color: var(--text-secondary) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 400 !important;
+  line-height: 1.2 !important;
 }
 
 .transaction-meta span {
   white-space: nowrap !important;
+  font-weight: 400 !important;
+}
+
+.transaction-category {
+  font-weight: 400 !important;
+  color: var(--text-secondary) !important;
+}
+
+.transaction-date {
+  font-weight: 400 !important;
+  color: var(--text-secondary) !important;
 }
 
 .transaction-amount {
   white-space: nowrap !important;
   min-width: max-content !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  font-variant-numeric: tabular-nums !important;
+  letter-spacing: -0.02em !important;
 }
 
 .transaction-actions {
   display: flex !important;
   align-items: center !important;
-  gap: 5px !important;
+  gap: 3px !important;
   white-space: nowrap !important;
+}
+
+.transaction-actions button {
+  background: transparent !important;
+  border: 0 !important;
+  color: rgba(141, 150, 168, 0.9) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  padding: 6px 7px !important;
+  border-radius: 7px !important;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease !important;
+}
+
+.transaction-actions button:hover {
+  color: var(--accent-cyan) !important;
+  background: rgba(34, 211, 238, 0.08) !important;
+}
+
+.transaction-actions .delete-btn:hover {
+  color: var(--coral) !important;
+  background: rgba(251, 113, 102, 0.08) !important;
 }
 
 @media (max-width: 640px) {
@@ -5041,4 +5111,20 @@ body.dark-mode #monthlySavings {
 #totalBalance {
   color: #d9a83f !important;
   font-weight: 700;
+}
+
+.transaction-category {
+  font-weight: 700;
+}
+
+.transaction-meta {
+  font-weight: 400 !important;
+}
+
+.transaction-category {
+  font-weight: 700 !important;
+}
+
+.transaction-date {
+  font-weight: 400 !important;
 }

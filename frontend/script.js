@@ -2006,13 +2006,19 @@ function renderTransactions() {
       info.className =
         "transaction-info";
 
-      const description =
+            const description =
         document.createElement(
           "div"
         );
 
       description.className =
         "transaction-description";
+
+      description.style.setProperty(
+        "font-weight",
+        "400",
+        "important"
+      );
 
       description.textContent =
         transaction.description;
@@ -2030,6 +2036,18 @@ function renderTransactions() {
           "span"
         );
 
+      category.className =
+        "transaction-category";
+
+      category.style.setProperty(
+        "font-weight",
+        "400",
+        "important"
+      );
+
+      category.style.fontSize =
+        "11px";
+
       category.textContent =
         transaction.category;
 
@@ -2038,10 +2056,32 @@ function renderTransactions() {
           "span"
         );
 
+      date.className =
+        "transaction-date";
+
+      date.style.setProperty(
+        "font-weight",
+        "400",
+        "important"
+      );
+
+      date.style.fontSize =
+        "11px";
+
       date.textContent =
         formatDate(
           transaction.date
         );
+
+      meta.append(
+        category,
+        date
+      );
+
+      info.append(
+        description,
+        meta
+      );
 
       meta.append(
         category,
