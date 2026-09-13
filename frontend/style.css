@@ -5644,6 +5644,27 @@ body:has(#themeToggleInput:checked) .budget-panel .budget-status.danger {
   box-sizing: border-box !important;
   background: transparent !important;
   border: 0 !important;
+  line-height: 0 !important;
+}
+
+#googleSignInButton > div {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  display: block !important;
+  line-height: 0 !important;
+}
+
+#googleSignInButton iframe {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
 }
 
 
