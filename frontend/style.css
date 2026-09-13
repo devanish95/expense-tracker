@@ -5261,3 +5261,129 @@ body.dark-mode #monthlySavings {
     max-width: 100% !important;
   }
 }
+
+@media (max-width: 430px) {
+  .app-main {
+    padding: 14px 10px 32px !important;
+  }
+
+  .auth-section {
+    min-height: calc(100vh - 80px) !important;
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  .auth-card {
+    width: 100% !important;
+    max-width: 360px !important;
+    margin: 12px auto !important;
+    padding: 24px 16px 20px !important;
+    border-radius: 18px !important;
+  }
+
+  .auth-intro {
+    width: 100% !important;
+    margin-bottom: 20px !important;
+  }
+
+  .auth-eyebrow {
+    font-size: 9px !important;
+    letter-spacing: 0.14em !important;
+  }
+
+  .auth-intro h2 {
+    font-size: 1.45rem !important;
+    line-height: 1.15 !important;
+    margin-bottom: 8px !important;
+  }
+
+  .auth-intro p {
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+  }
+
+  .auth-tabs {
+    margin-bottom: 24px !important;
+    padding: 4px !important;
+  }
+
+  .auth-tab {
+    min-height: 40px !important;
+    padding: 9px 5px !important;
+    font-size: 12px !important;
+  }
+
+  .form-group {
+    margin-bottom: 16px !important;
+  }
+
+  .form-group label {
+    font-size: 10px !important;
+  }
+
+  .form-control {
+    min-height: 44px !important;
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+  }
+
+  .forgot-link {
+    font-size: 11px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .btn {
+    min-height: 44px !important;
+    padding: 10px 12px !important;
+    font-size: 12px !important;
+  }
+
+  #googleSignInButton {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 44px !important;
+    margin-top: 4px !important;
+    overflow: hidden !important;
+  }
+
+  #googleSignInButton > div {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .auth-footnote {
+    margin-top: 18px !important;
+    font-size: 9px !important;
+    gap: 8px !important;
+  }
+}
+
+@media (max-width: 320px) {
+  .auth-card {
+    max-width: 100% !important;
+    padding: 22px 14px 18px !important;
+  }
+
+  .auth-intro h2 {
+    font-size: 1.3rem !important;
+  }
+
+  .auth-intro p {
+    font-size: 11px !important;
+  }
+
+  .form-control {
+    min-height: 43px !important;
+    font-size: 12px !important;
+  }
+
+  .btn {
+    min-height: 43px !important;
+    font-size: 11px !important;
+  }
+
+  .auth-tab {
+    min-height: 39px !important;
+    font-size: 11px !important;
+  }
+}
