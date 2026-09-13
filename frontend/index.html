@@ -52,23 +52,24 @@
       text-decoration: underline;
     }
 
-    #googleSignInButton {
-      width: 100%;
-      height: 44px;
-      margin-top: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-      border-radius: 10px;
+    #loginSubmitBtn {
+      width: 100% !important;
+      height: 40px !important;
+      min-height: 40px !important;
+      margin: 0 !important;
+      padding: 0 18px !important;
+      box-sizing: border-box !important;
+      border-radius: 10px !important;
     }
 
-    #googleSignInButton > div {
+    #googleSignInButton {
       width: 100% !important;
-      max-width: 380px !important;
-      height: 44px !important;
-      border-radius: 10px !important;
-      overflow: hidden;
+      margin-top: 12px !important;
+      padding: 0 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
     }
 
     .auth-card {
@@ -208,6 +209,16 @@
 
       .monthly-summary-value {
         font-size: 1.15rem;
+      }
+
+      #loginSubmitBtn {
+        width: 100% !important;
+        height: 44px !important;
+        min-height: 44px !important;
+      }
+
+      #googleSignInButton {
+        width: 100% !important;
       }
     }
   </style>
@@ -671,6 +682,7 @@
             <div class="panel-header">
 
               <div>
+
                 <h3 class="panel-title">
                   Monthly Income vs Expense
                 </h3>
@@ -678,6 +690,7 @@
                 <p class="analytics-subtitle">
                   Last 6 months
                 </p>
+
               </div>
 
             </div>
@@ -693,6 +706,7 @@
             <div class="panel-header">
 
               <div>
+
                 <h3 class="panel-title">
                   Expense by Category
                 </h3>
@@ -703,6 +717,7 @@
                 >
                   This month
                 </p>
+
               </div>
 
             </div>

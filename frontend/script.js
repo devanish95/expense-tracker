@@ -9,6 +9,15 @@ let editingTransactionId = null;
 let monthlyChart = null;
 let categoryChart = null;
 
+let budgetValue = 0;
+let budgetPanel = null;
+let budgetInput = null;
+let budgetSpentElement = null;
+let budgetRemainingElement = null;
+let budgetProgress = null;
+let budgetStatusElement = null;
+let budgetMonthElement = null;
+
 const $ = (id) => document.getElementById(id);
 
 const authSection = $("authSection");
@@ -377,6 +386,437 @@ function showPasswordLoginForm() {
   }
 }
 
+function getBudgetStorageKey() {
+  const userKey =
+    currentUser?.email ||
+    currentUser?._id ||
+    "guest";
+
+  const monthKey =
+    getMonthKey(new Date()) ||
+    new Date()
+      .toISOString()
+      .slice(0, 7);
+
+  return `expenseTrackerBudget:${userKey}:${monthKey}`;
+}
+
+function getStoredBudget() {
+  const stored =
+    localStorage.getItem(
+      getBudgetStorageKey()
+    );
+
+  const value =
+    Number(stored);
+
+  return Number.isFinite(
+    value
+  ) && value > 0
+    ? value
+    : 0;
+}
+
+function getCurrentMonthExpenseTotal() {
+  const currentMonth =
+    getMonthKey(
+      new Date()
+    );
+
+  return transactions.reduce(
+    (total, transaction) => {
+      if (
+        transaction.type !==
+          "expense" ||
+        getMonthKey(
+          transaction.date
+        ) !== currentMonth
+      ) {
+        return total;
+      }
+
+      return (
+        total +
+        (Number(
+          transaction.amount
+        ) || 0)
+      );
+    },
+    0
+  );
+}
+
+function getBudgetStatus(
+  spent,
+  budget
+) {
+  if (
+    !budget ||
+    budget <= 0
+  ) {
+    return {
+      text:
+        "Set a monthly budget to start tracking.",
+      className:
+        "neutral"
+    };
+  }
+
+  const percentage =
+    (spent / budget) *
+    100;
+
+  if (
+    percentage >=
+    100
+  ) {
+    return {
+      text:
+        `Budget exceeded by ${formatCurrency(
+          spent - budget
+        )}.`,
+      className:
+        "danger"
+    };
+  }
+
+  if (
+    percentage >=
+    80
+  ) {
+    return {
+      text:
+        `${percentage.toFixed(
+          0
+        )}% of your budget used.`,
+      className:
+        "warning"
+    };
+  }
+
+  return {
+    text:
+      `${percentage.toFixed(
+        0
+      )}% of your budget used.`,
+    className:
+      "good"
+  };
+}
+
+function ensureBudgetPanel() {
+  if (budgetPanel) {
+    return;
+  }
+
+  if (!dashboardSection) {
+    return;
+  }
+
+  budgetPanel =
+    document.createElement(
+      "section"
+    );
+
+  budgetPanel.className =
+    "panel budget-panel";
+
+  budgetPanel.innerHTML = `
+    <div class="budget-panel-header">
+      <div>
+        <h3 class="panel-title">
+          Monthly Budget
+        </h3>
+
+        <p
+          class="analytics-subtitle"
+          id="budgetMonthElement"
+        ></p>
+      </div>
+
+      <div class="budget-input-wrap">
+        <span class="budget-currency">
+          ₹
+        </span>
+
+        <input
+          type="number"
+          id="budgetInput"
+          class="form-control budget-input"
+          min="1"
+          step="1"
+          placeholder="Set budget"
+          aria-label="Monthly budget"
+        >
+
+        <button
+          type="button"
+          class="btn btn-primary budget-save-btn"
+          id="budgetSaveBtn"
+        >
+          Save Budget
+        </button>
+      </div>
+    </div>
+
+    <div class="budget-stats">
+      <div>
+        <span class="card-label">
+          Spent
+        </span>
+
+        <strong id="budgetSpentElement">
+          ₹0
+        </strong>
+      </div>
+
+      <div>
+        <span class="card-label">
+          Remaining
+        </span>
+
+        <strong id="budgetRemainingElement">
+          ₹0
+        </strong>
+      </div>
+    </div>
+
+    <div class="budget-progress-track">
+      <div
+        class="budget-progress"
+        id="budgetProgress"
+      ></div>
+    </div>
+
+    <p
+      class="budget-status neutral"
+      id="budgetStatusElement"
+    >
+      Set a monthly budget to start tracking.
+    </p>
+  `;
+
+  const analytics =
+    dashboardSection.querySelector(
+      ".dashboard-analytics"
+    );
+
+  if (analytics) {
+    analytics.insertAdjacentElement(
+      "afterend",
+      budgetPanel
+    );
+  } else {
+    dashboardSection.prepend(
+      budgetPanel
+    );
+  }
+
+  budgetInput =
+    budgetPanel.querySelector(
+      "#budgetInput"
+    );
+
+  budgetSpentElement =
+    budgetPanel.querySelector(
+      "#budgetSpentElement"
+    );
+
+  budgetRemainingElement =
+    budgetPanel.querySelector(
+      "#budgetRemainingElement"
+    );
+
+  budgetProgress =
+    budgetPanel.querySelector(
+      "#budgetProgress"
+    );
+
+  budgetStatusElement =
+    budgetPanel.querySelector(
+      "#budgetStatusElement"
+    );
+
+  budgetMonthElement =
+    budgetPanel.querySelector(
+      "#budgetMonthElement"
+    );
+
+  const saveButton =
+    budgetPanel.querySelector(
+      "#budgetSaveBtn"
+    );
+
+  saveButton?.addEventListener(
+    "click",
+    saveBudget
+  );
+
+  budgetInput?.addEventListener(
+    "keydown",
+    (event) => {
+      if (
+        event.key ===
+        "Enter"
+      ) {
+        event.preventDefault();
+        saveBudget();
+      }
+    }
+  );
+
+  updateBudgetUI();
+}
+
+function saveBudget() {
+  const value =
+    Number(
+      budgetInput?.value
+    );
+
+  if (
+    !Number.isFinite(
+      value
+    ) ||
+    value <= 0
+  ) {
+    showToast(
+      "Please enter a valid monthly budget.",
+      "error"
+    );
+
+    return;
+  }
+
+  localStorage.setItem(
+    getBudgetStorageKey(),
+    value.toFixed(2)
+  );
+
+  budgetValue =
+    value;
+
+  updateBudgetUI();
+
+  showToast(
+    "Monthly budget saved successfully."
+  );
+}
+
+function updateBudgetUI() {
+  if (!dashboardSection) {
+    return;
+  }
+
+  ensureBudgetPanel();
+
+  budgetValue =
+    getStoredBudget();
+
+  const spent =
+    getCurrentMonthExpenseTotal();
+
+  const remaining =
+    budgetValue -
+    spent;
+
+  const percentage =
+    budgetValue > 0
+      ? (spent /
+          budgetValue) *
+        100
+      : 0;
+
+  const visiblePercentage =
+    Math.min(
+      Math.max(
+        percentage,
+        0
+      ),
+      100
+    );
+
+  if (
+    budgetInput &&
+    document.activeElement !==
+      budgetInput
+  ) {
+    budgetInput.value =
+      budgetValue > 0
+        ? budgetValue
+        : "";
+  }
+
+  if (budgetMonthElement) {
+    budgetMonthElement.textContent =
+      new Date().toLocaleDateString(
+        "en-IN",
+        {
+          month:
+            "long",
+          year:
+            "numeric"
+        }
+      );
+  }
+
+  if (budgetSpentElement) {
+    budgetSpentElement.textContent =
+      formatCurrency(
+        spent
+      );
+  }
+
+  if (
+    budgetRemainingElement
+  ) {
+    budgetRemainingElement.textContent =
+      formatCurrency(
+        Math.max(
+          remaining,
+          0
+        )
+      );
+
+    budgetRemainingElement.classList.toggle(
+      "negative",
+      remaining < 0
+    );
+  }
+
+  if (budgetProgress) {
+    budgetProgress.style.width =
+      `${visiblePercentage}%`;
+
+    budgetProgress.classList.toggle(
+      "warning",
+      percentage >= 80 &&
+        percentage < 100
+    );
+
+    budgetProgress.classList.toggle(
+      "danger",
+      percentage >= 100
+    );
+  }
+
+  if (
+    budgetStatusElement
+  ) {
+    const status =
+      getBudgetStatus(
+        spent,
+        budgetValue
+      );
+
+    budgetStatusElement.textContent =
+      status.text;
+
+    budgetStatusElement.className =
+      `budget-status ${status.className}`;
+  }
+}
+
 function showDashboard() {
   authSection?.classList.add(
     "hidden"
@@ -412,6 +852,9 @@ function showDashboard() {
     userGreeting.textContent =
       `Welcome, ${currentUser.name}`;
   }
+
+  ensureBudgetPanel();
+  updateBudgetUI();
 }
 
 function showAuth() {
@@ -497,7 +940,8 @@ function populateTransactionCategories(
         category ===
         selectedCategory
       ) {
-        option.selected = true;
+        option.selected =
+          true;
       }
 
       txCategory.appendChild(
@@ -525,12 +969,16 @@ function formatCurrency(
   return new Intl.NumberFormat(
     "en-IN",
     {
-      style: "currency",
-      currency: "INR",
-      maximumFractionDigits: 2
+      style:
+        "currency",
+      currency:
+        "INR",
+      maximumFractionDigits:
+        2
     }
   ).format(
-    Number(amount) || 0
+    Number(amount) ||
+      0
   );
 }
 
@@ -555,9 +1003,12 @@ function formatDate(
   return date.toLocaleDateString(
     "en-IN",
     {
-      day: "2-digit",
-      month: "short",
-      year: "numeric"
+      day:
+        "2-digit",
+      month:
+        "short",
+      year:
+        "numeric"
     }
   );
 }
@@ -578,7 +1029,10 @@ function getMonthKey(
 
   return `${date.getFullYear()}-${String(
     date.getMonth() + 1
-  ).padStart(2, "0")}`;
+  ).padStart(
+    2,
+    "0"
+  )}`;
 }
 
 function getMonthLabel(
@@ -596,8 +1050,10 @@ function getMonthLabel(
   ).toLocaleDateString(
     "en-IN",
     {
-      month: "short",
-      year: "2-digit"
+      month:
+        "short",
+      year:
+        "2-digit"
     }
   );
 }
@@ -618,14 +1074,18 @@ function getLastSixMonths() {
     const date =
       new Date(
         now.getFullYear(),
-        now.getMonth() - i,
+        now.getMonth() -
+          i,
         1
       );
 
     result.push(
       `${date.getFullYear()}-${String(
         date.getMonth() + 1
-      ).padStart(2, "0")}`
+      ).padStart(
+        2,
+        "0"
+      )}`
     );
   }
 
@@ -640,8 +1100,10 @@ function calculateMonthlyData() {
     months.map(
       (month) => ({
         month,
-        income: 0,
-        expense: 0
+        income:
+          0,
+        expense:
+          0
       })
     );
 
@@ -695,15 +1157,19 @@ function updateMonthlySummary() {
       new Date()
     );
 
-  let income = 0;
-  let expense = 0;
+  let income =
+    0;
+
+  let expense =
+    0;
 
   transactions.forEach(
     (transaction) => {
       if (
         getMonthKey(
           transaction.date
-        ) !== currentMonth
+        ) !==
+        currentMonth
       ) {
         return;
       }
@@ -717,24 +1183,28 @@ function updateMonthlySummary() {
         transaction.type ===
         "income"
       ) {
-        income += amount;
+        income +=
+          amount;
       }
 
       if (
         transaction.type ===
         "expense"
       ) {
-        expense += amount;
+        expense +=
+          amount;
       }
     }
   );
 
   const savings =
-    income - expense;
+    income -
+    expense;
 
   const rate =
     income > 0
-      ? (savings / income) *
+      ? (savings /
+          income) *
         100
       : 0;
 
@@ -769,7 +1239,9 @@ function updateMonthlySummary() {
     monthlySavingsRateElement
   ) {
     monthlySavingsRateElement.textContent =
-      `${rate.toFixed(1)}%`;
+      `${rate.toFixed(
+        1
+      )}%`;
   }
 }
 
@@ -901,7 +1373,8 @@ function renderMonthlyChart() {
     new Chart(
       monthlyChartCanvas,
       {
-        type: "bar",
+        type:
+          "bar",
 
         data: {
           labels:
@@ -939,10 +1412,14 @@ function renderMonthlyChart() {
                 ),
 
               borderRadius: {
-                topLeft: 11,
-                topRight: 11,
-                bottomLeft: 5,
-                bottomRight: 5
+                topLeft:
+                  11,
+                topRight:
+                  11,
+                bottomLeft:
+                  5,
+                bottomRight:
+                  5
               },
 
               borderSkipped:
@@ -984,10 +1461,14 @@ function renderMonthlyChart() {
                 ),
 
               borderRadius: {
-                topLeft: 11,
-                topRight: 11,
-                bottomLeft: 5,
-                bottomRight: 5
+                topLeft:
+                  11,
+                topRight:
+                  11,
+                bottomLeft:
+                  5,
+                bottomRight:
+                  5
               },
 
               borderSkipped:
@@ -1030,10 +1511,14 @@ function renderMonthlyChart() {
 
           layout: {
             padding: {
-              top: 8,
-              left: 4,
-              right: 8,
-              bottom: 2
+              top:
+                8,
+              left:
+                4,
+              right:
+                8,
+              bottom:
+                2
             }
           },
 
@@ -1110,14 +1595,19 @@ function renderMonthlyChart() {
                   tooltipItems
                 ) {
                   return (
-                    tooltipItems[0]?.label ||
+                    tooltipItems[0]
+                      ?.label ||
                     ""
                   );
                 },
 
-                label(context) {
+                label(
+                  context
+                ) {
                   return ` ${
-                    context.dataset.label
+                    context
+                      .dataset
+                      .label
                   }: ${formatCurrency(
                     context.parsed.y
                   )}`;
@@ -1227,7 +1717,9 @@ function renderMonthlyChart() {
                     return `₹${(
                       amount /
                       100000
-                    ).toFixed(1)}L`;
+                    ).toFixed(
+                      1
+                    )}L`;
                   }
 
                   if (
@@ -1237,7 +1729,9 @@ function renderMonthlyChart() {
                     return `₹${(
                       amount /
                       1000
-                    ).toFixed(0)}K`;
+                    ).toFixed(
+                      0
+                    )}K`;
                   }
 
                   return `₹${amount}`;
@@ -1396,7 +1890,8 @@ function renderCategoryChart() {
           "expense" &&
         getMonthKey(
           transaction.date
-        ) === currentMonth
+        ) ===
+          currentMonth
     );
 
   const colors =
@@ -1555,7 +2050,9 @@ function renderCategoryChart() {
         "600 20px 'Space Grotesk', sans-serif";
 
       ctx.fillText(
-        formatCurrency(total),
+        formatCurrency(
+          total
+        ),
         x,
         y - 10
       );
@@ -1732,7 +2229,9 @@ function renderCategoryChart() {
                 const point =
                   tooltip.dataPoints?.[0];
 
-                if (!point) return;
+                if (!point) {
+                  return;
+                }
 
                 const index =
                   point.dataIndex;
@@ -1757,7 +2256,9 @@ function renderCategoryChart() {
                         (value /
                           total) *
                         100
-                      ).toFixed(1)
+                      ).toFixed(
+                        1
+                      )
                     : "0.0";
 
                 tooltipEl =
@@ -1808,7 +2309,8 @@ function renderCategoryChart() {
                   tooltipHeight;
 
                 if (isLeft) {
-                  left = 10;
+                  left =
+                    10;
                 } else {
                   left =
                     canvasWidth -
@@ -1816,7 +2318,9 @@ function renderCategoryChart() {
                     10;
                 }
 
-                if (nearCenter) {
+                if (
+                  nearCenter
+                ) {
                   top =
                     tooltip.caretY <
                     centerY
@@ -1827,7 +2331,8 @@ function renderCategoryChart() {
                 } else {
                   top =
                     tooltip.caretY -
-                    tooltipHeight / 2;
+                    tooltipHeight /
+                      2;
                 }
 
                 left =
@@ -1871,7 +2376,9 @@ function renderCategoryChart() {
     categoryChartSubtitle
   ) {
     categoryChartSubtitle.textContent =
-      `${formatCurrency(total)} spent across ${
+      `${formatCurrency(
+        total
+      )} spent across ${
         expenseTransactions.length
       } ${
         expenseTransactions.length ===
@@ -1888,8 +2395,11 @@ function updateChartTheme() {
 }
 
 function updateSummary() {
-  let income = 0;
-  let expenses = 0;
+  let income =
+    0;
+
+  let expenses =
+    0;
 
   transactions.forEach(
     (transaction) => {
@@ -1902,14 +2412,16 @@ function updateSummary() {
         transaction.type ===
         "income"
       ) {
-        income += amount;
+        income +=
+          amount;
       }
 
       if (
         transaction.type ===
         "expense"
       ) {
-        expenses += amount;
+        expenses +=
+          amount;
       }
     }
   );
@@ -1939,6 +2451,7 @@ function updateSummary() {
   updateMonthlySummary();
   renderMonthlyChart();
   renderCategoryChart();
+  updateBudgetUI();
 }
 
 function getFilteredTransactions() {
@@ -2312,7 +2825,8 @@ async function saveTransaction(
     !Number.isFinite(
       payload.amount
     ) ||
-    payload.amount <= 0
+    payload.amount <=
+      0
   ) {
     showToast(
       "Amount must be greater than 0.",
@@ -3265,11 +3779,15 @@ function logout() {
   editingTransactionId =
     null;
 
+  budgetValue =
+    0;
+
   localStorage.removeItem(
     "authToken"
   );
 
   monthlyChart?.destroy();
+
   categoryChart?.destroy();
 
   monthlyChart =
@@ -3438,10 +3956,14 @@ categoryFilter?.addEventListener(
 themeToggleInput?.addEventListener(
   "change",
   () => {
-    setTimeout(() => {
-      updateChartTheme();
-      initializeGoogleSignIn();
-    }, 50);
+    setTimeout(
+      () => {
+        updateChartTheme();
+        initializeGoogleSignIn();
+        updateBudgetUI();
+      },
+      50
+    );
   }
 );
 
