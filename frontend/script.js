@@ -6,131 +6,146 @@ let transactions = [];
 let currentTypeFilter = "all";
 let currentCategoryFilter = "all";
 let editingTransactionId = null;
+let monthlyChart = null;
+let categoryChart = null;
 
-const authSection =
-  document.getElementById("authSection");
+const $ = (id) => document.getElementById(id);
 
-const dashboardSection =
-  document.getElementById("dashboardSection");
+const authSection = $("authSection");
+const dashboardSection = $("dashboardSection");
 
-const tabLogin =
-  document.getElementById("tabLogin");
+const tabLogin = $("tabLogin");
+const tabRegister = $("tabRegister");
 
-const tabRegister =
-  document.getElementById("tabRegister");
+const loginForm = $("loginForm");
+const registerForm = $("registerForm");
 
-const loginForm =
-  document.getElementById("loginForm");
+const loginSubmitBtn = $("loginSubmitBtn");
+const registerSubmitBtn = $("registerSubmitBtn");
 
-const registerForm =
-  document.getElementById("registerForm");
-
-const loginSubmitBtn =
-  document.getElementById("loginSubmitBtn");
-
-const registerSubmitBtn =
-  document.getElementById("registerSubmitBtn");
-
-const loginError =
-  document.getElementById("loginError");
+const loginError = $("loginError");
 
 const googleSignInButton =
-  document.getElementById("googleSignInButton");
+  $("googleSignInButton");
 
 const otpLoginToggle =
-  document.getElementById("otpLoginToggle");
+  $("otpLoginToggle");
 
 const otpLoginForm =
-  document.getElementById("otpLoginForm");
+  $("otpLoginForm");
 
 const otpEmail =
-  document.getElementById("otpEmail");
+  $("otpEmail");
 
 const otpError =
-  document.getElementById("otpError");
+  $("otpError");
 
 const sendOtpBtn =
-  document.getElementById("sendOtpBtn");
+  $("sendOtpBtn");
 
 const otpCodeGroup =
-  document.getElementById("otpCodeGroup");
+  $("otpCodeGroup");
 
 const otpCode =
-  document.getElementById("otpCode");
+  $("otpCode");
 
 const verifyOtpBtn =
-  document.getElementById("verifyOtpBtn");
+  $("verifyOtpBtn");
 
 const otpBackBtn =
-  document.getElementById("otpBackBtn");
+  $("otpBackBtn");
 
 const userNav =
-  document.getElementById("userNav");
+  $("userNav");
 
 const userGreeting =
-  document.getElementById("userGreeting");
+  $("userGreeting");
 
 const logoutBtn =
-  document.getElementById("logoutBtn");
+  $("logoutBtn");
 
 const transactionForm =
-  document.getElementById("transactionForm");
+  $("transactionForm");
 
 const formTitle =
-  document.getElementById("formTitle");
+  $("formTitle");
 
 const cancelEditBtn =
-  document.getElementById("cancelEditBtn");
+  $("cancelEditBtn");
 
 const txSubmitBtn =
-  document.getElementById("txSubmitBtn");
+  $("txSubmitBtn");
 
 const txAmount =
-  document.getElementById("txAmount");
+  $("txAmount");
 
 const txCategory =
-  document.getElementById("txCategory");
+  $("txCategory");
 
 const txDescription =
-  document.getElementById("txDescription");
+  $("txDescription");
 
 const txDate =
-  document.getElementById("txDate");
+  $("txDate");
 
 const totalBalance =
-  document.getElementById("totalBalance");
+  $("totalBalance");
 
 const totalIncome =
-  document.getElementById("totalIncome");
+  $("totalIncome");
 
 const totalExpenses =
-  document.getElementById("totalExpenses");
+  $("totalExpenses");
 
 const txList =
-  document.getElementById("txList");
+  $("txList");
 
 const emptyState =
-  document.getElementById("emptyState");
+  $("emptyState");
 
 const txCountBadge =
-  document.getElementById("txCountBadge");
+  $("txCountBadge");
 
 const categoryFilter =
-  document.getElementById("categoryFilter");
+  $("categoryFilter");
+
+const toastContainer =
+  $("toastContainer");
+
+const typeExpenseLabel =
+  $("typeExpenseLabel");
+
+const typeIncomeLabel =
+  $("typeIncomeLabel");
+
+const monthlyChartCanvas =
+  $("monthlyChart");
+
+const categoryChartCanvas =
+  $("categoryChart");
+
+const categoryChartSubtitle =
+  $("categoryChartSubtitle");
+
+const monthlyIncomeElement =
+  $("monthlyIncome");
+
+const monthlyExpensesElement =
+  $("monthlyExpenses");
+
+const monthlySavingsElement =
+  $("monthlySavings");
+
+const monthlySavingsRateElement =
+  $("monthlySavingsRate");
+
+const themeToggleInput =
+  $("themeToggleInput");
 
 const filterButtons =
   document.querySelectorAll(
     "[data-type-filter]"
   );
-
-const toastContainer =
-  document.getElementById("toastContainer");
-
-const typeExpenseLabel =
-  document.getElementById("typeExpenseLabel");
-
-const typeIncomeLabel =
-  document.getElementById("typeIncomeLabel");
 
 const expenseCategories = [
   "Food",
@@ -147,67 +162,11 @@ const incomeCategories = [
   "Other"
 ];
 
-const amountWrapper =
-  txAmount.closest(
-    ".input-prefix-wrapper"
-  );
-
-const amountClearButton =
-  document.createElement("button");
-
-amountClearButton.type =
-  "button";
-
-amountClearButton.className =
-  "amount-clear-button";
-
-amountClearButton.setAttribute(
-  "aria-label",
-  "Clear amount"
-);
-
-amountClearButton.textContent =
-  "×";
-
-if (amountWrapper) {
-  amountWrapper.appendChild(
-    amountClearButton
-  );
-
-  const updateAmountClearButton =
-    () => {
-      amountClearButton.classList.toggle(
-        "visible",
-        txAmount.value.trim() !== ""
-      );
-    };
-
-  amountClearButton.addEventListener(
-    "click",
-    () => {
-      txAmount.value = "";
-
-      updateAmountClearButton();
-
-      txAmount.focus();
-    }
-  );
-
-  txAmount.addEventListener(
-    "input",
-    updateAmountClearButton
-  );
-
-  updateAmountClearButton();
-}
-
 function showToast(
   message,
   type = "success"
 ) {
-  if (!toastContainer) {
-    return;
-  }
+  if (!toastContainer) return;
 
   const toast =
     document.createElement("div");
@@ -232,20 +191,19 @@ function setLoading(
   loading,
   text
 ) {
-  if (!button) {
-    return;
-  }
-
-  button.disabled =
-    loading;
+  if (!button) return;
 
   if (loading) {
+    button.disabled = true;
+
     button.dataset.originalText =
       button.textContent;
 
     button.textContent =
       text;
   } else {
+    button.disabled = false;
+
     button.textContent =
       button.dataset.originalText ||
       button.textContent;
@@ -276,14 +234,13 @@ async function apiRequest(
       }
     );
 
-  let data;
+  let data = {};
 
   try {
     data =
       await response.json();
   } catch {
     data = {
-      success: false,
       message:
         "The server returned an invalid response."
     };
@@ -300,118 +257,190 @@ async function apiRequest(
 }
 
 function showLoginForm() {
-  tabLogin.classList.add(
-    "active"
-  );
+  tabLogin?.classList.add("active");
+  tabRegister?.classList.remove("active");
 
-  tabRegister.classList.remove(
-    "active"
-  );
-
-  tabLogin.setAttribute(
+  tabLogin?.setAttribute(
     "aria-selected",
     "true"
   );
 
-  tabRegister.setAttribute(
+  tabRegister?.setAttribute(
     "aria-selected",
     "false"
   );
 
-  loginForm.classList.remove(
+  loginForm?.classList.remove(
     "hidden"
   );
 
-  otpLoginForm.classList.add(
+  registerForm?.classList.add(
     "hidden"
   );
 
-  registerForm.classList.add(
+  otpLoginForm?.classList.add(
     "hidden"
   );
 }
 
 function showRegisterForm() {
-  tabRegister.classList.add(
+  tabRegister?.classList.add(
     "active"
   );
 
-  tabLogin.classList.remove(
+  tabLogin?.classList.remove(
     "active"
   );
 
-  tabRegister.setAttribute(
+  tabRegister?.setAttribute(
     "aria-selected",
     "true"
   );
 
-  tabLogin.setAttribute(
+  tabLogin?.setAttribute(
     "aria-selected",
     "false"
   );
 
-  registerForm.classList.remove(
+  registerForm?.classList.remove(
     "hidden"
   );
 
-  otpLoginForm.classList.add(
+  loginForm?.classList.add(
     "hidden"
   );
 
-  loginForm.classList.add(
+  otpLoginForm?.classList.add(
     "hidden"
   );
 }
 
+function showOtpForm() {
+  loginForm?.classList.add(
+    "hidden"
+  );
+
+  otpLoginForm?.classList.remove(
+    "hidden"
+  );
+
+  if (otpError) {
+    otpError.textContent = "";
+
+    otpError.classList.add(
+      "hidden"
+    );
+  }
+
+  otpCodeGroup?.classList.add(
+    "hidden"
+  );
+
+  verifyOtpBtn?.classList.add(
+    "hidden"
+  );
+
+  if (otpCode) {
+    otpCode.value = "";
+  }
+
+  const loginEmail =
+    $("loginEmail");
+
+  if (
+    loginEmail &&
+    otpEmail &&
+    loginEmail.value.trim()
+  ) {
+    otpEmail.value =
+      loginEmail.value.trim();
+  }
+
+  otpEmail?.focus();
+}
+
+function showPasswordLoginForm() {
+  otpLoginForm?.classList.add(
+    "hidden"
+  );
+
+  loginForm?.classList.remove(
+    "hidden"
+  );
+
+  if (otpError) {
+    otpError.textContent = "";
+
+    otpError.classList.add(
+      "hidden"
+    );
+  }
+}
+
 function showDashboard() {
-  authSection.classList.add(
+  authSection?.classList.add(
     "hidden"
   );
 
-  dashboardSection.classList.remove(
+  dashboardSection?.classList.remove(
     "hidden"
   );
 
-  userNav.classList.remove(
+  userNav?.classList.remove(
     "hidden"
   );
 
-  authSection.style.display =
-    "none";
+  if (authSection) {
+    authSection.style.display =
+      "none";
+  }
 
-  dashboardSection.style.display =
-    "";
+  if (dashboardSection) {
+    dashboardSection.style.display =
+      "";
+  }
 
-  userNav.style.display =
-    "";
+  if (userNav) {
+    userNav.style.display =
+      "";
+  }
 
-  if (currentUser) {
+  if (
+    currentUser &&
+    userGreeting
+  ) {
     userGreeting.textContent =
       `Welcome, ${currentUser.name}`;
   }
 }
 
 function showAuth() {
-  authSection.classList.remove(
+  authSection?.classList.remove(
     "hidden"
   );
 
-  dashboardSection.classList.add(
+  dashboardSection?.classList.add(
     "hidden"
   );
 
-  userNav.classList.add(
+  userNav?.classList.add(
     "hidden"
   );
 
-  authSection.style.display =
-    "";
+  if (authSection) {
+    authSection.style.display =
+      "";
+  }
 
-  dashboardSection.style.display =
-    "none";
+  if (dashboardSection) {
+    dashboardSection.style.display =
+      "none";
+  }
 
-  userNav.style.display =
-    "none";
+  if (userNav) {
+    userNav.style.display =
+      "none";
+  }
 }
 
 function getSelectedType() {
@@ -420,39 +449,20 @@ function getSelectedType() {
       'input[name="txType"]:checked'
     );
 
-  return selected
-    ? selected.value
-    : "expense";
-}
-
-function setSelectedType(
-  type
-) {
-  const radio =
-    document.querySelector(
-      `input[name="txType"][value="${type}"]`
-    );
-
-  if (radio) {
-    radio.checked =
-      true;
-  }
-
-  updateTypeStyles();
-
-  populateTransactionCategories();
+  return selected?.value ||
+    "expense";
 }
 
 function updateTypeStyles() {
   const type =
     getSelectedType();
 
-  typeExpenseLabel.classList.toggle(
+  typeExpenseLabel?.classList.toggle(
     "expense-active",
     type === "expense"
   );
 
-  typeIncomeLabel.classList.toggle(
+  typeIncomeLabel?.classList.toggle(
     "income-active",
     type === "income"
   );
@@ -461,16 +471,14 @@ function updateTypeStyles() {
 function populateTransactionCategories(
   selectedCategory = ""
 ) {
-  const type =
-    getSelectedType();
+  if (!txCategory) return;
 
   const categories =
-    type === "income"
+    getSelectedType() === "income"
       ? incomeCategories
       : expenseCategories;
 
-  txCategory.innerHTML =
-    "";
+  txCategory.innerHTML = "";
 
   categories.forEach(
     (category) => {
@@ -489,8 +497,7 @@ function populateTransactionCategories(
         category ===
         selectedCategory
       ) {
-        option.selected =
-          true;
+        option.selected = true;
       }
 
       txCategory.appendChild(
@@ -501,79 +508,15 @@ function populateTransactionCategories(
 
   if (
     !selectedCategory &&
-    categories.length > 0
+    categories.length
   ) {
     txCategory.value =
       categories[0];
   }
-}
 
-function populateCategoryFilter() {
-  const allCategories = [
-    "Food",
-    "Shopping",
-    "Transport",
-    "Bills",
-    "Entertainment",
-    "Salary",
-    "Freelance",
-    "Other"
-  ];
-
-  const currentValue =
-    categoryFilter.value;
-
-  categoryFilter.innerHTML =
-    "";
-
-  const allOption =
-    document.createElement(
-      "option"
-    );
-
-  allOption.value =
-    "all";
-
-  allOption.textContent =
-    "All Categories";
-
-  categoryFilter.appendChild(
-    allOption
+  refreshCustomSelect(
+    txCategory
   );
-
-  allCategories.forEach(
-    (category) => {
-      const option =
-        document.createElement(
-          "option"
-        );
-
-      option.value =
-        category;
-
-      option.textContent =
-        category;
-
-      categoryFilter.appendChild(
-        option
-      );
-    }
-  );
-
-  if (
-    allCategories.includes(
-      currentValue
-    )
-  ) {
-    categoryFilter.value =
-      currentValue;
-  } else {
-    categoryFilter.value =
-      "all";
-
-    currentCategoryFilter =
-      "all";
-  }
 }
 
 function formatCurrency(
@@ -586,18 +529,20 @@ function formatCurrency(
       currency: "INR",
       maximumFractionDigits: 2
     }
-  ).format(amount);
+  ).format(
+    Number(amount) || 0
+  );
 }
 
 function formatDate(
-  dateValue
+  value
 ) {
-  if (!dateValue) {
+  if (!value) {
     return "-";
   }
 
   const date =
-    new Date(dateValue);
+    new Date(value);
 
   if (
     Number.isNaN(
@@ -617,6 +562,1331 @@ function formatDate(
   );
 }
 
+function getMonthKey(
+  value
+) {
+  const date =
+    new Date(value);
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+    return null;
+  }
+
+  return `${date.getFullYear()}-${String(
+    date.getMonth() + 1
+  ).padStart(2, "0")}`;
+}
+
+function getMonthLabel(
+  value
+) {
+  const [year, month] =
+    value
+      .split("-")
+      .map(Number);
+
+  return new Date(
+    year,
+    month - 1,
+    1
+  ).toLocaleDateString(
+    "en-IN",
+    {
+      month: "short",
+      year: "2-digit"
+    }
+  );
+}
+
+function getLastSixMonths() {
+  const result = [];
+
+  const now =
+    new Date();
+
+  now.setDate(1);
+
+  for (
+    let i = 5;
+    i >= 0;
+    i--
+  ) {
+    const date =
+      new Date(
+        now.getFullYear(),
+        now.getMonth() - i,
+        1
+      );
+
+    result.push(
+      `${date.getFullYear()}-${String(
+        date.getMonth() + 1
+      ).padStart(2, "0")}`
+    );
+  }
+
+  return result;
+}
+
+function calculateMonthlyData() {
+  const months =
+    getLastSixMonths();
+
+  const result =
+    months.map(
+      (month) => ({
+        month,
+        income: 0,
+        expense: 0
+      })
+    );
+
+  transactions.forEach(
+    (transaction) => {
+      const month =
+        getMonthKey(
+          transaction.date
+        );
+
+      const item =
+        result.find(
+          (entry) =>
+            entry.month ===
+            month
+        );
+
+      if (!item) {
+        return;
+      }
+
+      const amount =
+        Number(
+          transaction.amount
+        ) || 0;
+
+      if (
+        transaction.type ===
+        "income"
+      ) {
+        item.income +=
+          amount;
+      }
+
+      if (
+        transaction.type ===
+        "expense"
+      ) {
+        item.expense +=
+          amount;
+      }
+    }
+  );
+
+  return result;
+}
+
+function updateMonthlySummary() {
+  const currentMonth =
+    getMonthKey(
+      new Date()
+    );
+
+  let income = 0;
+  let expense = 0;
+
+  transactions.forEach(
+    (transaction) => {
+      if (
+        getMonthKey(
+          transaction.date
+        ) !== currentMonth
+      ) {
+        return;
+      }
+
+      const amount =
+        Number(
+          transaction.amount
+        ) || 0;
+
+      if (
+        transaction.type ===
+        "income"
+      ) {
+        income += amount;
+      }
+
+      if (
+        transaction.type ===
+        "expense"
+      ) {
+        expense += amount;
+      }
+    }
+  );
+
+  const savings =
+    income - expense;
+
+  const rate =
+    income > 0
+      ? (savings / income) *
+        100
+      : 0;
+
+  if (
+    monthlyIncomeElement
+  ) {
+    monthlyIncomeElement.textContent =
+      formatCurrency(
+        income
+      );
+  }
+
+  if (
+    monthlyExpensesElement
+  ) {
+    monthlyExpensesElement.textContent =
+      formatCurrency(
+        expense
+      );
+  }
+
+  if (
+    monthlySavingsElement
+  ) {
+    monthlySavingsElement.textContent =
+      formatCurrency(
+        savings
+      );
+  }
+
+  if (
+    monthlySavingsRateElement
+  ) {
+    monthlySavingsRateElement.textContent =
+      `${rate.toFixed(1)}%`;
+  }
+}
+
+function getChartColors() {
+  const isLight =
+    themeToggleInput &&
+    themeToggleInput.checked;
+
+  return {
+    text:
+      isLight
+        ? "#334155"
+        : "#f2f5fa",
+
+    muted:
+      isLight
+        ? "#64748b"
+        : "#8d96a8",
+
+    grid:
+      isLight
+        ? "rgba(15,23,42,.07)"
+        : "rgba(255,255,255,.055)",
+
+    border:
+      isLight
+        ? "rgba(15,23,42,.12)"
+        : "rgba(255,255,255,.10)",
+
+    tooltip:
+      isLight
+        ? "rgba(255,255,255,.98)"
+        : "rgba(15,23,42,.98)"
+  };
+}
+
+function renderMonthlyChart() {
+  if (
+    !monthlyChartCanvas ||
+    typeof Chart ===
+      "undefined"
+  ) {
+    return;
+  }
+
+  monthlyChart?.destroy();
+
+  const colors =
+    getChartColors();
+
+  const data =
+    calculateMonthlyData();
+
+  const currentMonth =
+    getMonthKey(
+      new Date()
+    );
+
+  const ctx =
+    monthlyChartCanvas.getContext(
+      "2d"
+    );
+
+  const incomeGradient =
+    ctx.createLinearGradient(
+      0,
+      0,
+      0,
+      360
+    );
+
+  incomeGradient.addColorStop(
+    0,
+    "rgba(52,211,153,1)"
+  );
+
+  incomeGradient.addColorStop(
+    0.45,
+    "rgba(52,211,153,.82)"
+  );
+
+  incomeGradient.addColorStop(
+    1,
+    "rgba(52,211,153,.30)"
+  );
+
+  const expenseGradient =
+    ctx.createLinearGradient(
+      0,
+      0,
+      0,
+      360
+    );
+
+  expenseGradient.addColorStop(
+    0,
+    "rgba(251,113,102,1)"
+  );
+
+  expenseGradient.addColorStop(
+    0.45,
+    "rgba(251,113,102,.82)"
+  );
+
+  expenseGradient.addColorStop(
+    1,
+    "rgba(251,113,102,.30)"
+  );
+
+  const incomeBorders =
+    data.map(
+      (item) =>
+        item.month ===
+        currentMonth
+          ? "rgba(52,211,153,1)"
+          : "rgba(52,211,153,.72)"
+    );
+
+  const expenseBorders =
+    data.map(
+      (item) =>
+        item.month ===
+        currentMonth
+          ? "rgba(251,113,102,1)"
+          : "rgba(251,113,102,.72)"
+    );
+
+  monthlyChart =
+    new Chart(
+      monthlyChartCanvas,
+      {
+        type: "bar",
+
+        data: {
+          labels:
+            data.map(
+              (item) =>
+                getMonthLabel(
+                  item.month
+                )
+            ),
+
+          datasets: [
+            {
+              label:
+                "Income",
+
+              data:
+                data.map(
+                  (item) =>
+                    item.income
+                ),
+
+              backgroundColor:
+                incomeGradient,
+
+              borderColor:
+                incomeBorders,
+
+              borderWidth:
+                data.map(
+                  (item) =>
+                    item.month ===
+                    currentMonth
+                      ? 2
+                      : 1
+                ),
+
+              borderRadius: {
+                topLeft: 11,
+                topRight: 11,
+                bottomLeft: 5,
+                bottomRight: 5
+              },
+
+              borderSkipped:
+                false,
+
+              barPercentage:
+                0.78,
+
+              categoryPercentage:
+                0.62,
+
+              maxBarThickness:
+                30
+            },
+
+            {
+              label:
+                "Expense",
+
+              data:
+                data.map(
+                  (item) =>
+                    item.expense
+                ),
+
+              backgroundColor:
+                expenseGradient,
+
+              borderColor:
+                expenseBorders,
+
+              borderWidth:
+                data.map(
+                  (item) =>
+                    item.month ===
+                    currentMonth
+                      ? 2
+                      : 1
+                ),
+
+              borderRadius: {
+                topLeft: 11,
+                topRight: 11,
+                bottomLeft: 5,
+                bottomRight: 5
+              },
+
+              borderSkipped:
+                false,
+
+              barPercentage:
+                0.78,
+
+              categoryPercentage:
+                0.62,
+
+              maxBarThickness:
+                30
+            }
+          ]
+        },
+
+        options: {
+          responsive:
+            true,
+
+          maintainAspectRatio:
+            false,
+
+          animation: {
+            duration:
+              850,
+
+            easing:
+              "easeOutQuart"
+          },
+
+          interaction: {
+            mode:
+              "nearest",
+
+            intersect:
+              true
+          },
+
+          layout: {
+            padding: {
+              top: 8,
+              left: 4,
+              right: 8,
+              bottom: 2
+            }
+          },
+
+          plugins: {
+            legend: {
+              position:
+                "top",
+
+              align:
+                "center",
+
+              labels: {
+                color:
+                  colors.text,
+
+                usePointStyle:
+                  true,
+
+                pointStyle:
+                  "circle",
+
+                boxWidth:
+                  9,
+
+                boxHeight:
+                  9,
+
+                padding:
+                  18,
+
+                font: {
+                  size:
+                    12,
+
+                  weight:
+                    "600"
+                }
+              }
+            },
+
+            tooltip: {
+              enabled:
+                true,
+
+              backgroundColor:
+                colors.tooltip,
+
+              titleColor:
+                colors.text,
+
+              bodyColor:
+                colors.text,
+
+              borderColor:
+                colors.border,
+
+              borderWidth:
+                1,
+
+              cornerRadius:
+                12,
+
+              padding:
+                12,
+
+              displayColors:
+                true,
+
+              caretPadding:
+                8,
+
+              callbacks: {
+                title(
+                  tooltipItems
+                ) {
+                  return (
+                    tooltipItems[0]?.label ||
+                    ""
+                  );
+                },
+
+                label(context) {
+                  return ` ${
+                    context.dataset.label
+                  }: ${formatCurrency(
+                    context.parsed.y
+                  )}`;
+                }
+              }
+            }
+          },
+
+          scales: {
+            x: {
+              offset:
+                true,
+
+              grid: {
+                display:
+                  false
+              },
+
+              border: {
+                display:
+                  false
+              },
+
+              ticks: {
+                color:
+                  colors.muted,
+
+                padding:
+                  10,
+
+                font: {
+                  size:
+                    11,
+
+                  weight:
+                    "500"
+                },
+
+                callback(
+                  value,
+                  index
+                ) {
+                  const month =
+                    data[index];
+
+                  const label =
+                    getMonthLabel(
+                      month.month
+                    );
+
+                  return label;
+                }
+              }
+            },
+
+            y: {
+              beginAtZero:
+                true,
+
+              grace:
+                "14%",
+
+              grid: {
+                color:
+                  colors.grid,
+
+                drawTicks:
+                  false,
+
+                lineWidth:
+                  1
+              },
+
+              border: {
+                display:
+                  false
+              },
+
+              ticks: {
+                color:
+                  colors.muted,
+
+                padding:
+                  10,
+
+                maxTicksLimit:
+                  6,
+
+                font: {
+                  size:
+                    10,
+
+                  weight:
+                    "500"
+                },
+
+                callback(value) {
+                  const amount =
+                    Number(
+                      value
+                    ) || 0;
+
+                  if (
+                    amount >=
+                    100000
+                  ) {
+                    return `₹${(
+                      amount /
+                      100000
+                    ).toFixed(1)}L`;
+                  }
+
+                  if (
+                    amount >=
+                    1000
+                  ) {
+                    return `₹${(
+                      amount /
+                      1000
+                    ).toFixed(0)}K`;
+                  }
+
+                  return `₹${amount}`;
+                }
+              }
+            }
+          }
+        }
+      }
+    );
+}
+
+function createCategoryTooltip(
+  chart,
+  transaction,
+  value,
+  percentage,
+  colors
+) {
+  let tooltipEl =
+    chart.canvas.parentNode.querySelector(
+      ".expense-chart-tooltip"
+    );
+
+  if (!tooltipEl) {
+    tooltipEl =
+      document.createElement(
+        "div"
+      );
+
+    tooltipEl.className =
+      "expense-chart-tooltip";
+
+    chart.canvas.parentNode.style.position =
+      "relative";
+
+    chart.canvas.parentNode.appendChild(
+      tooltipEl
+    );
+  }
+
+  Object.assign(
+    tooltipEl.style,
+    {
+      position:
+        "absolute",
+
+      pointerEvents:
+        "none",
+
+      zIndex:
+        "100",
+
+      minWidth:
+        "165px",
+
+      maxWidth:
+        "205px",
+
+      padding:
+        "10px 12px",
+
+      borderRadius:
+        "12px",
+
+      opacity:
+        "0",
+
+      background:
+        colors.tooltip,
+
+      color:
+        colors.text,
+
+      border:
+        `1px solid ${colors.border}`,
+
+      boxShadow:
+        themeToggleInput?.checked
+          ? "0 12px 30px rgba(15,23,42,.14)"
+          : "0 12px 30px rgba(0,0,0,.32)",
+
+      fontFamily:
+        "inherit"
+    }
+  );
+
+  tooltipEl.innerHTML =
+    `
+    <div style="
+      font-size:12px;
+      font-weight:700;
+      color:${colors.text};
+      margin-bottom:6px;
+    ">
+      ${
+        transaction.description ||
+        "Expense"
+      }
+    </div>
+
+    <div style="
+      font-size:12px;
+      line-height:1.6;
+      color:${colors.muted};
+    ">
+      <div>
+        <strong style="color:${colors.text}">
+          Amount:
+        </strong>
+        ${formatCurrency(value)}
+      </div>
+
+      <div>
+        <strong style="color:${colors.text}">
+          Category:
+        </strong>
+        ${
+          transaction.category ||
+          "Other"
+        }
+      </div>
+
+      <div>
+        <strong style="color:${colors.text}">
+          Share:
+        </strong>
+        ${percentage}%
+      </div>
+    </div>
+  `;
+
+  return tooltipEl;
+}
+
+function renderCategoryChart() {
+  if (
+    !categoryChartCanvas ||
+    typeof Chart ===
+      "undefined"
+  ) {
+    return;
+  }
+
+  categoryChart?.destroy();
+
+  const currentMonth =
+    getMonthKey(
+      new Date()
+    );
+
+  const expenseTransactions =
+    transactions.filter(
+      (transaction) =>
+        transaction.type ===
+          "expense" &&
+        getMonthKey(
+          transaction.date
+        ) === currentMonth
+    );
+
+  const colors =
+    getChartColors();
+
+  const isLight =
+    themeToggleInput &&
+    themeToggleInput.checked;
+
+  if (
+    !expenseTransactions.length
+  ) {
+    categoryChart =
+      new Chart(
+        categoryChartCanvas,
+        {
+          type:
+            "doughnut",
+
+          data: {
+            labels: [
+              "No expenses"
+            ],
+
+            datasets: [
+              {
+                data: [1],
+
+                backgroundColor: [
+                  isLight
+                    ? "rgba(100,116,139,.12)"
+                    : "rgba(148,163,184,.12)"
+                ],
+
+                borderWidth:
+                  0
+              }
+            ]
+          },
+
+          options: {
+            responsive:
+              true,
+
+            maintainAspectRatio:
+              false,
+
+            cutout:
+              "68%",
+
+            plugins: {
+              legend: {
+                display:
+                  false
+              },
+
+              tooltip: {
+                enabled:
+                  false
+              }
+            }
+          }
+        }
+      );
+
+    if (
+      categoryChartSubtitle
+    ) {
+      categoryChartSubtitle.textContent =
+        "No expenses this month";
+    }
+
+    return;
+  }
+
+  const labels =
+    expenseTransactions.map(
+      (transaction) =>
+        transaction.description ||
+        transaction.category ||
+        "Expense"
+    );
+
+  const values =
+    expenseTransactions.map(
+      (transaction) =>
+        Number(
+          transaction.amount
+        ) || 0
+    );
+
+  const total =
+    values.reduce(
+      (sum, value) =>
+        sum + value,
+      0
+    );
+
+  const palette = [
+    "#22c7e6",
+    "#3b82f6",
+    "#34d399",
+    "#d9b26a",
+    "#fb7166",
+    "#a78bfa",
+    "#f472b6",
+    "#f59e0b",
+    "#14b8a6",
+    "#8b5cf6"
+  ];
+
+  const backgroundColors =
+    labels.map(
+      (_, index) =>
+        palette[
+          index %
+            palette.length
+        ]
+    );
+
+  const centerTextPlugin = {
+    id:
+      "expenseCenterText",
+
+    afterDraw(chart) {
+      const area =
+        chart.chartArea;
+
+      if (!area) return;
+
+      const ctx =
+        chart.ctx;
+
+      const x =
+        (area.left +
+          area.right) /
+        2;
+
+      const y =
+        (area.top +
+          area.bottom) /
+        2;
+
+      ctx.save();
+
+      ctx.textAlign =
+        "center";
+
+      ctx.textBaseline =
+        "middle";
+
+      ctx.fillStyle =
+        colors.text;
+
+      ctx.font =
+        "600 20px 'Space Grotesk', sans-serif";
+
+      ctx.fillText(
+        formatCurrency(total),
+        x,
+        y - 10
+      );
+
+      ctx.fillStyle =
+        colors.muted;
+
+      ctx.font =
+        "500 11px Inter, sans-serif";
+
+      ctx.fillText(
+        `${expenseTransactions.length} ${
+          expenseTransactions.length ===
+          1
+            ? "Expense"
+            : "Expenses"
+        }`,
+        x,
+        y + 17
+      );
+
+      ctx.restore();
+    }
+  };
+
+  categoryChart =
+    new Chart(
+      categoryChartCanvas,
+      {
+        type:
+          "doughnut",
+
+        plugins: [
+          centerTextPlugin
+        ],
+
+        data: {
+          labels,
+
+          datasets: [
+            {
+              data:
+                values,
+
+              backgroundColor:
+                backgroundColors,
+
+              borderColor:
+                isLight
+                  ? "rgba(15,23,42,.10)"
+                  : "rgba(3,10,18,.60)",
+
+              borderWidth:
+                2,
+
+              borderRadius:
+                12,
+
+              spacing:
+                5,
+
+              offset:
+                labels.map(
+                  () => 5
+                ),
+
+              hoverOffset:
+                9,
+
+              hoverBorderWidth:
+                3,
+
+              hoverBorderColor:
+                isLight
+                  ? "#ffffff"
+                  : "#111827"
+            }
+          ]
+        },
+
+        options: {
+          responsive:
+            true,
+
+          maintainAspectRatio:
+            false,
+
+          cutout:
+            "62%",
+
+          rotation:
+            -90,
+
+          animation: {
+            animateRotate:
+              true,
+
+            animateScale:
+              true,
+
+            duration:
+              850,
+
+            easing:
+              "easeOutQuart"
+          },
+
+          layout: {
+            padding:
+              8
+          },
+
+          plugins: {
+            legend: {
+              position:
+                "bottom",
+
+              labels: {
+                color:
+                  colors.text,
+
+                usePointStyle:
+                  true,
+
+                pointStyle:
+                  "circle",
+
+                boxWidth:
+                  9,
+
+                boxHeight:
+                  9,
+
+                padding:
+                  10,
+
+                font: {
+                  size:
+                    10,
+
+                  weight:
+                    "600"
+                }
+              }
+            },
+
+            tooltip: {
+              enabled:
+                false,
+
+              external(context) {
+                const {
+                  chart,
+                  tooltip
+                } = context;
+
+                let tooltipEl =
+                  chart.canvas.parentNode.querySelector(
+                    ".expense-chart-tooltip"
+                  );
+
+                if (
+                  tooltip.opacity ===
+                  0
+                ) {
+                  if (tooltipEl) {
+                    tooltipEl.style.opacity =
+                      "0";
+                  }
+
+                  return;
+                }
+
+                const point =
+                  tooltip.dataPoints?.[0];
+
+                if (!point) return;
+
+                const index =
+                  point.dataIndex;
+
+                const transaction =
+                  expenseTransactions[
+                    index
+                  ];
+
+                if (!transaction) {
+                  return;
+                }
+
+                const value =
+                  Number(
+                    transaction.amount
+                  ) || 0;
+
+                const percentage =
+                  total > 0
+                    ? (
+                        (value /
+                          total) *
+                        100
+                      ).toFixed(1)
+                    : "0.0";
+
+                tooltipEl =
+                  createCategoryTooltip(
+                    chart,
+                    transaction,
+                    value,
+                    percentage,
+                    colors
+                  );
+
+                const canvasWidth =
+                  chart.canvas
+                    .offsetWidth;
+
+                const canvasHeight =
+                  chart.canvas
+                    .offsetHeight;
+
+                const tooltipWidth =
+                  tooltipEl
+                    .offsetWidth ||
+                  185;
+
+                const tooltipHeight =
+                  tooltipEl
+                    .offsetHeight ||
+                  90;
+
+                const centerX =
+                  canvasWidth / 2;
+
+                const centerY =
+                  canvasHeight / 2;
+
+                let left;
+                let top;
+
+                const isLeft =
+                  tooltip.caretX <
+                  centerX;
+
+                const nearCenter =
+                  Math.abs(
+                    tooltip.caretY -
+                      centerY
+                  ) <
+                  tooltipHeight;
+
+                if (isLeft) {
+                  left = 10;
+                } else {
+                  left =
+                    canvasWidth -
+                    tooltipWidth -
+                    10;
+                }
+
+                if (nearCenter) {
+                  top =
+                    tooltip.caretY <
+                    centerY
+                      ? 10
+                      : canvasHeight -
+                        tooltipHeight -
+                        10;
+                } else {
+                  top =
+                    tooltip.caretY -
+                    tooltipHeight / 2;
+                }
+
+                left =
+                  Math.max(
+                    10,
+                    Math.min(
+                      left,
+                      canvasWidth -
+                        tooltipWidth -
+                        10
+                    )
+                  );
+
+                top =
+                  Math.max(
+                    10,
+                    Math.min(
+                      top,
+                      canvasHeight -
+                        tooltipHeight -
+                        10
+                    )
+                  );
+
+                tooltipEl.style.left =
+                  `${left}px`;
+
+                tooltipEl.style.top =
+                  `${top}px`;
+
+                tooltipEl.style.opacity =
+                  "1";
+              }
+            }
+          }
+        }
+      }
+    );
+
+  if (
+    categoryChartSubtitle
+  ) {
+    categoryChartSubtitle.textContent =
+      `${formatCurrency(total)} spent across ${
+        expenseTransactions.length
+      } ${
+        expenseTransactions.length ===
+        1
+          ? "expense"
+          : "expenses"
+      } this month`;
+  }
+}
+
+function updateChartTheme() {
+  renderMonthlyChart();
+  renderCategoryChart();
+}
+
 function updateSummary() {
   let income = 0;
   let expenses = 0;
@@ -624,94 +1894,101 @@ function updateSummary() {
   transactions.forEach(
     (transaction) => {
       const amount =
-        Number(transaction.amount) ||
-        0;
+        Number(
+          transaction.amount
+        ) || 0;
 
       if (
         transaction.type ===
         "income"
       ) {
-        income +=
-          amount;
-      } else if (
+        income += amount;
+      }
+
+      if (
         transaction.type ===
         "expense"
       ) {
-        expenses +=
-          amount;
+        expenses += amount;
       }
     }
   );
 
-  const balance =
-    income -
-    expenses;
+  if (totalIncome) {
+    totalIncome.textContent =
+      `+${formatCurrency(
+        income
+      )}`;
+  }
 
-  totalIncome.textContent =
-    `+${formatCurrency(income)}`;
+  if (totalExpenses) {
+    totalExpenses.textContent =
+      `-${formatCurrency(
+        expenses
+      )}`;
+  }
 
-  totalExpenses.textContent =
-    `-${formatCurrency(expenses)}`;
+  if (totalBalance) {
+    totalBalance.textContent =
+      formatCurrency(
+        income -
+          expenses
+      );
+  }
 
-  totalBalance.textContent =
-    formatCurrency(balance);
+  updateMonthlySummary();
+  renderMonthlyChart();
+  renderCategoryChart();
 }
 
 function getFilteredTransactions() {
   return transactions.filter(
     (transaction) => {
-      const matchesType =
+      const typeMatch =
         currentTypeFilter ===
           "all" ||
         transaction.type ===
           currentTypeFilter;
 
-      const matchesCategory =
+      const categoryMatch =
         currentCategoryFilter ===
           "all" ||
         transaction.category ===
           currentCategoryFilter;
 
       return (
-        matchesType &&
-        matchesCategory
+        typeMatch &&
+        categoryMatch
       );
     }
   );
 }
 
 function renderTransactions() {
-  const filteredTransactions =
+  if (!txList) return;
+
+  const filtered =
     getFilteredTransactions();
 
   txList.innerHTML =
     "";
 
-  emptyState.classList.toggle(
+  emptyState?.classList.toggle(
     "hidden",
-    filteredTransactions.length >
-      0
+    filtered.length > 0
   );
 
-  if (
-    filteredTransactions.length ===
-    0
-  ) {
+  if (txCountBadge) {
     txCountBadge.textContent =
-      "0 records";
-
-    return;
+      `${filtered.length} ${
+        filtered.length ===
+        1
+          ? "record"
+          : "records"
+      }`;
   }
 
-  txCountBadge.textContent =
-    `${filteredTransactions.length} ${
-      filteredTransactions.length ===
-      1
-        ? "record"
-        : "records"
-    }`;
-
-  filteredTransactions.forEach(
+  filtered.forEach(
     (transaction) => {
       const item =
         document.createElement(
@@ -794,49 +2071,6 @@ function renderTransactions() {
               transaction.amount
             )}`;
 
-      const editButton =
-        document.createElement(
-          "button"
-        );
-
-      editButton.type =
-        "button";
-
-      editButton.textContent =
-        "Edit";
-
-      editButton.addEventListener(
-        "click",
-        () => {
-          startEditingTransaction(
-            transaction
-          );
-        }
-      );
-
-      const deleteButton =
-        document.createElement(
-          "button"
-        );
-
-      deleteButton.type =
-        "button";
-
-      deleteButton.className =
-        "delete-btn";
-
-      deleteButton.textContent =
-        "Delete";
-
-      deleteButton.addEventListener(
-        "click",
-        () => {
-          deleteTransaction(
-            transaction._id
-          );
-        }
-      );
-
       const actions =
         document.createElement(
           "div"
@@ -845,9 +2079,50 @@ function renderTransactions() {
       actions.className =
         "transaction-actions";
 
+      const editBtn =
+        document.createElement(
+          "button"
+        );
+
+      editBtn.type =
+        "button";
+
+      editBtn.textContent =
+        "Edit";
+
+      editBtn.addEventListener(
+        "click",
+        () =>
+          startEditingTransaction(
+            transaction
+          )
+      );
+
+      const deleteBtn =
+        document.createElement(
+          "button"
+        );
+
+      deleteBtn.type =
+        "button";
+
+      deleteBtn.className =
+        "delete-btn";
+
+      deleteBtn.textContent =
+        "Delete";
+
+      deleteBtn.addEventListener(
+        "click",
+        () =>
+          deleteTransaction(
+            transaction._id
+          )
+      );
+
       actions.append(
-        editButton,
-        deleteButton
+        editBtn,
+        deleteBtn
       );
 
       item.append(
@@ -863,57 +2138,46 @@ function renderTransactions() {
   );
 }
 
-async function loadTransactions() {
-  try {
-    const data =
-      await apiRequest(
-        "/transactions"
-      );
-
-    transactions =
-      Array.isArray(
-        data.transactions
-      )
-        ? data.transactions
-        : [];
-
-    populateCategoryFilter();
-
-    updateSummary();
-
-    renderTransactions();
-  } catch (error) {
-    showToast(
-      error.message,
-      "error"
-    );
-  }
-}
-
 function resetTransactionForm() {
   editingTransactionId =
     null;
 
-  transactionForm.reset();
+  transactionForm?.reset();
 
-  formTitle.textContent =
-    "Add Transaction";
+  if (formTitle) {
+    formTitle.textContent =
+      "Add Transaction";
+  }
 
-  txSubmitBtn.textContent =
-    "+ Add Transaction";
+  if (txSubmitBtn) {
+    txSubmitBtn.textContent =
+      "+ Add Transaction";
+  }
 
-  cancelEditBtn.classList.add(
+  cancelEditBtn?.classList.add(
     "hidden"
   );
 
-  setSelectedType(
-    "expense"
-  );
+  const expenseRadio =
+    document.querySelector(
+      'input[name="txType"][value="expense"]'
+    );
 
-  txDate.value =
-    new Date()
-      .toISOString()
-      .split("T")[0];
+  if (expenseRadio) {
+    expenseRadio.checked =
+      true;
+  }
+
+  updateTypeStyles();
+
+  populateTransactionCategories();
+
+  if (txDate) {
+    txDate.value =
+      new Date()
+        .toISOString()
+        .split("T")[0];
+  }
 }
 
 function startEditingTransaction(
@@ -922,38 +2186,45 @@ function startEditingTransaction(
   editingTransactionId =
     transaction._id;
 
-  formTitle.textContent =
-    "Edit Transaction";
+  if (formTitle) {
+    formTitle.textContent =
+      "Edit Transaction";
+  }
 
-  txSubmitBtn.textContent =
-    "Save Changes";
+  if (txSubmitBtn) {
+    txSubmitBtn.textContent =
+      "Save Changes";
+  }
 
-  cancelEditBtn.classList.remove(
+  cancelEditBtn?.classList.remove(
     "hidden"
   );
 
-  setSelectedType(
-    transaction.type
-  );
+  const radio =
+    document.querySelector(
+      `input[name="txType"][value="${transaction.type}"]`
+    );
 
-  txAmount.value =
-    transaction.amount;
+  if (radio) {
+    radio.checked =
+      true;
+  }
 
-  txAmount.dispatchEvent(
-    new Event(
-      "input",
-      {
-        bubbles: true
-      }
-    )
-  );
+  updateTypeStyles();
 
   populateTransactionCategories(
     transaction.category
   );
 
-  txDescription.value =
-    transaction.description;
+  if (txAmount) {
+    txAmount.value =
+      transaction.amount;
+  }
+
+  if (txDescription) {
+    txDescription.value =
+      transaction.description;
+  }
 
   if (transaction.date) {
     const date =
@@ -964,32 +2235,23 @@ function startEditingTransaction(
     if (
       !Number.isNaN(
         date.getTime()
-      )
+      ) &&
+      txDate
     ) {
-      const year =
-        date.getFullYear();
-
-      const month =
-        String(
-          date.getMonth() + 1
-        ).padStart(2, "0");
-
-      const day =
-        String(
-          date.getDate()
-        ).padStart(2, "0");
-
       txDate.value =
-        `${year}-${month}-${day}`;
+        date
+          .toISOString()
+          .split("T")[0];
     }
   }
 
-  transactionForm.scrollIntoView(
-    {
-      behavior: "smooth",
-      block: "start"
-    }
-  );
+  transactionForm?.scrollIntoView({
+    behavior:
+      "smooth",
+
+    block:
+      "start"
+  });
 }
 
 async function saveTransaction(
@@ -997,28 +2259,30 @@ async function saveTransaction(
 ) {
   event.preventDefault();
 
-  const type =
-    getSelectedType();
+  const payload = {
+    type:
+      getSelectedType(),
 
-  const amount =
-    Number(
-      txAmount.value
-    );
+    amount:
+      Number(
+        txAmount.value
+      ),
 
-  const category =
-    txCategory.value.trim();
+    category:
+      txCategory.value.trim(),
 
-  const description =
-    txDescription.value.trim();
+    description:
+      txDescription.value.trim(),
 
-  const date =
-    txDate.value;
+    date:
+      txDate.value
+  };
 
   if (
     !Number.isFinite(
-      amount
+      payload.amount
     ) ||
-    amount <= 0
+    payload.amount <= 0
   ) {
     showToast(
       "Amount must be greater than 0.",
@@ -1029,9 +2293,9 @@ async function saveTransaction(
   }
 
   if (
-    !category ||
-    !description ||
-    !date
+    !payload.category ||
+    !payload.description ||
+    !payload.date
   ) {
     showToast(
       "Please fill in all transaction fields.",
@@ -1041,33 +2305,24 @@ async function saveTransaction(
     return;
   }
 
-  const payload = {
-    type,
-    amount,
-    category,
-    description,
-    date
-  };
-
-  const isEditing =
-    Boolean(
-      editingTransactionId
-    );
-
   try {
     setLoading(
       txSubmitBtn,
       true,
-      isEditing
+      editingTransactionId
         ? "Saving..."
         : "Adding..."
     );
 
-    if (isEditing) {
+    if (
+      editingTransactionId
+    ) {
       await apiRequest(
         `/transactions/${editingTransactionId}`,
         {
-          method: "PUT",
+          method:
+            "PUT",
+
           body:
             JSON.stringify(
               payload
@@ -1082,7 +2337,9 @@ async function saveTransaction(
       await apiRequest(
         "/transactions",
         {
-          method: "POST",
+          method:
+            "POST",
+
           body:
             JSON.stringify(
               payload
@@ -1114,16 +2371,13 @@ async function saveTransaction(
 async function deleteTransaction(
   id
 ) {
-  if (!id) {
-    return;
-  }
+  if (!id) return;
 
-  const shouldDelete =
-    window.confirm(
+  if (
+    !confirm(
       "Are you sure you want to delete this transaction?"
-    );
-
-  if (!shouldDelete) {
+    )
+  ) {
     return;
   }
 
@@ -1131,12 +2385,9 @@ async function deleteTransaction(
     await apiRequest(
       `/transactions/${id}`,
       {
-        method: "DELETE"
+        method:
+          "DELETE"
       }
-    );
-
-    showToast(
-      "Transaction deleted successfully."
     );
 
     if (
@@ -1146,6 +2397,10 @@ async function deleteTransaction(
       resetTransactionForm();
     }
 
+    showToast(
+      "Transaction deleted successfully."
+    );
+
     await loadTransactions();
   } catch (error) {
     showToast(
@@ -1155,778 +2410,93 @@ async function deleteTransaction(
   }
 }
 
-async function registerUser(
-  event
-) {
-  event.preventDefault();
-
-  const name =
-    document
-      .getElementById(
-        "registerName"
-      )
-      .value
-      .trim();
-
-  const email =
-    document
-      .getElementById(
-        "registerEmail"
-      )
-      .value
-      .trim();
-
-  const password =
-    document
-      .getElementById(
-        "registerPassword"
-      )
-      .value;
-
-  if (
-    !name ||
-    !email ||
-    !password
-  ) {
-    showToast(
-      "Please fill in all fields.",
-      "error"
-    );
-
-    return;
-  }
-
-  if (
-    password.length < 6
-  ) {
-    showToast(
-      "Password must be at least 6 characters.",
-      "error"
-    );
-
-    return;
-  }
-
-  try {
-    setLoading(
-      registerSubmitBtn,
-      true,
-      "Creating Account..."
-    );
-
-    const data =
-      await apiRequest(
-        "/auth/register",
-        {
-          method: "POST",
-          body:
-            JSON.stringify({
-              name,
-              email,
-              password
-            })
-        }
-      );
-
-    authToken =
-      data.token;
-
-    currentUser =
-      data.user;
-
-    localStorage.setItem(
-      "authToken",
-      authToken
-    );
-
-    registerForm.reset();
-
-    showDashboard();
-
-    resetTransactionForm();
-
-    await loadTransactions();
-
-    showToast(
-      data.message ||
-      "Registration successful."
-    );
-  } catch (error) {
-    showToast(
-      error.message,
-      "error"
-    );
-  } finally {
-    setLoading(
-      registerSubmitBtn,
-      false
-    );
-  }
-}
-
-async function loginUser(
-  event
-) {
-  event.preventDefault();
-
-  const email =
-    document
-      .getElementById(
-        "loginEmail"
-      )
-      .value
-      .trim();
-
-  const password =
-    document
-      .getElementById(
-        "loginPassword"
-      )
-      .value;
-
-  loginError.textContent =
-    "";
-
-  loginError.classList.add(
-    "hidden"
-  );
-
-  if (
-    !email ||
-    !password
-  ) {
-    loginError.textContent =
-      "Please enter your email and password.";
-
-    loginError.classList.remove(
-      "hidden"
-    );
-
-    return;
-  }
-
-  try {
-    setLoading(
-      loginSubmitBtn,
-      true,
-      "Signing In..."
-    );
-
-    const data =
-      await apiRequest(
-        "/auth/login",
-        {
-          method: "POST",
-          body:
-            JSON.stringify({
-              email,
-              password
-            })
-        }
-      );
-
-    authToken =
-      data.token;
-
-    currentUser =
-      data.user;
-
-    localStorage.setItem(
-      "authToken",
-      authToken
-    );
-
-    loginForm.reset();
-
-    loginError.textContent =
-      "";
-
-    loginError.classList.add(
-      "hidden"
-    );
-
-    showDashboard();
-
-    resetTransactionForm();
-
-    await loadTransactions();
-
-    showToast(
-      data.message ||
-      "Login successful."
-    );
-  } catch (error) {
-    loginError.textContent =
-      error.message ||
-      "Invalid email or password.";
-
-    loginError.classList.remove(
-      "hidden"
-    );
-  } finally {
-    setLoading(
-      loginSubmitBtn,
-      false
-    );
-  }
-}
-
-async function sendOtp() {
-  const email =
-    otpEmail.value.trim();
-
-  otpError.textContent =
-    "";
-
-  otpError.classList.add(
-    "hidden"
-  );
-
-  if (!email) {
-    otpError.textContent =
-      "Please enter your email address.";
-
-    otpError.classList.remove(
-      "hidden"
-    );
-
-    return;
-  }
-
-  try {
-    setLoading(
-      sendOtpBtn,
-      true,
-      "Sending OTP..."
-    );
-
-    const data =
-      await apiRequest(
-        "/auth/send-otp",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            email
-          })
-        }
-      );
-
-    otpCodeGroup.classList.remove(
-      "hidden"
-    );
-
-    verifyOtpBtn.classList.remove(
-      "hidden"
-    );
-
-    otpCode.value =
-      "";
-
-    showToast(
-      data.message ||
-      "OTP sent successfully."
-    );
-
-    otpCode.focus();
-  } catch (error) {
-    otpError.textContent =
-      error.message ||
-      "Unable to send OTP.";
-
-    otpError.classList.remove(
-      "hidden"
-    );
-  } finally {
-    setLoading(
-      sendOtpBtn,
-      false
-    );
-  }
-}
-
-async function verifyOtp() {
-  const email =
-    otpEmail.value.trim();
-
-  const otp =
-    otpCode.value.trim();
-
-  otpError.textContent =
-    "";
-
-  otpError.classList.add(
-    "hidden"
-  );
-
-  if (
-    !email ||
-    !otp
-  ) {
-    otpError.textContent =
-      "Please enter your email and OTP.";
-
-    otpError.classList.remove(
-      "hidden"
-    );
-
-    return;
-  }
-
-  if (
-    !/^\d{6}$/.test(otp)
-  ) {
-    otpError.textContent =
-      "Please enter a valid 6-digit OTP.";
-
-    otpError.classList.remove(
-      "hidden"
-    );
-
-    return;
-  }
-
-  try {
-    setLoading(
-      verifyOtpBtn,
-      true,
-      "Verifying..."
-    );
-
-    const data =
-      await apiRequest(
-        "/auth/verify-otp",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            email,
-            otp
-          })
-        }
-      );
-
-    authToken =
-      data.token;
-
-    currentUser =
-      data.user;
-
-    localStorage.setItem(
-      "authToken",
-      authToken
-    );
-
-    otpLoginForm.reset();
-
-    otpCodeGroup.classList.add(
-      "hidden"
-    );
-
-    verifyOtpBtn.classList.add(
-      "hidden"
-    );
-
-    showDashboard();
-
-    resetTransactionForm();
-
-    await loadTransactions();
-
-    showToast(
-      data.message ||
-      "OTP login successful."
-    );
-  } catch (error) {
-    otpError.textContent =
-      error.message ||
-      "Invalid OTP.";
-
-    otpError.classList.remove(
-      "hidden"
-    );
-  } finally {
-    setLoading(
-      verifyOtpBtn,
-      false
-    );
-  }
-}
-
-function showOtpForm() {
-  loginForm.classList.add(
-    "hidden"
-  );
-
-  otpLoginForm.classList.remove(
-    "hidden"
-  );
-
-  otpError.textContent =
-    "";
-
-  otpError.classList.add(
-    "hidden"
-  );
-
-  otpCodeGroup.classList.add(
-    "hidden"
-  );
-
-  verifyOtpBtn.classList.add(
-    "hidden"
-  );
-
-  otpCode.value =
-    "";
-
-  const loginEmail =
-    document.getElementById(
-      "loginEmail"
-    );
-
-  if (
-    loginEmail &&
-    loginEmail.value
-  ) {
-    otpEmail.value =
-      loginEmail.value.trim();
-  }
-
-  otpEmail.focus();
-}
-
-function showPasswordLoginForm() {
-  otpLoginForm.classList.add(
-    "hidden"
-  );
-
-  loginForm.classList.remove(
-    "hidden"
-  );
-
-  otpError.textContent =
-    "";
-
-  otpError.classList.add(
-    "hidden"
-  );
-}
-
-function handleGoogleCredentialResponse(
-  response
-) {
-  apiRequest(
-    "/auth/google",
-    {
-      method: "POST",
-      body: JSON.stringify({
-        credential:
-          response.credential
-      })
-    }
-  )
-    .then((data) => {
-      authToken =
-        data.token;
-
-      currentUser =
-        data.user;
-
-      localStorage.setItem(
-        "authToken",
-        authToken
-      );
-
-      showDashboard();
-
-      resetTransactionForm();
-
-      return loadTransactions();
-    })
-    .then(() => {
-      showToast(
-        "Google login successful."
-      );
-    })
-    .catch((error) => {
-      loginError.textContent =
-        error.message ||
-        "Google login failed.";
-
-      loginError.classList.remove(
-        "hidden"
-      );
-    });
-}
-
-function initializeGoogleSignIn() {
-  if (
-    !googleSignInButton ||
-    !window.google ||
-    !google.accounts ||
-    !google.accounts.id
-  ) {
-    return false;
-  }
-
-  google.accounts.id.initialize({
-    client_id:
-      "448499935087-ee77v8eoka98h5k0hojiiev41fsjilsv.apps.googleusercontent.com",
-    callback:
-      handleGoogleCredentialResponse
-  });
-
-  googleSignInButton.style.marginTop =
-    "12px";
-
-  googleSignInButton.style.display =
-    "flex";
-
-  googleSignInButton.style.justifyContent =
-    "center";
-
-  google.accounts.id.renderButton(
-    googleSignInButton,
-    {
-      theme: "outline",
-      size: "large",
-      text: "continue_with",
-      shape: "rectangular",
-      width: 355
-    }
-  );
-
-  return true;
-}
-
-const googleSignInInterval =
-  setInterval(() => {
-    if (initializeGoogleSignIn()) {
-      clearInterval(
-        googleSignInInterval
-      );
-    }
-  }, 100);
-
-async function checkExistingSession() {
-  if (!authToken) {
-    showAuth();
-    return;
-  }
-
+async function loadTransactions() {
   try {
     const data =
       await apiRequest(
-        "/auth/me"
+        "/transactions"
       );
 
-    currentUser =
-      data.user;
+    transactions =
+      Array.isArray(
+        data.transactions
+      )
+        ? data.transactions
+        : [];
 
-    showDashboard();
+    populateCategoryFilter();
 
-    resetTransactionForm();
-
-    await loadTransactions();
-  } catch {
-    authToken =
-      null;
-
-    currentUser =
-      null;
-
-    localStorage.removeItem(
-      "authToken"
-    );
-
-    showAuth();
-  }
-}
-
-function logout() {
-  authToken =
-    null;
-
-  currentUser =
-    null;
-
-  transactions =
-    [];
-
-  editingTransactionId =
-    null;
-
-  localStorage.removeItem(
-    "authToken"
-  );
-
-  txList.innerHTML =
-    "";
-
-  loginForm.reset();
-
-  registerForm.reset();
-
-  otpLoginForm.reset();
-
-  otpCodeGroup.classList.add(
-    "hidden"
-  );
-
-  verifyOtpBtn.classList.add(
-    "hidden"
-  );
-
-  updateSummary();
-
-  currentTypeFilter =
-    "all";
-
-  currentCategoryFilter =
-    "all";
-
-  categoryFilter.value =
-    "all";
-
-  filterButtons.forEach(
-    (button) => {
-      button.classList.toggle(
-        "active",
-        button.dataset
-          .typeFilter ===
-          "all"
-      );
-    }
-  );
-
-  resetTransactionForm();
-
-  showLoginForm();
-
-  showAuth();
-
-  showToast(
-    "You have been logged out."
-  );
-}
-
-tabLogin.addEventListener(
-  "click",
-  showLoginForm
-);
-
-tabRegister.addEventListener(
-  "click",
-  showRegisterForm
-);
-
-loginForm.addEventListener(
-  "submit",
-  loginUser
-);
-
-otpLoginToggle.addEventListener(
-  "click",
-  showOtpForm
-);
-
-sendOtpBtn.addEventListener(
-  "click",
-  sendOtp
-);
-
-verifyOtpBtn.addEventListener(
-  "click",
-  verifyOtp
-);
-
-otpBackBtn.addEventListener(
-  "click",
-  showPasswordLoginForm
-);
-
-otpCode.addEventListener(
-  "input",
-  () => {
-    otpCode.value =
-      otpCode.value
-        .replace(/\D/g, "")
-        .slice(0, 6);
-  }
-);
-
-registerForm.addEventListener(
-  "submit",
-  registerUser
-);
-
-logoutBtn.addEventListener(
-  "click",
-  logout
-);
-
-transactionForm.addEventListener(
-  "submit",
-  saveTransaction
-);
-
-cancelEditBtn.addEventListener(
-  "click",
-  resetTransactionForm
-);
-
-document
-  .querySelectorAll(
-    'input[name="txType"]'
-  )
-  .forEach(
-    (radio) => {
-      radio.addEventListener(
-        "change",
-        () => {
-          updateTypeStyles();
-
-          populateTransactionCategories();
-        }
-      );
-    }
-  );
-
-filterButtons.forEach(
-  (button) => {
-    button.addEventListener(
-      "click",
-      () => {
-        currentTypeFilter =
-          button.dataset.typeFilter;
-
-        filterButtons.forEach(
-          (item) => {
-            item.classList.toggle(
-              "active",
-              item === button
-            );
-          }
-        );
-
-        renderTransactions();
-      }
-    );
-  }
-);
-
-categoryFilter.addEventListener(
-  "change",
-  () => {
-    currentCategoryFilter =
-      categoryFilter.value;
+    updateSummary();
 
     renderTransactions();
+  } catch (error) {
+    showToast(
+      error.message,
+      "error"
+    );
   }
-);
+}
 
-updateTypeStyles();
+function populateCategoryFilter() {
+  if (!categoryFilter) {
+    return;
+  }
 
-populateTransactionCategories();
+  const categories = [
+    "Food",
+    "Shopping",
+    "Transport",
+    "Bills",
+    "Entertainment",
+    "Salary",
+    "Freelance",
+    "Other"
+  ];
+
+  categoryFilter.innerHTML =
+    "";
+
+  const all =
+    document.createElement(
+      "option"
+    );
+
+  all.value =
+    "all";
+
+  all.textContent =
+    "All Categories";
+
+  categoryFilter.appendChild(
+    all
+  );
+
+  categories.forEach(
+    (category) => {
+      const option =
+        document.createElement(
+          "option"
+        );
+
+      option.value =
+        category;
+
+      option.textContent =
+        category;
+
+      categoryFilter.appendChild(
+        option
+      );
+    }
+  );
+
+  categoryFilter.value =
+    currentCategoryFilter;
+
+  refreshCustomSelect(
+    categoryFilter
+  );
+}
 
 function setupCustomSelect(
   select
@@ -2001,97 +2571,22 @@ function setupCustomSelect(
     menu
   );
 
-  function updateLabel() {
-    const selected =
-      select.options[
-        select.selectedIndex
-      ];
-
-    label.textContent =
-      selected
-        ? selected.textContent
-        : "";
-  }
-
-  function renderOptions() {
-    menu.innerHTML =
-      "";
-
-    [
-      ...select.options
-    ].forEach(
-      (option) => {
-        const item =
-          document.createElement(
-            "button"
-          );
-
-        item.type =
-          "button";
-
-        item.className =
-          "custom-select-option";
-
-        item.textContent =
-          option.textContent;
-
-        if (
-          option.value ===
-          select.value
-        ) {
-          item.classList.add(
-            "selected"
-          );
-        }
-
-        item.addEventListener(
-          "click",
-          () => {
-            select.value =
-              option.value;
-
-            select.dispatchEvent(
-              new Event(
-                "change",
-                {
-                  bubbles: true
-                }
-              )
-            );
-
-            updateLabel();
-
-            renderOptions();
-
-            wrapper.classList.remove(
-              "open"
-            );
-          }
-        );
-
-        menu.appendChild(
-          item
-        );
-      }
-    );
-
-    updateLabel();
-  }
-
   button.addEventListener(
     "click",
-    () => {
+    (event) => {
+      event.stopPropagation();
+
       document
         .querySelectorAll(
           ".custom-select.open"
         )
         .forEach(
-          (item) => {
+          (other) => {
             if (
-              item !==
+              other !==
               wrapper
             ) {
-              item.classList.remove(
+              other.classList.remove(
                 "open"
               );
             }
@@ -2106,44 +2601,817 @@ function setupCustomSelect(
 
   select.addEventListener(
     "change",
-    renderOptions
-  );
-
-  new MutationObserver(
-    renderOptions
-  ).observe(
-    select,
-    {
-      childList: true,
-      subtree: true
+    () => {
+      refreshCustomSelect(
+        select
+      );
     }
   );
 
-  renderOptions();
+  select._customRefresh =
+    () => {
+      menu.innerHTML =
+        "";
+
+      Array.from(
+        select.options
+      ).forEach(
+        (option) => {
+          const item =
+            document.createElement(
+              "button"
+            );
+
+          item.type =
+            "button";
+
+          item.className =
+            "custom-select-option";
+
+          item.textContent =
+            option.textContent;
+
+          if (
+            option.value ===
+            select.value
+          ) {
+            item.classList.add(
+              "selected"
+            );
+          }
+
+          item.addEventListener(
+            "click",
+            (event) => {
+              event.stopPropagation();
+
+              select.value =
+                option.value;
+
+              select.dispatchEvent(
+                new Event(
+                  "change",
+                  {
+                    bubbles:
+                      true
+                  }
+                )
+              );
+
+              wrapper.classList.remove(
+                "open"
+              );
+            }
+          );
+
+          menu.appendChild(
+            item
+          );
+        }
+      );
+
+      const selected =
+        select.options[
+          select.selectedIndex
+        ];
+
+      label.textContent =
+        selected
+          ? selected.textContent
+          : "";
+    };
+
+  select._customRefresh();
+}
+
+function refreshCustomSelect(
+  select
+) {
+  if (
+    select &&
+    typeof select._customRefresh ===
+      "function"
+  ) {
+    select._customRefresh();
+  }
 }
 
 document.addEventListener(
   "click",
-  (event) => {
-    if (
-      !event.target.closest(
-        ".custom-select"
+  () => {
+    document
+      .querySelectorAll(
+        ".custom-select.open"
       )
-    ) {
-      document
-        .querySelectorAll(
-          ".custom-select.open"
-        )
-        .forEach(
+      .forEach(
+        (select) => {
+          select.classList.remove(
+            "open"
+          );
+        }
+      );
+  }
+);
+
+async function registerUser(
+  event
+) {
+  event.preventDefault();
+
+  const name =
+    $("registerName")
+      ?.value
+      .trim();
+
+  const email =
+    $("registerEmail")
+      ?.value
+      .trim();
+
+  const password =
+    $("registerPassword")
+      ?.value;
+
+  if (
+    !name ||
+    !email ||
+    !password
+  ) {
+    showToast(
+      "Please fill in all fields.",
+      "error"
+    );
+
+    return;
+  }
+
+  if (
+    password.length < 6
+  ) {
+    showToast(
+      "Password must be at least 6 characters.",
+      "error"
+    );
+
+    return;
+  }
+
+  try {
+    setLoading(
+      registerSubmitBtn,
+      true,
+      "Creating Account..."
+    );
+
+    const data =
+      await apiRequest(
+        "/auth/register",
+        {
+          method:
+            "POST",
+
+          body:
+            JSON.stringify({
+              name,
+              email,
+              password
+            })
+        }
+      );
+
+    authToken =
+      data.token;
+
+    currentUser =
+      data.user;
+
+    localStorage.setItem(
+      "authToken",
+      authToken
+    );
+
+    registerForm.reset();
+
+    showDashboard();
+
+    resetTransactionForm();
+
+    await loadTransactions();
+
+    showToast(
+      data.message ||
+      "Registration successful."
+    );
+  } catch (error) {
+    showToast(
+      error.message,
+      "error"
+    );
+  } finally {
+    setLoading(
+      registerSubmitBtn,
+      false
+    );
+  }
+}
+
+async function loginUser(
+  event
+) {
+  event.preventDefault();
+
+  const email =
+    $("loginEmail")
+      ?.value
+      .trim();
+
+  const password =
+    $("loginPassword")
+      ?.value;
+
+  if (loginError) {
+    loginError.textContent =
+      "";
+
+    loginError.classList.add(
+      "hidden"
+    );
+  }
+
+  if (
+    !email ||
+    !password
+  ) {
+    if (loginError) {
+      loginError.textContent =
+        "Please enter your email and password.";
+
+      loginError.classList.remove(
+        "hidden"
+      );
+    }
+
+    return;
+  }
+
+  try {
+    setLoading(
+      loginSubmitBtn,
+      true,
+      "Signing In..."
+    );
+
+    const data =
+      await apiRequest(
+        "/auth/login",
+        {
+          method:
+            "POST",
+
+          body:
+            JSON.stringify({
+              email,
+              password
+            })
+        }
+      );
+
+    authToken =
+      data.token;
+
+    currentUser =
+      data.user;
+
+    localStorage.setItem(
+      "authToken",
+      authToken
+    );
+
+    loginForm.reset();
+
+    showDashboard();
+
+    resetTransactionForm();
+
+    await loadTransactions();
+
+    showToast(
+      data.message ||
+      "Login successful."
+    );
+  } catch (error) {
+    if (loginError) {
+      loginError.textContent =
+        error.message ||
+        "Invalid email or password.";
+
+      loginError.classList.remove(
+        "hidden"
+      );
+    }
+  } finally {
+    setLoading(
+      loginSubmitBtn,
+      false
+    );
+  }
+}
+
+async function sendOtp() {
+  const email =
+    otpEmail?.value.trim();
+
+  if (otpError) {
+    otpError.textContent =
+      "";
+
+    otpError.classList.add(
+      "hidden"
+    );
+  }
+
+  if (!email) {
+    if (otpError) {
+      otpError.textContent =
+        "Please enter your email address.";
+
+      otpError.classList.remove(
+        "hidden"
+      );
+    }
+
+    return;
+  }
+
+  try {
+    setLoading(
+      sendOtpBtn,
+      true,
+      "Sending OTP..."
+    );
+
+    const data =
+      await apiRequest(
+        "/auth/send-otp",
+        {
+          method:
+            "POST",
+
+          body:
+            JSON.stringify({
+              email
+            })
+        }
+      );
+
+    otpCodeGroup?.classList.remove(
+      "hidden"
+    );
+
+    verifyOtpBtn?.classList.remove(
+      "hidden"
+    );
+
+    if (otpCode) {
+      otpCode.value =
+        "";
+
+      otpCode.focus();
+    }
+
+    showToast(
+      data.message ||
+      "OTP sent successfully."
+    );
+  } catch (error) {
+    if (otpError) {
+      otpError.textContent =
+        error.message ||
+        "Unable to send OTP.";
+
+      otpError.classList.remove(
+        "hidden"
+      );
+    }
+  } finally {
+    setLoading(
+      sendOtpBtn,
+      false
+    );
+  }
+}
+
+async function verifyOtp() {
+  const email =
+    otpEmail?.value.trim();
+
+  const otp =
+    otpCode?.value.trim();
+
+  if (otpError) {
+    otpError.textContent =
+      "";
+
+    otpError.classList.add(
+      "hidden"
+    );
+  }
+
+  if (
+    !email ||
+    !otp
+  ) {
+    if (otpError) {
+      otpError.textContent =
+        "Please enter your email and OTP.";
+
+      otpError.classList.remove(
+        "hidden"
+      );
+    }
+
+    return;
+  }
+
+  if (
+    !/^\d{6}$/.test(
+      otp
+    )
+  ) {
+    if (otpError) {
+      otpError.textContent =
+        "Please enter a valid 6-digit OTP.";
+
+      otpError.classList.remove(
+        "hidden"
+      );
+    }
+
+    return;
+  }
+
+  try {
+    setLoading(
+      verifyOtpBtn,
+      true,
+      "Verifying..."
+    );
+
+    const data =
+      await apiRequest(
+        "/auth/verify-otp",
+        {
+          method:
+            "POST",
+
+          body:
+            JSON.stringify({
+              email,
+              otp
+            })
+        }
+      );
+
+    authToken =
+      data.token;
+
+    currentUser =
+      data.user;
+
+    localStorage.setItem(
+      "authToken",
+      authToken
+    );
+
+    otpLoginForm.reset();
+
+    otpCodeGroup?.classList.add(
+      "hidden"
+    );
+
+    verifyOtpBtn?.classList.add(
+      "hidden"
+    );
+
+    showDashboard();
+
+    resetTransactionForm();
+
+    await loadTransactions();
+
+    showToast(
+      data.message ||
+      "OTP login successful."
+    );
+  } catch (error) {
+    if (otpError) {
+      otpError.textContent =
+        error.message ||
+        "Invalid OTP.";
+
+      otpError.classList.remove(
+        "hidden"
+      );
+    }
+  } finally {
+    setLoading(
+      verifyOtpBtn,
+      false
+    );
+  }
+}
+
+function handleGoogleCredentialResponse(
+  response
+) {
+  apiRequest(
+    "/auth/google",
+    {
+      method:
+        "POST",
+
+      body:
+        JSON.stringify({
+          credential:
+            response.credential
+        })
+    }
+  )
+    .then(
+      (data) => {
+        authToken =
+          data.token;
+
+        currentUser =
+          data.user;
+
+        localStorage.setItem(
+          "authToken",
+          authToken
+        );
+
+        showDashboard();
+
+        resetTransactionForm();
+
+        return loadTransactions();
+      }
+    )
+    .then(() => {
+      showToast(
+        "Google login successful."
+      );
+    })
+    .catch((error) => {
+      if (loginError) {
+        loginError.textContent =
+          error.message ||
+          "Google login failed.";
+
+        loginError.classList.remove(
+          "hidden"
+        );
+      }
+    });
+}
+
+function initializeGoogleSignIn() {
+  if (
+    !googleSignInButton ||
+    !window.google ||
+    !google.accounts ||
+    !google.accounts.id
+  ) {
+    return false;
+  }
+
+  google.accounts.id.initialize({
+    client_id:
+      "448499935087-ee77v8eoka98h5k0hojiiev41fsjilsv.apps.googleusercontent.com",
+
+    callback:
+      handleGoogleCredentialResponse
+  });
+
+  google.accounts.id.renderButton(
+    googleSignInButton,
+    {
+      theme:
+        "outline",
+
+      size:
+        "large",
+
+      text:
+        "continue_with",
+
+      shape:
+        "rectangular",
+
+      width:
+        355
+    }
+  );
+
+  return true;
+}
+
+function logout() {
+  authToken =
+    null;
+
+  currentUser =
+    null;
+
+  transactions =
+    [];
+
+  editingTransactionId =
+    null;
+
+  localStorage.removeItem(
+    "authToken"
+  );
+
+  monthlyChart?.destroy();
+  categoryChart?.destroy();
+
+  monthlyChart =
+    null;
+
+  categoryChart =
+    null;
+
+  showAuth();
+
+  showLoginForm();
+
+  if (txList) {
+    txList.innerHTML =
+      "";
+  }
+
+  resetTransactionForm();
+
+  showToast(
+    "You have been logged out."
+  );
+}
+
+async function checkExistingSession() {
+  if (!authToken) {
+    showAuth();
+
+    return;
+  }
+
+  try {
+    const data =
+      await apiRequest(
+        "/auth/me"
+      );
+
+    currentUser =
+      data.user;
+
+    showDashboard();
+
+    resetTransactionForm();
+
+    await loadTransactions();
+  } catch {
+    authToken =
+      null;
+
+    currentUser =
+      null;
+
+    localStorage.removeItem(
+      "authToken"
+    );
+
+    showAuth();
+  }
+}
+
+tabLogin?.addEventListener(
+  "click",
+  showLoginForm
+);
+
+tabRegister?.addEventListener(
+  "click",
+  showRegisterForm
+);
+
+loginForm?.addEventListener(
+  "submit",
+  loginUser
+);
+
+registerForm?.addEventListener(
+  "submit",
+  registerUser
+);
+
+otpLoginToggle?.addEventListener(
+  "click",
+  showOtpForm
+);
+
+otpBackBtn?.addEventListener(
+  "click",
+  showPasswordLoginForm
+);
+
+sendOtpBtn?.addEventListener(
+  "click",
+  sendOtp
+);
+
+verifyOtpBtn?.addEventListener(
+  "click",
+  verifyOtp
+);
+
+logoutBtn?.addEventListener(
+  "click",
+  logout
+);
+
+transactionForm?.addEventListener(
+  "submit",
+  saveTransaction
+);
+
+cancelEditBtn?.addEventListener(
+  "click",
+  resetTransactionForm
+);
+
+document
+  .querySelectorAll(
+    'input[name="txType"]'
+  )
+  .forEach(
+    (radio) => {
+      radio.addEventListener(
+        "change",
+        () => {
+          updateTypeStyles();
+
+          populateTransactionCategories();
+        }
+      );
+    }
+  );
+
+filterButtons.forEach(
+  (button) => {
+    button.addEventListener(
+      "click",
+      () => {
+        currentTypeFilter =
+          button.dataset.typeFilter;
+
+        filterButtons.forEach(
           (item) => {
-            item.classList.remove(
-              "open"
+            item.classList.toggle(
+              "active",
+              item === button
             );
           }
         );
-    }
+
+        renderTransactions();
+      }
+    );
   }
 );
+
+categoryFilter?.addEventListener(
+  "change",
+  () => {
+    currentCategoryFilter =
+      categoryFilter.value;
+
+    renderTransactions();
+  }
+);
+
+themeToggleInput?.addEventListener(
+  "change",
+  () => {
+    setTimeout(() => {
+      updateChartTheme();
+      initializeGoogleSignIn();
+    }, 50);
+  }
+);
+
+updateTypeStyles();
+
+populateTransactionCategories();
 
 setupCustomSelect(
   txCategory
@@ -2154,3 +3422,17 @@ setupCustomSelect(
 );
 
 checkExistingSession();
+
+const googleInterval =
+  setInterval(
+    () => {
+      if (
+        initializeGoogleSignIn()
+      ) {
+        clearInterval(
+          googleInterval
+        );
+      }
+    },
+    100
+  );
