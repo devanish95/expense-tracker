@@ -37,6 +37,9 @@ const loginError = $("loginError");
 const googleSignInButton =
   $("googleSignInButton");
 
+const googleClickLayer =
+  $("googleClickLayer");
+
 const otpLoginToggle =
   $("otpLoginToggle");
 
@@ -3667,7 +3670,7 @@ async function verifyOtp() {
 
 function initializeGoogleSignIn() {
   if (
-    !googleSignInButton ||
+    !googleClickLayer ||
     !window.google ||
     !google.accounts ||
     !google.accounts.id
@@ -3675,31 +3678,39 @@ function initializeGoogleSignIn() {
     return false;
   }
 
-  if (googleSignInButton.dataset.googleInitialized === "true") {
-    return true;
-  }
-
   google.accounts.id.initialize({
     client_id:
       "448499935087-ee77v8eoka98h5k0hojiiev41fsjilsv.apps.googleusercontent.com",
-    callback: handleGoogleCredentialResponse,
+    callback:
+      handleGoogleCredentialResponse,
     auto_select: false,
     cancel_on_tap_outside: true
   });
 
-  googleSignInButton.addEventListener(
-    "click",
-    () => {
-      if (window.google?.accounts?.id) {
-        google.accounts.id.prompt();
-      }
+  googleClickLayer.innerHTML = "";
+
+  const width =
+    Math.max(
+      200,
+      Math.floor(
+        googleClickLayer.parentElement?.getBoundingClientRect().width || 355
+      )
+    );
+
+  google.accounts.id.renderButton(
+    googleClickLayer,
+    {
+      theme: "outline",
+      size: "large",
+      text: "continue_with",
+      shape: "rectangular",
+      width,
+      logo_alignment: "left"
     }
   );
 
-  googleSignInButton.dataset.googleInitialized = "true";
   return true;
 }
-
 function handleGoogleCredentialResponse(
   response
 ) {
