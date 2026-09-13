@@ -4820,14 +4820,19 @@ body:has(#themeToggleInput:checked) .auth-tab.active {
 
 #googleSignInButton {
   width: 100%;
+  height: 44px;
   margin-top: 12px;
   display: flex;
+  align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 #googleSignInButton > div {
   width: 100% !important;
-  max-width: 400px;
+  max-width: none !important;
+  height: 44px !important;
+  margin: 0 !important;
 }
 
 .dashboard-analytics {
