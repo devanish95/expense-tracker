@@ -2006,7 +2006,7 @@ function renderTransactions() {
       info.className =
         "transaction-info";
 
-            const description =
+      const description =
         document.createElement(
           "div"
         );
@@ -2072,16 +2072,6 @@ function renderTransactions() {
         formatDate(
           transaction.date
         );
-
-      meta.append(
-        category,
-        date
-      );
-
-      info.append(
-        description,
-        meta
-      );
 
       meta.append(
         category,
@@ -3233,6 +3223,9 @@ function initializeGoogleSignIn() {
       handleGoogleCredentialResponse
   });
 
+  googleSignInButton.innerHTML =
+    "";
+
   google.accounts.id.renderButton(
     googleSignInButton,
     {
@@ -3240,7 +3233,7 @@ function initializeGoogleSignIn() {
         "outline",
 
       size:
-        "large",
+        "medium",
 
       text:
         "continue_with",
@@ -3249,7 +3242,10 @@ function initializeGoogleSignIn() {
         "rectangular",
 
       width:
-        355
+        355,
+
+      logo_alignment:
+        "left"
     }
   );
 
