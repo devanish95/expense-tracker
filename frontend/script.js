@@ -43,6 +43,9 @@ const googleClickLayer =
 const otpLoginToggle =
   $("otpLoginToggle");
 
+const forgotPasswordLink =
+  document.querySelector(".forgot-link");
+
 const otpLoginForm =
   $("otpLoginForm");
 
@@ -67,8 +70,12 @@ const verifyOtpBtn =
 const otpBackBtn =
   $("otpBackBtn");
 
-const forgotPasswordLink =
-  document.querySelector(".forgot-link");
+let otpVerifiedEmail = "";
+let passwordResetPanel = null;
+let passwordResetInput = null;
+let passwordResetConfirmInput = null;
+let passwordResetBtn = null;
+let passwordResetError = null;
 
 const userNav =
   $("userNav");
@@ -339,9 +346,16 @@ function showOtpForm() {
     "hidden"
   );
 
+  otpVerifiedEmail = "";
+
+  if (passwordResetPanel) {
+    passwordResetPanel.classList.add(
+      "hidden"
+    );
+  }
+
   if (otpError) {
     otpError.textContent = "";
-
     otpError.classList.add(
       "hidden"
     );
@@ -354,6 +368,14 @@ function showOtpForm() {
   verifyOtpBtn?.classList.add(
     "hidden"
   );
+
+  sendOtpBtn?.classList.remove(
+    "hidden"
+  );
+
+  if (otpEmail) {
+    otpEmail.disabled = false;
+  }
 
   if (otpCode) {
     otpCode.value = "";
@@ -383,11 +405,293 @@ function showPasswordLoginForm() {
     "hidden"
   );
 
+  otpVerifiedEmail = "";
+
+  if (passwordResetPanel) {
+    passwordResetPanel.classList.add(
+      "hidden"
+    );
+  }
+
   if (otpError) {
     otpError.textContent = "";
-
     otpError.classList.add(
       "hidden"
+    );
+  }
+}
+
+function ensurePasswordResetPanel() {
+  if (!otpLoginForm) {
+    return;
+  }
+
+  if (passwordResetPanel) {
+    return;
+  }
+
+  passwordResetPanel =
+    document.createElement("div");
+
+  passwordResetPanel.id =
+    "passwordResetPanel";
+
+  passwordResetPanel.className =
+    "hidden";
+
+  passwordResetPanel.innerHTML = `
+    <div class="form-group">
+      <label for="newPasswordAfterOtp">
+        New Password
+      </label>
+      <input
+        type="password"
+        id="newPasswordAfterOtp"
+        class="form-control"
+        placeholder="Enter new password"
+        minlength="6"
+        autocomplete="new-password"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPasswordAfterOtp">
+        Confirm New Password
+      </label>
+      <input
+        type="password"
+        id="confirmPasswordAfterOtp"
+        class="form-control"
+        placeholder="Confirm new password"
+        minlength="6"
+        autocomplete="new-password"
+      >
+    </div>
+
+    <p
+      class="form-error hidden"
+      id="passwordResetError"
+      role="alert"
+    ></p>
+
+    <button
+      type="button"
+      class="btn btn-primary btn-block"
+      id="passwordResetBtn"
+    >
+      Set New Password
+    </button>
+
+    <button
+      type="button"
+      class="otp-back-button"
+      id="passwordResetBackBtn"
+    >
+      Back to OTP
+    </button>
+  `;
+
+  otpLoginForm.appendChild(
+    passwordResetPanel
+  );
+
+  passwordResetInput =
+    $("newPasswordAfterOtp");
+
+  passwordResetConfirmInput =
+    $("confirmPasswordAfterOtp");
+
+  passwordResetBtn =
+    $("passwordResetBtn");
+
+  passwordResetError =
+    $("passwordResetError");
+
+  const passwordResetBackBtn =
+    $("passwordResetBackBtn");
+
+  passwordResetBtn?.addEventListener(
+    "click",
+    submitPasswordReset
+  );
+
+  passwordResetBackBtn?.addEventListener(
+    "click",
+    () => {
+      passwordResetPanel?.classList.add(
+        "hidden"
+      );
+
+      otpVerifiedEmail = "";
+
+      otpCodeGroup?.classList.remove(
+        "hidden"
+      );
+
+      verifyOtpBtn?.classList.remove(
+        "hidden"
+      );
+
+      sendOtpBtn?.classList.add(
+        "hidden"
+      );
+
+      otpEmail?.focus();
+    }
+  );
+}
+
+function showPasswordResetForm(email) {
+  ensurePasswordResetPanel();
+
+  otpVerifiedEmail =
+    email.trim();
+
+  otpCodeGroup?.classList.add(
+    "hidden"
+  );
+
+  verifyOtpBtn?.classList.add(
+    "hidden"
+  );
+
+  sendOtpBtn?.classList.add(
+    "hidden"
+  );
+
+  if (otpEmail) {
+    otpEmail.disabled = true;
+  }
+
+  if (otpCode) {
+    otpCode.value = "";
+  }
+
+  if (passwordResetInput) {
+    passwordResetInput.value = "";
+  }
+
+  if (passwordResetConfirmInput) {
+    passwordResetConfirmInput.value = "";
+  }
+
+  if (passwordResetError) {
+    passwordResetError.textContent = "";
+    passwordResetError.classList.add(
+      "hidden"
+    );
+  }
+
+  passwordResetPanel?.classList.remove(
+    "hidden"
+  );
+
+  passwordResetInput?.focus();
+}
+
+async function submitPasswordReset() {
+  const email =
+    otpVerifiedEmail.trim();
+
+  const password =
+    passwordResetInput?.value || "";
+
+  const confirmPassword =
+    passwordResetConfirmInput?.value || "";
+
+  if (passwordResetError) {
+    passwordResetError.textContent = "";
+    passwordResetError.classList.add(
+      "hidden"
+    );
+  }
+
+  if (!email) {
+    showPasswordLoginForm();
+    return;
+  }
+
+  if (password.length < 6) {
+    if (passwordResetError) {
+      passwordResetError.textContent =
+        "Password must be at least 6 characters.";
+      passwordResetError.classList.remove(
+        "hidden"
+      );
+    }
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    if (passwordResetError) {
+      passwordResetError.textContent =
+        "Passwords do not match.";
+      passwordResetError.classList.remove(
+        "hidden"
+      );
+    }
+    return;
+  }
+
+  try {
+    setLoading(
+      passwordResetBtn,
+      true,
+      "Updating..."
+    );
+
+    const data =
+      await apiRequest(
+        "/auth/reset-password",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            identifier: email,
+            password
+          })
+        }
+      );
+
+    showToast(
+      data.message ||
+      "Password updated successfully. Please log in."
+    );
+
+    otpVerifiedEmail = "";
+    passwordResetPanel?.classList.add(
+      "hidden"
+    );
+    otpLoginForm?.classList.add(
+      "hidden"
+    );
+    loginForm?.classList.remove(
+      "hidden"
+    );
+
+    const loginEmailInput =
+      $("loginEmail");
+
+    const loginPasswordInput =
+      $("loginPassword");
+
+    if (loginEmailInput) {
+      loginEmailInput.value = email;
+    }
+
+    loginPasswordInput?.focus();
+  } catch (error) {
+    if (passwordResetError) {
+      passwordResetError.textContent =
+        error.message ||
+        "Unable to update password.";
+      passwordResetError.classList.remove(
+        "hidden"
+      );
+    }
+  } finally {
+    setLoading(
+      passwordResetBtn,
+      false
     );
   }
 }
@@ -3622,36 +3926,14 @@ async function verifyOtp() {
         }
       );
 
-    authToken =
-      data.token;
+    void data;
 
-    currentUser =
-      data.user;
-
-    localStorage.setItem(
-      "authToken",
-      authToken
+    showPasswordResetForm(
+      email
     );
-
-    otpLoginForm.reset();
-
-    otpCodeGroup?.classList.add(
-      "hidden"
-    );
-
-    verifyOtpBtn?.classList.add(
-      "hidden"
-    );
-
-    showDashboard();
-
-    resetTransactionForm();
-
-    await loadTransactions();
 
     showToast(
-      data.message ||
-      "OTP login successful."
+      "OTP verified. Set your new password."
     );
   } catch (error) {
     if (otpError) {
@@ -3990,6 +4272,8 @@ setupCustomSelect(
 setupCustomSelect(
   categoryFilter
 );
+
+ensurePasswordResetPanel();
 
 checkExistingSession();
 
