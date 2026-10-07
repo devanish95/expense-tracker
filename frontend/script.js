@@ -67,6 +67,9 @@ const verifyOtpBtn =
 const otpBackBtn =
   $("otpBackBtn");
 
+const forgotPasswordLink =
+  document.querySelector(".forgot-link");
+
 const userNav =
   $("userNav");
 
@@ -3872,6 +3875,14 @@ registerForm?.addEventListener(
 otpLoginToggle?.addEventListener(
   "click",
   showOtpForm
+);
+
+forgotPasswordLink?.addEventListener(
+  "click",
+  (event) => {
+    event.preventDefault();
+    showOtpForm();
+  }
 );
 
 otpBackBtn?.addEventListener(
