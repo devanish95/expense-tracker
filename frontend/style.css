@@ -5757,3 +5757,7 @@ body:has(#themeToggleInput:checked) .budget-panel .budget-status.danger {
   margin: 0 auto !important;
   border: 0 !important;
 }
+
+.otp-login-toggle {
+  display: none !important;
+}
